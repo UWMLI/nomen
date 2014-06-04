@@ -53,14 +53,18 @@
       var makeRow = function(ids){
         var row = $('<div />', {'class': 'row'});
         ids.forEach(function(id){
-          var button = $('<span />', {'class': 'row-button'});
+          var button = $('<span />', {
+            'class': 'row-button',
+            'onmousedown': 'isDrag = false;',
+            'onclick': 'if (!isDrag) console.log("'+id+'");',
+          });
           var img = $('<img />', {'class': 'row-image', 'src': images[id]});
           var text = $('<div class="row-text">'+id+'</div>');
           button.append(img);
           button.append(text);
           row.append(button);
         });
-        row.dragscrollable({dragSelector:'*'});
+        row.dragscrollable();
         $('.rows').append(row);
       };
 
@@ -71,8 +75,6 @@
       $(document).ready(function(){
         makeRow(['Owl', 'Parrot', 'Flycatcher', 'Sunbittern', 'Flamingo']);
         makeRow(['Flamingo', 'Sunbittern', 'Owl', 'Parrot', 'Flycatcher']);
-
-        // todo: drag with the space between images
       });
     </script>
   </head>

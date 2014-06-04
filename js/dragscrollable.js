@@ -8,6 +8,10 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
+
+// MT: used to distinguish drag from click
+var isDrag = false;
+
 ;(function($){ // secure $ jQuery alias
 
 /**
@@ -49,6 +53,7 @@
  *  would not interfere as acceptPropagatedEvent is set to false.
  *
  */
+
 $.fn.dragscrollable = function( options ){
 
   var settings = $.extend(
@@ -80,6 +85,8 @@ $.fn.dragscrollable = function( options ){
       }
     },
     mouseMoveHandler : function(event) { // User is dragging
+      isDrag = true;
+
       // How much did the mouse move?
       var delta = {left: (event.clientX - event.data.lastCoord.left),
              top: (event.clientY - event.data.lastCoord.top)};
@@ -115,8 +122,12 @@ $.fn.dragscrollable = function( options ){
           acceptPropagatedEvent : settings.acceptPropagatedEvent,
           preventDefault : settings.preventDefault }
     // Set mouse initiating event on the desired descendant
-    $(this).find(settings.dragSelector).
-            bind('mousedown', data, dragscroll.mouseDownHandler);
+
+    // MT: commented out dragSelector, instead use the whole element as handle
+    //$(this).find(settings.dragSelector).
+    //        bind('mousedown', data, dragscroll.mouseDownHandler);
+    $(this).bind('mousedown', data, dragscroll.mouseDownHandler);
+
   });
 }; //end plugin dragscrollable
 
