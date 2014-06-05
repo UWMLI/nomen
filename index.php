@@ -4,6 +4,10 @@
     <title>
       Field Guide Demo
     </title>
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, use r-scalable=0" name="viewport" />
+    <meta name="viewport" content="width=device-width" />
+
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="js/dragscrollable.js"></script>
     <style>
@@ -11,7 +15,7 @@
         width: 100%;
         clear: left;
         white-space: nowrap;
-        overflow-x: hidden;
+        overflow-x: scroll;
         background-color: #AAA;
         padding-top: 6px;
         padding-left: 6px;
@@ -56,7 +60,7 @@
           var button = $('<span />', {
             'class': 'row-button',
             'onmousedown': 'isDrag = false;',
-            'onclick': 'if (!isDrag) console.log("'+id+'");',
+            'onclick': 'if (!isDrag) alert("'+id+'");',
           });
           var img = $('<img />', {'class': 'row-image', 'src': images[id]});
           var text = $('<div class="row-text">'+id+'</div>');
