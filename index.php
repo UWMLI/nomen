@@ -28,6 +28,9 @@
         height: 100px;
         border: 3px solid black;
       }
+      .selected {
+        border: 3px solid red;
+      }
       .row-text {
         position: absolute;
         left: 3px;
@@ -38,11 +41,19 @@
         font-family: sans-serif;
         font-size: 13px;
         background-color: black;
-        opacity: 0.6;
+        opacity: 0.7;
         padding: 6px;
       }
     </style>
     <script type="text/javascript">
+
+      var toggleElement = function(element) {
+        image = $(element).find('.row-image');
+        if (image.hasClass('selected'))
+          image.removeClass('selected');
+        else
+          image.addClass('selected');
+      };
 
       var makeRow = function(entries){
         var row = $('<div />', {'class': 'row'});
@@ -50,7 +61,7 @@
           var button = $('<span />', {
             'class': 'row-button',
             'onmousedown': 'isDrag = false;',
-            'onclick': 'if (!isDrag) alert("'+entry.display+'");',
+            'onclick': 'if (!isDrag) toggleElement(this);',
           });
           var img = $('<img />', {'class': 'row-image', 'src': entry.image});
           var text = $('<div class="row-text">'+entry.display+'</div>');
