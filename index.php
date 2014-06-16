@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width" />
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery.parse.min.js"></script>
     <script type="text/javascript" src="js/dragscrollable.js"></script>
     <style>
       .row {
@@ -44,6 +45,10 @@
         opacity: 0.7;
         padding: 6px;
       }
+      #num-matching {
+        padding-bottom: 10px;
+        font-size: 20px;
+      }
     </style>
     <script type="text/javascript">
 
@@ -53,6 +58,7 @@
           image.removeClass('selected');
         else
           image.addClass('selected');
+        computeScores();
       };
 
       var makeRow = function(entries){
@@ -63,7 +69,12 @@
             'onmousedown': 'isDrag = false;',
             'onclick': 'if (!isDrag) toggleElement(this);',
           });
-          var img = $('<img />', {'class': 'row-image', 'src': entry.image});
+          var img = $('<img />', {
+            'class': 'row-image',
+            'src': entry.image,
+            'feature': entry.feature,
+            'value': entry.value,
+          });
           var text = $('<div class="row-text">'+entry.display+'</div>');
           button.append(img);
           button.append(text);
@@ -87,6 +98,8 @@
               row.push({
                 'display': value.split('_').join(' '),
                 'image': 'plantfeatures/'+feature+'/'+feature+'-'+value+'.png',
+                'feature': feature,
+                'value': value,
               });
             });
             makeRow(row);
@@ -94,10 +107,73 @@
         });
       });
 
+      var selected = {};
+      var computeSelected = function() {
+        selected = {};
+        $('.selected').each(function(index, img) {
+          var feature = $(img).attr('feature');
+          var value   = $(img).attr('value');
+          if (!(selected[feature]))
+            selected[feature] = [];
+          selected[feature].push(value);
+        });
+      };
+
+      var dataset = [];
+
+      var computeScores = function() {
+        computeSelected();
+        var maxScore = 0;
+        for (feature in selected)
+        {
+          maxScore++;
+        }
+        var viable = 0;
+        dataset.forEach(function(row) {
+          var name = row.Scientific_name;
+          var score = 0;
+          for (feature in selected)
+          {
+            var match = false;
+            var user = selected[feature].map(function(specimenValue) {
+              return specimenValue.toLowerCase().trim();
+            });
+            var specimen = row[feature].split(",").map(function(specimenValue) {
+              return specimenValue.toLowerCase().trim();
+            });
+            user.forEach(function(userValue) {
+              specimen.forEach(function(specimenValue) {
+                if (userValue === specimenValue)
+                  match = true;
+              });
+            });
+            if (match)
+              score++;
+          }
+          if (score >= maxScore * 0.9)
+            viable++;
+        });
+        $('#num-matching').html(viable + ' likely matches.');
+      };
+
+      $.get('dataset.csv', function(str) {
+        var parsed = $.parse(str);
+        parsed.results.rows.forEach(function(row) {
+          dataset.push(row);
+        });
+
+        $(document).ready(function() {
+          computeScores();
+        });
+      });
+
     </script>
   </head>
 
   <body>
+
+    <div id="num-matching">
+    </div>
 
     <div class="rows">
     </div>
