@@ -123,11 +123,16 @@
 
       var computeScores = function() {
         computeSelected();
+
         var maxScore = 0;
         for (feature in selected)
         {
           maxScore++;
         }
+        var cutoffScore = maxScore * 0.9;
+
+        var specimens = [];
+
         var viable = 0;
         dataset.forEach(function(row) {
           var name = row.Scientific_name;
@@ -138,7 +143,7 @@
             var user = selected[feature].map(function(specimenValue) {
               return specimenValue.toLowerCase().trim();
             });
-            var specimen = row[feature].split(",").map(function(specimenValue) {
+            var specimen = row[feature].toString().split(",").map(function(specimenValue) {
               return specimenValue.toLowerCase().trim();
             });
             user.forEach(function(userValue) {
@@ -150,10 +155,32 @@
             if (match)
               score++;
           }
-          if (score >= maxScore * 0.9)
-            viable++;
+          specimens.push({score: score, scientific: name});
         });
-        $('#num-matching').html(viable + ' likely matches.');
+
+        specimens.sort(function(spec1, spec2) {
+          return spec2.score - spec1.score; // sorts descending
+        });
+        viable = 0;
+        for (var i = 0; i < specimens.length; i++)
+        {
+          if (specimens[i].score >= cutoffScore)
+            viable++;
+          else
+            break;
+        }
+
+        var html = viable + ' likely match' + (viable == 1 ? '' : 'es') + '.'
+        if (maxScore > 0)
+        {
+          html += ' Top choices:'
+          html += '<ul>';
+          specimens.slice(0, 10).forEach(function(specimen) {
+            html += '<li>' + specimen.scientific + ' (' + specimen.score + ')</li>';
+          });
+          html += '</ul>';
+        }
+        $('#num-matching').html(html);
       };
 
       $.get('dataset.csv', function(str) {
