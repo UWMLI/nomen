@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+rm -rf plugins
+rm -rf platforms
+mkdir plugins
+mkdir platforms
+cordova platform add ios
