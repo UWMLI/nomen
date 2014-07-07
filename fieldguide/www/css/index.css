@@ -1,41 +1,72 @@
-* {
-  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+/*
+App-o-Mat jQuery Mobile Cordova starter template
+Copyright 2014 Lou Franco
+https://github.com/app-o-mat/jqm-cordova-template-project
+http://app-o-mat.com
+
+MIT License
+https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
+*/
+
+/* Make the webviews act less like a browser, and more like an app*/
+body {
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  -webkit-user-select: none;
 }
 
-.row {
-  width: 100%;
-  clear: left;
+#plants-content {
+  padding: 0px;
+  padding-top: 4px;
+}
+
+.feature-row {
+  font-size: 12px;
+  position: relative;
   white-space: nowrap;
   overflow-x: scroll;
-  background-color: #AAA;
 }
-.row:last-child {
-}
-.row-button {
-  position: relative;
-  display: inline;
-}
-.row-image {
-  height: 100px;
-  border: 3px solid black;
-}
-.selected {
-  border: 3px solid red;
-}
-.row-text {
+
+.feature-name {
   position: absolute;
-  left: 3px;
-  top: -89px;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  background-color: #666;
+  padding: 3px;
+  text-shadow: none;
   color: white;
-  width: 88px;
-  overflow-x: hidden;
-  font-family: sans-serif;
-  font-size: 13px;
-  background-color: black;
-  opacity: 0.7;
-  padding: 6px;
+  opacity: 0.85;
+  border-bottom-right-radius: 3px;
+  margin-left: 1px;
+  margin-top: 1px;
 }
-#num-matching {
-  padding-bottom: 10px;
-  font-size: 20px;
+
+.feature-box {
+  display: inline;
+  position: relative;
+}
+
+.feature-value {
+  position: absolute;
+  top: -10px;
+  background-color: #666;
+  padding: 3px;
+  text-shadow: none;
+  color: white;
+  opacity: 0.85;
+  margin-left: 1px;
+  border-top-right-radius: 3px;
+  z-index: 1;
+}
+
+.feature-img {
+  height: 100px;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.feature-box:last-child .feature-img {
+  border-right: 1px solid black;
 }
