@@ -46,7 +46,7 @@ class App
       for {display, image, value} in row
         htmlBox = $('<div />', {
           class: 'feature-box'
-          onclick: "app.toggleElement(#{JSON.stringify feature}, #{JSON.stringify value});"
+          onclick: "app.toggleElement(this, #{JSON.stringify feature}, #{JSON.stringify value});"
         })
         htmlBox.append $("<div class='feature-value'>#{display}</div>")
         htmlBox.append $('<img />', class: 'feature-img', src: image)
@@ -54,7 +54,7 @@ class App
       container.append htmlRow
     @selected = {}
 
-  toggleElement: (feature, value) ->
+  toggleElement: (element, feature, value) ->
     @selected[feature] ?= {}
 
     if @selected[feature][value]
@@ -64,6 +64,12 @@ class App
 
     if Object.keys(@selected[feature]).length is 0
       delete @selected[feature]
+
+    value = $(element).find '.feature-value'
+    if value.hasClass 'selected'
+      value.removeClass 'selected'
+    else
+      value.addClass 'selected'
 
     @showLikely()
     @fillLikely()

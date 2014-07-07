@@ -50,7 +50,6 @@ body {
 .feature-value {
   position: absolute;
   top: -10px;
-  background-color: #666;
   padding: 3px;
   text-shadow: none;
   color: white;
@@ -58,6 +57,14 @@ body {
   margin-left: 1px;
   border-top-right-radius: 3px;
   z-index: 1;
+}
+
+.feature-value:not(.selected) {
+  background-color: #666;
+}
+
+.feature-value.selected {
+  background-color: #A33;
 }
 
 .feature-img {

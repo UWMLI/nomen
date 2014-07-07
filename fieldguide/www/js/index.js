@@ -88,7 +88,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref1 = row[_j], display = _ref1.display, image = _ref1.image, value = _ref1.value;
           htmlBox = $('<div />', {
             "class": 'feature-box',
-            onclick: "app.toggleElement(" + (JSON.stringify(feature)) + ", " + (JSON.stringify(value)) + ");"
+            onclick: "app.toggleElement(this, " + (JSON.stringify(feature)) + ", " + (JSON.stringify(value)) + ");"
           });
           htmlBox.append($("<div class='feature-value'>" + display + "</div>"));
           htmlBox.append($('<img />', {
@@ -102,7 +102,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return this.selected = {};
     };
 
-    App.prototype.toggleElement = function(feature, value) {
+    App.prototype.toggleElement = function(element, feature, value) {
       var _base;
       if ((_base = this.selected)[feature] == null) {
         _base[feature] = {};
@@ -114,6 +114,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       }
       if (Object.keys(this.selected[feature]).length === 0) {
         delete this.selected[feature];
+      }
+      value = $(element).find('.feature-value');
+      if (value.hasClass('selected')) {
+        value.removeClass('selected');
+      } else {
+        value.addClass('selected');
       }
       this.showLikely();
       return this.fillLikely();
