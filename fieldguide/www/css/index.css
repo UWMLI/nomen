@@ -25,6 +25,11 @@ body {
   padding-top: 4px;
 }
 
+#specimen-content {
+  padding: 0px;
+  padding-top: 4px;
+}
+
 .feature-row {
   font-size: 12px;
   position: relative;
@@ -81,4 +86,41 @@ body {
 
 .feature-box:last-child .feature-img {
   border-right: 1px solid black;
+}
+
+.specimen-img-box {
+  position: relative;
+  overflow: visible;
+}
+
+.specimen-img {
+  width: 100%;
+}
+
+.blur {
+  position: absolute;
+  top: 0px;
+  -webkit-filter: blur(4px);
+  -moz-filter: blur(4px);
+  -o-filter: blur(4px);
+  -ms-filter: blur(4px);
+  filter: blur(4px);
+}
+
+.specimen-img-fade {
+  background: linear-gradient(to top, black, black, rgba(0,0,0,0) 100%);
+  width: 100%;
+  height: 30px;
+  z-index: 1;
+  position: absolute;
+  bottom: 0px;
+}
+
+.specimen-text {
+  width: calc(100% - 40px);
+  background-color: black;
+  text-align: justify;
+  padding: 20px;
+  text-shadow: none;
+  color: white;
 }
