@@ -21,6 +21,13 @@ class App
         @fillLikely()
         console.log 'Loaded!'
 
+  ###
+  scrollBlur: ->
+    $(window).scroll (e) ->
+      console.log($(window).scrollTop())
+      $('.blur').css('opacity', $(window).scrollTop() / 150)
+  ###
+
   loadSpecies: (callback) ->
     $.get 'data/dataset.csv', (str) =>
       @species = $.parse(str).results.rows
@@ -118,6 +125,8 @@ class App
             htmlBox.append("<div class='feature-value'>#{part}</div>").trigger("create")
           htmlBox.append($('<img />', class: 'feature-img', src: img)).trigger("create")
           htmlRow.append(htmlBox).trigger("create")
-      container.append(htmlRow).trigger("create")
+      htmlLink = $('<a href="#specimen" data-transition="slide" />')
+      htmlLink.append(htmlRow).trigger("create")
+      container.append(htmlLink).trigger("create")
 
 window.app = new App

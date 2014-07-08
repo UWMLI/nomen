@@ -79,13 +79,13 @@ body {
 
 .feature-img {
   height: 100px;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
+  border-top: 1px solid black !important;
+  border-left: 1px solid black !important;
+  border-bottom: 1px solid black !important;
 }
 
 .feature-box:last-child .feature-img {
-  border-right: 1px solid black;
+  border-right: 1px solid black !important;
 }
 
 .specimen-img-box {

@@ -35,6 +35,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       });
     };
 
+    /*
+      scrollBlur: ->
+        $(window).scroll (e) ->
+          console.log($(window).scrollTop())
+          $('.blur').css('opacity', $(window).scrollTop() / 150)
+    */
+
+
     App.prototype.loadSpecies = function(callback) {
       var _this = this;
       return $.get('data/dataset.csv', function(str) {
@@ -187,7 +195,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var container, htmlBox, htmlRow, image, img, part, place, result, scientific, score, spec, species, __, _i, _j, _len, _len1, _ref, _ref1, _ref2, _results;
+      var container, htmlBox, htmlLink, htmlRow, image, img, part, place, result, scientific, score, spec, species, __, _i, _j, _len, _len1, _ref, _ref1, _ref2, _results;
       $('#likely-content').html('');
       species = (function() {
         var _i, _len, _ref, _results;
@@ -238,7 +246,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             htmlRow.append(htmlBox).trigger("create");
           }
         }
-        _results.push(container.append(htmlRow).trigger("create"));
+        htmlLink = $('<a href="#specimen" data-transition="slide" />');
+        htmlLink.append(htmlRow).trigger("create");
+        _results.push(container.append(htmlLink).trigger("create"));
       }
       return _results;
     };
