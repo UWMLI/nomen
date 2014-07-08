@@ -89,31 +89,44 @@ body {
 }
 
 .specimen-img-box {
-  position: relative;
+  position: fixed;
+  top: 50px;
   overflow: visible;
+  width: 100%;
 }
 
 .specimen-img {
+  position: absolute;
+  top: 0px;
   width: 100%;
 }
 
 .blur {
-  position: absolute;
-  top: 0px;
   -webkit-filter: blur(4px);
   -moz-filter: blur(4px);
   -o-filter: blur(4px);
   -ms-filter: blur(4px);
   filter: blur(4px);
+  opacity: 0;
+}
+
+.specimen-text-box {
+  z-index: 1;
+  position: relative;
+}
+
+.specimen-img-fake-box {
+}
+
+.specimen-img-fake {
+  opacity: 0;
+  width: 90%;
 }
 
 .specimen-img-fade {
-  background: linear-gradient(to top, black, black, rgba(0,0,0,0) 100%);
+  background: linear-gradient(to top, black, rgba(0,0,0,0) 100%);
   width: 100%;
-  height: 30px;
-  z-index: 1;
-  position: absolute;
-  bottom: 0px;
+  height: 20px;
 }
 
 .specimen-text {
