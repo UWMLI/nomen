@@ -273,6 +273,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       desc = spec.Description;
       $('#specimen-name').html(name);
       $('.specimen-img').prop('src', img);
+      $('.specimen-img-fake').prop('src', img);
       return $('.specimen-text').html(desc);
     };
 

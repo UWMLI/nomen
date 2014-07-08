@@ -143,6 +143,7 @@ class App
     desc = spec.Description
     $('#specimen-name').html(name)
     $('.specimen-img').prop('src', img)
+    $('.specimen-img-fake').prop('src', img)
     $('.specimen-text').html(desc)
 
 window.app = new App

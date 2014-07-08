@@ -90,7 +90,7 @@ body {
 
 .specimen-img-box {
   position: fixed;
-  top: 50px;
+  top: 44px;
   overflow: visible;
   width: 100%;
 }
@@ -137,3 +137,8 @@ body {
   text-shadow: none;
   color: white;
 }
+
+#specimen {
+  background-color: black;
+}
+
