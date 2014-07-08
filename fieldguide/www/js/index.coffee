@@ -78,9 +78,9 @@ class App
     score = 0
     for feature, values of @selected
       selectedValues =
-        v.toLowerCase().trim() for v of values
+        v.toLowerCase() for v of values
       speciesValues =
-        v.toLowerCase().trim() for v in species[feature].toString().split(',')
+        v.toLowerCase() for v in species[feature].toString().split(/\s*,\s*/)
       overlap =
         v for v in selectedValues when v in speciesValues
       score++ if overlap.length != 0
@@ -98,8 +98,27 @@ class App
     $('#likely-content').html ''
     species = ([spec, @computeScore spec] for spec in @species)
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
-    for [spec, score] in species
-      entry = $("<a href=\"#\" data-role=\"button\">#{spec.Scientific_name} (#{score})</a>")
-      $('#likely-content').append(entry).trigger("create")
+    container = $('#likely-content')
+    for [spec, score] in species[0...10]
+      htmlRow = $('<div />', class: 'feature-row')
+      htmlRow.append("<div class='feature-name'>#{spec.Scientific_name} (#{score})</div>").trigger("create")
+      if spec.Pictures.toString().match /^\s*$/
+        htmlBox = $('<div class="feature-box" />')
+        htmlBox.append("<div class='feature-value'>No Image</div>").trigger("create")
+        htmlBox.append($('<img />', class: 'feature-img', src: 'data/noimage.png')).trigger("create")
+        htmlRow.append(htmlBox).trigger("create")
+      else
+        for image in spec.Pictures.toString().split(/\s*,\s*/)
+          img = "data/plantphotos/#{image}.jpg"
+          console.log(image)
+          htmlBox = $('<div class="feature-box" />')
+          result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/)
+          if result?
+            [__, scientific, part, place] = result
+            part = part.split('_').join(' ')
+            htmlBox.append("<div class='feature-value'>#{part}</div>").trigger("create")
+          htmlBox.append($('<img />', class: 'feature-img', src: img)).trigger("create")
+          htmlRow.append(htmlBox).trigger("create")
+      container.append(htmlRow).trigger("create")
 
 window.app = new App

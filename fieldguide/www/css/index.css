@@ -20,6 +20,11 @@ body {
   padding-top: 4px;
 }
 
+#likely-content {
+  padding: 0px;
+  padding-top: 4px;
+}
+
 .feature-row {
   font-size: 12px;
   position: relative;

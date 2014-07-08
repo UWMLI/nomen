@@ -135,17 +135,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           var _results;
           _results = [];
           for (v in values) {
-            _results.push(v.toLowerCase().trim());
+            _results.push(v.toLowerCase());
           }
           return _results;
         })();
         speciesValues = (function() {
           var _i, _len, _ref1, _results;
-          _ref1 = species[feature].toString().split(',');
+          _ref1 = species[feature].toString().split(/\s*,\s*/);
           _results = [];
           for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
             v = _ref1[_i];
-            _results.push(v.toLowerCase().trim());
+            _results.push(v.toLowerCase());
           }
           return _results;
         })();
@@ -187,7 +187,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var entry, score, spec, species, _i, _len, _ref, _results;
+      var container, htmlBox, htmlRow, image, img, part, place, result, scientific, score, spec, species, __, _i, _j, _len, _len1, _ref, _ref1, _ref2, _results;
       $('#likely-content').html('');
       species = (function() {
         var _i, _len, _ref, _results;
@@ -202,11 +202,44 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       species.sort(function(s1, s2) {
         return s2[1] - s1[1];
       });
+      container = $('#likely-content');
+      _ref = species.slice(0, 10);
       _results = [];
-      for (_i = 0, _len = species.length; _i < _len; _i++) {
-        _ref = species[_i], spec = _ref[0], score = _ref[1];
-        entry = $("<a href=\"#\" data-role=\"button\">" + spec.Scientific_name + " (" + score + ")</a>");
-        _results.push($('#likely-content').append(entry).trigger("create"));
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        _ref1 = _ref[_i], spec = _ref1[0], score = _ref1[1];
+        htmlRow = $('<div />', {
+          "class": 'feature-row'
+        });
+        htmlRow.append("<div class='feature-name'>" + spec.Scientific_name + " (" + score + ")</div>").trigger("create");
+        if (spec.Pictures.toString().match(/^\s*$/)) {
+          htmlBox = $('<div class="feature-box" />');
+          htmlBox.append("<div class='feature-value'>No Image</div>").trigger("create");
+          htmlBox.append($('<img />', {
+            "class": 'feature-img',
+            src: 'data/noimage.png'
+          })).trigger("create");
+          htmlRow.append(htmlBox).trigger("create");
+        } else {
+          _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
+          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+            image = _ref2[_j];
+            img = "data/plantphotos/" + image + ".jpg";
+            console.log(image);
+            htmlBox = $('<div class="feature-box" />');
+            result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/);
+            if (result != null) {
+              __ = result[0], scientific = result[1], part = result[2], place = result[3];
+              part = part.split('_').join(' ');
+              htmlBox.append("<div class='feature-value'>" + part + "</div>").trigger("create");
+            }
+            htmlBox.append($('<img />', {
+              "class": 'feature-img',
+              src: img
+            })).trigger("create");
+            htmlRow.append(htmlBox).trigger("create");
+          }
+        }
+        _results.push(container.append(htmlRow).trigger("create"));
       }
       return _results;
     };
