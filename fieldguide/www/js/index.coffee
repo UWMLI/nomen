@@ -110,7 +110,6 @@ class App
       else
         for image in spec.Pictures.toString().split(/\s*,\s*/)
           img = "data/plantphotos/#{image}.jpg"
-          console.log(image)
           htmlBox = $('<div class="feature-box" />')
           result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/)
           if result?

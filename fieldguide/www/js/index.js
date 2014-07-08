@@ -224,7 +224,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
             image = _ref2[_j];
             img = "data/plantphotos/" + image + ".jpg";
-            console.log(image);
             htmlBox = $('<div class="feature-box" />');
             result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/);
             if (result != null) {
