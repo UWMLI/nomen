@@ -42,16 +42,16 @@ class App
     for row in @featureRows
       feature = row[0].feature
       htmlRow = $('<div />', class: 'feature-row')
-      htmlRow.append $("<div class='feature-name'>#{feature.split('_').join(' ')}</div>")
+      htmlRow.append("<div class='feature-name'>#{feature.split('_').join(' ')}</div>").trigger("create")
       for {display, image, value} in row
         htmlBox = $('<div />', {
           class: 'feature-box'
           onclick: "app.toggleElement(this, #{JSON.stringify feature}, #{JSON.stringify value});"
         })
-        htmlBox.append $("<div class='feature-value'>#{display}</div>")
-        htmlBox.append $('<img />', class: 'feature-img', src: image)
-        htmlRow.append htmlBox
-      container.append htmlRow
+        htmlBox.append("<div class='feature-value'>#{display}</div>").trigger("create")
+        htmlBox.append($('<img />', class: 'feature-img', src: image)).trigger("create")
+        htmlRow.append(htmlBox).trigger("create")
+      container.append(htmlRow).trigger("create")
     @selected = {}
 
   toggleElement: (element, feature, value) ->
@@ -99,7 +99,7 @@ class App
     species = ([spec, @computeScore spec] for spec in @species)
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
     for [spec, score] in species
-      entry = $("<h2>#{spec.Scientific_name} (#{score})</h2>")
-      $('#likely-content').append entry
+      entry = $("<a href=\"#\" data-role=\"button\">#{spec.Scientific_name} (#{score})</a>")
+      $('#likely-content').append(entry).trigger("create")
 
 window.app = new App

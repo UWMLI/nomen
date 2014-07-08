@@ -83,21 +83,21 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         htmlRow = $('<div />', {
           "class": 'feature-row'
         });
-        htmlRow.append($("<div class='feature-name'>" + (feature.split('_').join(' ')) + "</div>"));
+        htmlRow.append("<div class='feature-name'>" + (feature.split('_').join(' ')) + "</div>").trigger("create");
         for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
           _ref1 = row[_j], display = _ref1.display, image = _ref1.image, value = _ref1.value;
           htmlBox = $('<div />', {
             "class": 'feature-box',
             onclick: "app.toggleElement(this, " + (JSON.stringify(feature)) + ", " + (JSON.stringify(value)) + ");"
           });
-          htmlBox.append($("<div class='feature-value'>" + display + "</div>"));
+          htmlBox.append("<div class='feature-value'>" + display + "</div>").trigger("create");
           htmlBox.append($('<img />', {
             "class": 'feature-img',
             src: image
-          }));
-          htmlRow.append(htmlBox);
+          })).trigger("create");
+          htmlRow.append(htmlBox).trigger("create");
         }
-        container.append(htmlRow);
+        container.append(htmlRow).trigger("create");
       }
       return this.selected = {};
     };
@@ -205,8 +205,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       _results = [];
       for (_i = 0, _len = species.length; _i < _len; _i++) {
         _ref = species[_i], spec = _ref[0], score = _ref[1];
-        entry = $("<h2>" + spec.Scientific_name + " (" + score + ")</h2>");
-        _results.push($('#likely-content').append(entry));
+        entry = $("<a href=\"#\" data-role=\"button\">" + spec.Scientific_name + " (" + score + ")</a>");
+        _results.push($('#likely-content').append(entry).trigger("create"));
       }
       return _results;
     };
