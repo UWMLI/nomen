@@ -31,6 +31,9 @@ class App
   loadSpecies: (callback) ->
     $.get 'data/dataset.csv', (str) =>
       @species = $.parse(str).results.rows
+      @speciesHash = {}
+      for spec in @species
+        @speciesHash[spec.Scientific_name] = spec
       callback()
 
   loadFeatures: (callback) ->
@@ -125,8 +128,21 @@ class App
             htmlBox.append("<div class='feature-value'>#{part}</div>").trigger("create")
           htmlBox.append($('<img />', class: 'feature-img', src: img)).trigger("create")
           htmlRow.append(htmlBox).trigger("create")
-      htmlLink = $('<a href="#specimen" data-transition="slide" />')
+      setFn = "app.setSpecimen(#{JSON.stringify spec.Scientific_name})"
+      htmlLink = $("<a href=\"#specimen\" data-transition=\"slide\" onclick='#{setFn}' />")
       htmlLink.append(htmlRow).trigger("create")
       container.append(htmlLink).trigger("create")
+
+  setSpecimen: (name) ->
+    spec = @speciesHash[name]
+    if spec.Pictures.toString().match /^\s*$/
+      img = 'data/noimage.png'
+    else
+      id = spec.Pictures.toString().split(/\s*,\s*/)[0]
+      img = "data/plantphotos/#{id}.jpg"
+    desc = spec.Description
+    $('#specimen-name').html(name)
+    $('.specimen-img').prop('src', img)
+    $('.specimen-text').html(desc)
 
 window.app = new App

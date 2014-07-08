@@ -46,7 +46,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.loadSpecies = function(callback) {
       var _this = this;
       return $.get('data/dataset.csv', function(str) {
+        var spec, _i, _len, _ref;
         _this.species = $.parse(str).results.rows;
+        _this.speciesHash = {};
+        _ref = _this.species;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          spec = _ref[_i];
+          _this.speciesHash[spec.Scientific_name] = spec;
+        }
         return callback();
       });
     };
@@ -195,7 +202,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var container, htmlBox, htmlLink, htmlRow, image, img, part, place, result, scientific, score, spec, species, __, _i, _j, _len, _len1, _ref, _ref1, _ref2, _results;
+      var container, htmlBox, htmlLink, htmlRow, image, img, part, place, result, scientific, score, setFn, spec, species, __, _i, _j, _len, _len1, _ref, _ref1, _ref2, _results;
       $('#likely-content').html('');
       species = (function() {
         var _i, _len, _ref, _results;
@@ -246,11 +253,27 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             htmlRow.append(htmlBox).trigger("create");
           }
         }
-        htmlLink = $('<a href="#specimen" data-transition="slide" />');
+        setFn = "app.setSpecimen(" + (JSON.stringify(spec.Scientific_name)) + ")";
+        htmlLink = $("<a href=\"#specimen\" data-transition=\"slide\" onclick='" + setFn + "' />");
         htmlLink.append(htmlRow).trigger("create");
         _results.push(container.append(htmlLink).trigger("create"));
       }
       return _results;
+    };
+
+    App.prototype.setSpecimen = function(name) {
+      var desc, id, img, spec;
+      spec = this.speciesHash[name];
+      if (spec.Pictures.toString().match(/^\s*$/)) {
+        img = 'data/noimage.png';
+      } else {
+        id = spec.Pictures.toString().split(/\s*,\s*/)[0];
+        img = "data/plantphotos/" + id + ".jpg";
+      }
+      desc = spec.Description;
+      $('#specimen-name').html(name);
+      $('.specimen-img').prop('src', img);
+      return $('.specimen-text').html(desc);
     };
 
     return App;
