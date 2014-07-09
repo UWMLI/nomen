@@ -10,7 +10,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 class App
   initialize: ->
     @onDeviceReady()
-    document.addEventListener 'deviceready', @onDeviceReady, false
+    #document.addEventListener 'deviceready', @onDeviceReady, false
 
   onDeviceReady: ->
     FastClick.attach document.body
