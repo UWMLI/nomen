@@ -7,6 +7,8 @@ MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 ###
 
+ck = window.coffeecup
+
 class App
   initialize: ->
     @onDeviceReady()
@@ -108,30 +110,29 @@ class App
     $('#likely-content').html ''
     species = ([spec, @computeScore spec] for spec in @species)
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
-    container = $('#likely-content')
     for [spec, score] in species[0...10]
-      htmlRow = $('<div />', class: 'feature-row')
-      htmlRow.append("<div class='feature-name'>#{spec.Scientific_name} (#{score})</div>").trigger("create")
-      if spec.Pictures.toString().match /^\s*$/
-        htmlBox = $('<div class="feature-box" />')
-        htmlBox.append("<div class='feature-value'>No Image</div>").trigger("create")
-        htmlBox.append($('<img />', class: 'feature-img', src: 'data/noimage.png')).trigger("create")
-        htmlRow.append(htmlBox).trigger("create")
-      else
-        for image in spec.Pictures.toString().split(/\s*,\s*/)
-          img = "data/plantphotos/#{image}.jpg"
-          htmlBox = $('<div class="feature-box" />')
-          result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/)
-          if result?
-            [__, scientific, part, place] = result
-            part = part.split('_').join(' ')
-            htmlBox.append("<div class='feature-value'>#{part}</div>").trigger("create")
-          htmlBox.append($('<img />', class: 'feature-img', src: img)).trigger("create")
-          htmlRow.append(htmlBox).trigger("create")
-      setFn = "app.setSpecimen(#{JSON.stringify spec.Scientific_name})"
-      htmlLink = $("<a href=\"#specimen\" data-transition=\"slide\" onclick='#{setFn}' />")
-      htmlLink.append(htmlRow).trigger("create")
-      container.append(htmlLink).trigger("create")
+      window.spec = spec # TODO: fix this hack
+      window.score = score
+      $('#likely-content').append(
+        ck.render ->
+          setFn = "app.setSpecimen('#{spec.Scientific_name}')"
+          a href: '#specimen', 'data-transition': 'slide', onclick: setFn, ->
+            div '.feature-row', ->
+              div '.feature-name', ->
+                text "#{spec.Scientific_name} (#{score})"
+              if spec.Pictures.toString().match /^\s*$/
+                div '.feature-box', ->
+                  div '.feature-value', 'No Image'
+                  img '.feature-img', src: 'data/noimage.png'
+              else
+                for image in spec.Pictures.toString().split(/\s*,\s*/)
+                  div '.feature-box', ->
+                    result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/)
+                    if result?
+                      [__, scientific, part, place] = result
+                      div '.feature-value', part.split('_').join(' ')
+                    img '.feature-img', src: "data/plantphotos/#{image}.jpg"
+      ).trigger('create')
 
   setSpecimen: (name) ->
     spec = @speciesHash[name]

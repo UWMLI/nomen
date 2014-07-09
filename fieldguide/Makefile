@@ -1,4 +1,4 @@
-coffee_files := $(wildcard www/js/*.coffee)
+coffee_files := $(wildcard www/js/*.coffee) $(wildcard www/lib/*/js/*.coffee)
 js_files     := $(coffee_files:%.coffee=%.js)
 
 sass_files := $(wildcard www/css/*.s[ac]ss)

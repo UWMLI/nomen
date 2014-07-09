@@ -10,8 +10,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
  */
 
 (function() {
-  var App,
+  var App, ck,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  ck = window.coffeecup;
 
   App = (function() {
     function App() {}
@@ -203,7 +205,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var container, htmlBox, htmlLink, htmlRow, image, img, part, place, result, scientific, score, setFn, spec, species, __, _i, _j, _len, _len1, _ref, _ref1, _ref2, _results;
+      var score, spec, species, _i, _len, _ref, _ref1, _results;
       $('#likely-content').html('');
       species = (function() {
         var _i, _len, _ref, _results;
@@ -218,46 +220,54 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       species.sort(function(s1, s2) {
         return s2[1] - s1[1];
       });
-      container = $('#likely-content');
       _ref = species.slice(0, 10);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         _ref1 = _ref[_i], spec = _ref1[0], score = _ref1[1];
-        htmlRow = $('<div />', {
-          "class": 'feature-row'
-        });
-        htmlRow.append("<div class='feature-name'>" + spec.Scientific_name + " (" + score + ")</div>").trigger("create");
-        if (spec.Pictures.toString().match(/^\s*$/)) {
-          htmlBox = $('<div class="feature-box" />');
-          htmlBox.append("<div class='feature-value'>No Image</div>").trigger("create");
-          htmlBox.append($('<img />', {
-            "class": 'feature-img',
-            src: 'data/noimage.png'
-          })).trigger("create");
-          htmlRow.append(htmlBox).trigger("create");
-        } else {
-          _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
-          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            image = _ref2[_j];
-            img = "data/plantphotos/" + image + ".jpg";
-            htmlBox = $('<div class="feature-box" />');
-            result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/);
-            if (result != null) {
-              __ = result[0], scientific = result[1], part = result[2], place = result[3];
-              part = part.split('_').join(' ');
-              htmlBox.append("<div class='feature-value'>" + part + "</div>").trigger("create");
-            }
-            htmlBox.append($('<img />', {
-              "class": 'feature-img',
-              src: img
-            })).trigger("create");
-            htmlRow.append(htmlBox).trigger("create");
-          }
-        }
-        setFn = "app.setSpecimen(" + (JSON.stringify(spec.Scientific_name)) + ")";
-        htmlLink = $("<a href=\"#specimen\" data-transition=\"slide\" onclick='" + setFn + "' />");
-        htmlLink.append(htmlRow).trigger("create");
-        _results.push(container.append(htmlLink).trigger("create"));
+        window.spec = spec;
+        window.score = score;
+        _results.push($('#likely-content').append(ck.render(function() {
+          var setFn;
+          setFn = "app.setSpecimen('" + spec.Scientific_name + "')";
+          return a({
+            href: '#specimen',
+            'data-transition': 'slide',
+            onclick: setFn
+          }, function() {
+            return div('.feature-row', function() {
+              var image, _j, _len1, _ref2, _results1;
+              div('.feature-name', function() {
+                return text("" + spec.Scientific_name + " (" + score + ")");
+              });
+              if (spec.Pictures.toString().match(/^\s*$/)) {
+                return div('.feature-box', function() {
+                  div('.feature-value', 'No Image');
+                  return img('.feature-img', {
+                    src: 'data/noimage.png'
+                  });
+                });
+              } else {
+                _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
+                _results1 = [];
+                for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+                  image = _ref2[_j];
+                  _results1.push(div('.feature-box', function() {
+                    var part, place, result, scientific, __;
+                    result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/);
+                    if (result != null) {
+                      __ = result[0], scientific = result[1], part = result[2], place = result[3];
+                      div('.feature-value', part.split('_').join(' '));
+                    }
+                    return img('.feature-img', {
+                      src: "data/plantphotos/" + image + ".jpg"
+                    });
+                  }));
+                }
+                return _results1;
+              }
+            });
+          });
+        })).trigger('create'));
       }
       return _results;
     };
