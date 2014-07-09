@@ -7,7 +7,7 @@ MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 ###
 
-ck = window.coffeecup
+cm = window.CoffeeMugg
 
 class App
   initialize: ->
@@ -51,17 +51,17 @@ class App
 
   makeRows: ->
     for row in @featureRows
-      window.row = row # TODO: fix this hack
-      window.feature = row[0].feature
+      feature = row[0].feature
       $('#plants-content').append(
-        ck.render ->
-          div '.feature-row', ->
-            div '.feature-name', feature.split('_').join(' ')
+        cm.render(->
+          @div '.feature-row', ->
+            @div '.feature-name', feature.split('_').join(' ')
             for {display, image, value} in row
               toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
-              div '.feature-box', onclick: toggleFn, ->
-                div '.feature-value', display
-                img '.feature-img', src: image
+              @div '.feature-box', onclick: toggleFn, ->
+                @div '.feature-value', display
+                @img '.feature-img', src: image
+        , format: no)
       ).trigger('create')
     @selected = {}
 
@@ -113,24 +113,25 @@ class App
       window.spec = spec # TODO: fix this hack
       window.score = score
       $('#likely-content').append(
-        ck.render ->
+        cm.render(->
           setFn = "app.setSpecimen('#{spec.Scientific_name}')"
-          a href: '#specimen', 'data-transition': 'slide', onclick: setFn, ->
-            div '.feature-row', ->
-              div '.feature-name', ->
-                text "#{spec.Scientific_name} (#{score})"
+          @a href: '#specimen', 'data-transition': 'slide', onclick: setFn, ->
+            @div '.feature-row', ->
+              @div '.feature-name', ->
+                @text "#{spec.Scientific_name} (#{score})"
               if spec.Pictures.toString().match /^\s*$/
-                div '.feature-box', ->
-                  div '.feature-value', 'No Image'
-                  img '.feature-img', src: 'data/noimage.png'
+                @div '.feature-box', ->
+                  @div '.feature-value', 'No Image'
+                  @img '.feature-img', src: 'data/noimage.png'
               else
                 for image in spec.Pictures.toString().split(/\s*,\s*/)
-                  div '.feature-box', ->
+                  @div '.feature-box', ->
                     result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/)
                     if result?
                       [__, scientific, part, place] = result
-                      div '.feature-value', part.split('_').join(' ')
-                    img '.feature-img', src: "data/plantphotos/#{image}.jpg"
+                      @div '.feature-value', part.split('_').join(' ')
+                    @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
+        , format: no)
       ).trigger('create')
 
   setSpecimen: (name) ->
