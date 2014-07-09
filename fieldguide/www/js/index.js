@@ -92,30 +92,32 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.makeRows = function() {
-      var container, display, feature, htmlBox, htmlRow, image, row, value, _i, _j, _len, _len1, _ref, _ref1;
-      container = $('#plants-content');
+      var row, _i, _len, _ref;
       _ref = this.featureRows;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
-        feature = row[0].feature;
-        htmlRow = $('<div />', {
-          "class": 'feature-row'
-        });
-        htmlRow.append("<div class='feature-name'>" + (feature.split('_').join(' ')) + "</div>").trigger("create");
-        for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
-          _ref1 = row[_j], display = _ref1.display, image = _ref1.image, value = _ref1.value;
-          htmlBox = $('<div />', {
-            "class": 'feature-box',
-            onclick: "app.toggleElement(this, " + (JSON.stringify(feature)) + ", " + (JSON.stringify(value)) + ");"
+        window.row = row;
+        window.feature = row[0].feature;
+        $('#plants-content').append(ck.render(function() {
+          return div('.feature-row', function() {
+            var display, image, toggleFn, value, _j, _len1, _ref1, _results;
+            div('.feature-name', feature.split('_').join(' '));
+            _results = [];
+            for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
+              _ref1 = row[_j], display = _ref1.display, image = _ref1.image, value = _ref1.value;
+              toggleFn = "app.toggleElement(this, '" + feature + "', '" + value + "');";
+              _results.push(div('.feature-box', {
+                onclick: toggleFn
+              }, function() {
+                div('.feature-value', display);
+                return img('.feature-img', {
+                  src: image
+                });
+              }));
+            }
+            return _results;
           });
-          htmlBox.append("<div class='feature-value'>" + display + "</div>").trigger("create");
-          htmlBox.append($('<img />', {
-            "class": 'feature-img',
-            src: image
-          })).trigger("create");
-          htmlRow.append(htmlBox).trigger("create");
-        }
-        container.append(htmlRow).trigger("create");
+        })).trigger('create');
       }
       return this.selected = {};
     };

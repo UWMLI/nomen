@@ -50,20 +50,19 @@ class App
       callback()
 
   makeRows: ->
-    container = $('#plants-content')
     for row in @featureRows
-      feature = row[0].feature
-      htmlRow = $('<div />', class: 'feature-row')
-      htmlRow.append("<div class='feature-name'>#{feature.split('_').join(' ')}</div>").trigger("create")
-      for {display, image, value} in row
-        htmlBox = $('<div />', {
-          class: 'feature-box'
-          onclick: "app.toggleElement(this, #{JSON.stringify feature}, #{JSON.stringify value});"
-        })
-        htmlBox.append("<div class='feature-value'>#{display}</div>").trigger("create")
-        htmlBox.append($('<img />', class: 'feature-img', src: image)).trigger("create")
-        htmlRow.append(htmlBox).trigger("create")
-      container.append(htmlRow).trigger("create")
+      window.row = row # TODO: fix this hack
+      window.feature = row[0].feature
+      $('#plants-content').append(
+        ck.render ->
+          div '.feature-row', ->
+            div '.feature-name', feature.split('_').join(' ')
+            for {display, image, value} in row
+              toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
+              div '.feature-box', onclick: toggleFn, ->
+                div '.feature-value', display
+                img '.feature-img', src: image
+      ).trigger('create')
     @selected = {}
 
   toggleElement: (element, feature, value) ->
