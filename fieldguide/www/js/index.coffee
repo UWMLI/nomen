@@ -8,7 +8,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 ###
 
 appendTo = (element, muggexpr) ->
-  element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
+  element.append( CoffeeMugg.render(muggexpr) ).trigger('create')
 
 class App
   initialize: ->
@@ -17,6 +17,8 @@ class App
 
   onDeviceReady: ->
     FastClick.attach document.body
+    @getScreenDims()
+    $(window).resize => @getScreenDims()
     @loadSpecies =>
       @loadFeatures =>
         @makeRows()
@@ -59,8 +61,8 @@ class App
           for {display, image, value} in row
             toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
             @div '.feature-box', onclick: toggleFn, ->
-              @div '.feature-value', display
               @img '.feature-img', src: image
+              @div '.feature-value', display
     @selected = {}
 
   toggleElement: (element, feature, value) ->
@@ -116,16 +118,24 @@ class App
               @text "#{spec.Scientific_name} (#{score})"
             if spec.Pictures.toString().match /^\s*$/
               @div '.feature-box', ->
-                @div '.feature-value', 'No Image'
                 @img '.feature-img', src: 'data/noimage.png'
+                @div '.feature-value', 'No Image'
             else
               for image in spec.Pictures.toString().split(/\s*,\s*/)
                 @div '.feature-box', ->
-                  result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/)
+                  @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
+                  result = image.match(/^(\w+)-(\w+)-(\w+)$/)
                   if result?
                     [__, scientific, part, place] = result
                     @div '.feature-value', part.split('_').join(' ')
-                  @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
+
+  getScreenDims: ->
+    w = window
+    d = document
+    e = d.documentElement
+    g = d.getElementsByTagName('body')[0]
+    @width  = w.innerWidth || e.clientWidth || g.clientWidth
+    @height = w.innerHeight|| e.clientHeight|| g.clientHeight
 
   setSpecimen: (name) ->
     spec = @speciesHash[name]

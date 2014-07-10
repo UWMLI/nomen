@@ -14,9 +14,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   appendTo = function(element, muggexpr) {
-    return element.append(CoffeeMugg.render(muggexpr, {
-      format: false
-    })).trigger('create');
+    return element.append(CoffeeMugg.render(muggexpr)).trigger('create');
   };
 
   App = (function() {
@@ -28,6 +26,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
+      this.getScreenDims();
+      $(window).resize((function(_this) {
+        return function() {
+          return _this.getScreenDims();
+        };
+      })(this));
       return this.loadSpecies((function(_this) {
         return function() {
           return _this.loadFeatures(function() {
@@ -112,10 +116,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               _results.push(this.div('.feature-box', {
                 onclick: toggleFn
               }, function() {
-                this.div('.feature-value', display);
-                return this.img('.feature-img', {
+                this.img('.feature-img', {
                   src: image
                 });
+                return this.div('.feature-value', display);
               }));
             }
             return _results;
@@ -244,10 +248,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               });
               if (spec.Pictures.toString().match(/^\s*$/)) {
                 return this.div('.feature-box', function() {
-                  this.div('.feature-value', 'No Image');
-                  return this.img('.feature-img', {
+                  this.img('.feature-img', {
                     src: 'data/noimage.png'
                   });
+                  return this.div('.feature-value', 'No Image');
                 });
               } else {
                 _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
@@ -256,14 +260,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   image = _ref2[_j];
                   _results1.push(this.div('.feature-box', function() {
                     var part, place, result, scientific, __;
-                    result = image.match(/^([A-Za-z0-9_]+)-([A-Za-z0-9_]+)-([A-Za-z0-9_]+)$/);
-                    if (result != null) {
-                      __ = result[0], scientific = result[1], part = result[2], place = result[3];
-                      this.div('.feature-value', part.split('_').join(' '));
-                    }
-                    return this.img('.feature-img', {
+                    this.img('.feature-img', {
                       src: "data/plantphotos/" + image + ".jpg"
                     });
+                    result = image.match(/^(\w+)-(\w+)-(\w+)$/);
+                    if (result != null) {
+                      __ = result[0], scientific = result[1], part = result[2], place = result[3];
+                      return this.div('.feature-value', part.split('_').join(' '));
+                    }
                   }));
                 }
                 return _results1;
@@ -273,6 +277,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         }));
       }
       return _results;
+    };
+
+    App.prototype.getScreenDims = function() {
+      var d, e, g, w;
+      w = window;
+      d = document;
+      e = d.documentElement;
+      g = d.getElementsByTagName('body')[0];
+      this.width = w.innerWidth || e.clientWidth || g.clientWidth;
+      return this.height = w.innerHeight || e.clientHeight || g.clientHeight;
     };
 
     App.prototype.setSpecimen = function(name) {
