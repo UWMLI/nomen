@@ -10,10 +10,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
  */
 
 (function() {
-  var App, cm,
+  var App, appendTo,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  cm = window.CoffeeMugg;
+  appendTo = function(element, muggexpr) {
+    return element.append(CoffeeMugg.render(muggexpr, {
+      format: false
+    })).trigger('create');
+  };
 
   App = (function() {
     function App() {}
@@ -97,7 +101,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
         feature = row[0].feature;
-        $('#plants-content').append(cm.render(function() {
+        appendTo($('#plants-content'), function() {
           return this.div('.feature-row', function() {
             var display, image, toggleFn, value, _j, _len1, _ref1, _results;
             this.div('.feature-name', feature.split('_').join(' '));
@@ -116,9 +120,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
             return _results;
           });
-        }, {
-          format: false
-        })).trigger('create');
+        });
       }
       return this.selected = {};
     };
@@ -227,9 +229,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         _ref1 = _ref[_i], spec = _ref1[0], score = _ref1[1];
-        window.spec = spec;
-        window.score = score;
-        _results.push($('#likely-content').append(cm.render(function() {
+        _results.push(appendTo($('#likely-content'), function() {
           var setFn;
           setFn = "app.setSpecimen('" + spec.Scientific_name + "')";
           return this.a({
@@ -270,9 +270,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               }
             });
           });
-        }, {
-          format: false
-        })).trigger('create'));
+        }));
       }
       return _results;
     };
