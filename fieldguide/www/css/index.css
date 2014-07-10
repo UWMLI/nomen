@@ -32,17 +32,19 @@ body {
 
 .feature-row {
   font-size: 12px;
-  white-space: nowrap;
-  overflow-x: scroll;
   font-weight: normal;
 }
 
 .feature-name {
-  background-color: #666;
+  background-color: #333;
   padding: 3px;
   text-shadow: none;
   color: white;
-  border-bottom-right-radius: 3px;
+}
+
+.feature-boxes {
+  white-space: nowrap;
+  overflow-x: scroll;
 }
 
 .feature-box {

@@ -14,7 +14,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   appendTo = function(element, muggexpr) {
-    return element.append(CoffeeMugg.render(muggexpr)).trigger('create');
+    return element.append(CoffeeMugg.render(muggexpr, {
+      format: false
+    })).trigger('create');
   };
 
   App = (function() {
@@ -107,22 +109,24 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         feature = row[0].feature;
         appendTo($('#plants-content'), function() {
           return this.div('.feature-row', function() {
-            var display, image, toggleFn, value, _j, _len1, _ref1, _results;
             this.div('.feature-name', feature.split('_').join(' '));
-            _results = [];
-            for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
-              _ref1 = row[_j], display = _ref1.display, image = _ref1.image, value = _ref1.value;
-              toggleFn = "app.toggleElement(this, '" + feature + "', '" + value + "');";
-              _results.push(this.div('.feature-box', {
-                onclick: toggleFn
-              }, function() {
-                this.img('.feature-img', {
-                  src: image
-                });
-                return this.div('.feature-value', display);
-              }));
-            }
-            return _results;
+            return this.div('.feature-boxes', function() {
+              var display, image, toggleFn, value, _j, _len1, _ref1, _results;
+              _results = [];
+              for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
+                _ref1 = row[_j], display = _ref1.display, image = _ref1.image, value = _ref1.value;
+                toggleFn = "app.toggleElement(this, '" + feature + "', '" + value + "');";
+                _results.push(this.div('.feature-box', {
+                  onclick: toggleFn
+                }, function() {
+                  this.img('.feature-img', {
+                    src: image
+                  });
+                  return this.div('.feature-value', display);
+                }));
+              }
+              return _results;
+            });
           });
         });
       }
@@ -242,36 +246,38 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             onclick: setFn
           }, function() {
             return this.div('.feature-row', function() {
-              var image, _j, _len1, _ref2, _results1;
               this.div('.feature-name', function() {
                 return this.text("" + spec.Scientific_name + " (" + score + ")");
               });
-              if (spec.Pictures.toString().match(/^\s*$/)) {
-                return this.div('.feature-box', function() {
-                  this.img('.feature-img', {
-                    src: 'data/noimage.png'
-                  });
-                  return this.div('.feature-value', 'No Image');
-                });
-              } else {
-                _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
-                _results1 = [];
-                for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-                  image = _ref2[_j];
-                  _results1.push(this.div('.feature-box', function() {
-                    var part, place, result, scientific, __;
+              return this.div('.feature-boxes', function() {
+                var image, _j, _len1, _ref2, _results1;
+                if (spec.Pictures.toString().match(/^\s*$/)) {
+                  return this.div('.feature-box', function() {
                     this.img('.feature-img', {
-                      src: "data/plantphotos/" + image + ".jpg"
+                      src: 'data/noimage.png'
                     });
-                    result = image.match(/^(\w+)-(\w+)-(\w+)$/);
-                    if (result != null) {
-                      __ = result[0], scientific = result[1], part = result[2], place = result[3];
-                      return this.div('.feature-value', part.split('_').join(' '));
-                    }
-                  }));
+                    return this.div('.feature-value', 'No Image');
+                  });
+                } else {
+                  _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
+                  _results1 = [];
+                  for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+                    image = _ref2[_j];
+                    _results1.push(this.div('.feature-box', function() {
+                      var part, place, result, scientific, __;
+                      this.img('.feature-img', {
+                        src: "data/plantphotos/" + image + ".jpg"
+                      });
+                      result = image.match(/^(\w+)-(\w+)-(\w+)$/);
+                      if (result != null) {
+                        __ = result[0], scientific = result[1], part = result[2], place = result[3];
+                        return this.div('.feature-value', part.split('_').join(' '));
+                      }
+                    }));
+                  }
+                  return _results1;
                 }
-                return _results1;
-              }
+              });
             });
           });
         }));
