@@ -17,8 +17,8 @@ class App
 
   onDeviceReady: ->
     FastClick.attach document.body
-    @getScreenDims()
-    $(window).resize => @getScreenDims()
+    @setBlur()
+    $(document).scroll => @setBlur()
     @loadSpecies =>
       @loadFeatures =>
         @makeRows()
@@ -131,14 +131,6 @@ class App
                       [__, scientific, part, place] = result
                       @div '.feature-value', part.split('_').join(' ')
 
-  getScreenDims: ->
-    w = window
-    d = document
-    e = d.documentElement
-    g = d.getElementsByTagName('body')[0]
-    @width  = w.innerWidth  || e.clientWidth  || g.clientWidth
-    @height = w.innerHeight || e.clientHeight || g.clientHeight
-
   setSpecimen: (name) ->
     spec = @speciesHash[name]
     if spec.Pictures.toString().match /^\s*$/
@@ -151,5 +143,15 @@ class App
     $('.specimen-img').css('background-image', "url(#{img})")
     $('.specimen-img-fake').prop('src', img)
     $('.specimen-text').html(desc)
+
+  setBlur: ->
+    scroll = $(document).scrollTop()
+    windowHeight = $(window).height()
+    maxScroll = $(document).height() - windowHeight
+    if maxScroll > 50
+      $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5))
+      console.log scroll
+    else
+      $('.blur').css('opacity', 0)
 
 window.app = new App

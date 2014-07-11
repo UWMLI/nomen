@@ -28,10 +28,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      this.getScreenDims();
-      $(window).resize((function(_this) {
+      this.setBlur();
+      $(document).scroll((function(_this) {
         return function() {
-          return _this.getScreenDims();
+          return _this.setBlur();
         };
       })(this));
       return this.loadSpecies((function(_this) {
@@ -285,16 +285,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return _results;
     };
 
-    App.prototype.getScreenDims = function() {
-      var d, e, g, w;
-      w = window;
-      d = document;
-      e = d.documentElement;
-      g = d.getElementsByTagName('body')[0];
-      this.width = w.innerWidth || e.clientWidth || g.clientWidth;
-      return this.height = w.innerHeight || e.clientHeight || g.clientHeight;
-    };
-
     App.prototype.setSpecimen = function(name) {
       var desc, id, img, spec;
       spec = this.speciesHash[name];
@@ -309,6 +299,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       $('.specimen-img').css('background-image', "url(" + img + ")");
       $('.specimen-img-fake').prop('src', img);
       return $('.specimen-text').html(desc);
+    };
+
+    App.prototype.setBlur = function() {
+      var maxScroll, scroll, windowHeight;
+      scroll = $(document).scrollTop();
+      windowHeight = $(window).height();
+      maxScroll = $(document).height() - windowHeight;
+      if (maxScroll > 50) {
+        $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5));
+        return console.log(scroll);
+      } else {
+        return $('.blur').css('opacity', 0);
+      }
     };
 
     return App;
