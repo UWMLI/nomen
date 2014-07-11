@@ -34,6 +34,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           return _this.setBlur();
         };
       })(this));
+      $(document).bind('touchmove', (function(_this) {
+        return function(e) {
+          return _this.setBlur();
+        };
+      })(this));
       return this.loadSpecies((function(_this) {
         return function() {
           return _this.loadFeatures(function() {

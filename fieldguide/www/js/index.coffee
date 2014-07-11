@@ -19,6 +19,7 @@ class App
     FastClick.attach document.body
     @setBlur()
     $(document).scroll => @setBlur()
+    $(document).bind('touchmove', (e) => @setBlur())
     @loadSpecies =>
       @loadFeatures =>
         @makeRows()
