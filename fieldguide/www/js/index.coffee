@@ -136,8 +136,8 @@ class App
     d = document
     e = d.documentElement
     g = d.getElementsByTagName('body')[0]
-    @width  = w.innerWidth || e.clientWidth || g.clientWidth
-    @height = w.innerHeight|| e.clientHeight|| g.clientHeight
+    @width  = w.innerWidth  || e.clientWidth  || g.clientWidth
+    @height = w.innerHeight || e.clientHeight || g.clientHeight
 
   setSpecimen: (name) ->
     spec = @speciesHash[name]
@@ -148,7 +148,7 @@ class App
       img = "data/plantphotos/#{id}.jpg"
     desc = spec.Description
     $('#specimen-name').html(name)
-    $('.specimen-img').prop('src', img)
+    $('.specimen-img').css('background-image', "url(#{img})")
     $('.specimen-img-fake').prop('src', img)
     $('.specimen-text').html(desc)
 
