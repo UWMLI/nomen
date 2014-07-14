@@ -22,7 +22,6 @@ class App
     $(document).scroll => @setBlur()
     $(document).bind('touchmove', (e) => @setBlur())
     @loadSpecies =>
-      @loadFeaturesFromSpecies()
       @makeRows()
       @showLikely()
       @fillLikely()
@@ -40,29 +39,18 @@ class App
 
   loadSpecies: (callback) ->
     $.get 'data/dataset.csv', (str) =>
-      {rows: @species, fields: @csvFields} = $.parse(str).results
+      @species =
+        new Species csvRow for csvRow in $.parse(str).results.rows
       @speciesHash = {}
       for spec in @species
-        @speciesHash[spec.Scientific_name] = spec
+        @speciesHash[spec.name] = spec
+      @featureRows = for feature, values of allFeatures(@species)
+        for value of values
+          display: value.split('_').join(' ')
+          image: "data/plantfeatures/#{feature}/#{feature}-#{value}.png"
+          feature: feature
+          value: value
       callback()
-
-  loadFeaturesFromSpecies: ->
-    reachedFeatures = false
-    @featureRows = for feature in @csvFields
-      reachedFeatures ||= feature is 'Flower_color'
-      continue unless reachedFeatures
-      continue if feature in ['Plant_height', 'Petiole_present']
-      hsh = {}
-      for spec in @species
-        for value in spec[feature].toString().split(',')
-          value = value.trim()
-          continue if value.length is 0
-          hsh[value] = true
-      for value in Object.keys(hsh).sort()
-        display: value.split('_').join(' ')
-        image: "data/plantfeatures/#{feature}/#{feature}-#{value.split(' ').join('_')}.png"
-        feature: feature
-        value: value
 
   makeRows: ->
     for row in @featureRows
@@ -98,44 +86,32 @@ class App
     @showLikely()
     @fillLikely()
 
-  computeScore: (species) ->
-    score = 0
-    for feature, values of @selected
-      selectedValues =
-        v.toLowerCase() for v of values
-      speciesValues =
-        v.toLowerCase() for v in species[feature].toString().split(/\s*,\s*/)
-      overlap =
-        v for v in selectedValues when v in speciesValues
-      score++ if overlap.length != 0
-    score
-
   showLikely: ->
     $('#likely-button').html "#{@getLikely().length} Likely"
 
   getLikely: ->
     maxScore = Object.keys(@selected).length
     cutoff = maxScore * 0.9
-    spec for spec in @species when @computeScore(spec) >= cutoff
+    spec for spec in @species when spec.computeScore(@selected) >= cutoff
 
   fillLikely: ->
     $('#likely-content').html ''
-    species = ([spec, @computeScore spec] for spec in @species)
+    species = ([spec, spec.computeScore(@selected)] for spec in @species)
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
     for [spec, score] in species[0...10]
       appendTo $('#likely-content'), ->
-        setFn = (i) -> "if (!event.wasImage) app.setSpecimen('#{spec.Scientific_name}', #{i});"
+        setFn = (i) -> "if (!event.wasImage) app.setSpecimen('#{spec.name}', #{i});"
         @a href: '#specimen', 'data-transition': 'slide', onclick: setFn(0), ->
           @div '.feature-row', ->
             @div '.feature-name', ->
-              @text "#{spec.Scientific_name} (#{score})"
+              @text "#{spec.name} (#{score})"
             @div '.feature-boxes', ->
-              if spec.Pictures.toString().match /^\s*$/
+              if spec.pictures.length is 0
                 @div '.feature-box', ->
                   @img '.feature-img', src: 'data/noimage.png'
                   @div '.feature-value', 'No Image'
               else
-                for image, ix in spec.Pictures.toString().split(/\s*,\s*/)
+                for image, ix in spec.pictures
                   @div '.feature-box', onclick: "#{setFn(ix)} event.wasImage = true;", ->
                     @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
                     result = image.match(/^(\w+)-(\w+)-(\w+)$/)
@@ -145,12 +121,12 @@ class App
 
   setSpecimen: (name, ix) ->
     spec = @speciesHash[name]
-    if spec.Pictures.toString().match /^\s*$/
-      @imgs = ['data/noimage.png']
-    else
-      @imgs = for id in spec.Pictures.toString().split(/\s*,\s*/)
-        "data/plantphotos/#{id}.jpg"
-    desc = spec.Description
+    @imgs =
+      if spec.pictures.length is 0
+        ['data/noimage.png']
+      else
+        "data/plantphotos/#{id}.jpg" for id in spec.pictures
+    desc = spec.description
     $('#specimen-name').html(name)
     @imageIndex = ix
     @setImage()
