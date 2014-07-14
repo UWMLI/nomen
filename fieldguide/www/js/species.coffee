@@ -7,6 +7,11 @@ parseList = (str) ->
 canonicalValue = (value) ->
   value.trim().toLowerCase().split(' ').join('_')
 
+displayValue = (value) ->
+  words = for word in value.split('_')
+    word[0].toUpperCase() + word[1..]
+  words.join(' ')
+
 class Species
   constructor: (csvRow) ->
     @name = csvRow.Scientific_name
@@ -41,3 +46,4 @@ allFeatures = (specs) ->
 
 window.Species = Species
 window.allFeatures = allFeatures
+window.displayValue = displayValue

@@ -46,7 +46,7 @@ class App
         @speciesHash[spec.name] = spec
       @featureRows = for feature, values of allFeatures(@species)
         for value of values
-          display: value.split('_').join(' ')
+          display: displayValue value
           image: "data/plantfeatures/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
@@ -57,7 +57,7 @@ class App
       feature = row[0].feature
       appendTo $('#plants-content'), ->
         @div '.feature-row', ->
-          @div '.feature-name', feature.split('_').join(' ')
+          @div '.feature-name', displayValue feature
           @div '.feature-boxes', ->
             for {display, image, value} in row
               toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
@@ -117,7 +117,7 @@ class App
                     result = image.match(/^(\w+)-(\w+)-(\w+)$/)
                     if result?
                       [__, scientific, part, place] = result
-                      @div '.feature-value', part.split('_').join(' ')
+                      @div '.feature-value', displayValue part
 
   setSpecimen: (name, ix) ->
     spec = @speciesHash[name]

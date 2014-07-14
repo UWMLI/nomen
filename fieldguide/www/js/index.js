@@ -99,7 +99,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 _results1 = [];
                 for (value in values) {
                   _results1.push({
-                    display: value.split('_').join(' '),
+                    display: displayValue(value),
                     image: "data/plantfeatures/" + feature + "/" + feature + "-" + value + ".png",
                     feature: feature,
                     value: value
@@ -123,7 +123,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         feature = row[0].feature;
         appendTo($('#plants-content'), function() {
           return this.div('.feature-row', function() {
-            this.div('.feature-name', feature.split('_').join(' '));
+            this.div('.feature-name', displayValue(feature));
             return this.div('.feature-boxes', function() {
               var display, image, toggleFn, value, _j, _len1, _ref1, _results;
               _results = [];
@@ -247,7 +247,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                       result = image.match(/^(\w+)-(\w+)-(\w+)$/);
                       if (result != null) {
                         __ = result[0], scientific = result[1], part = result[2], place = result[3];
-                        return this.div('.feature-value', part.split('_').join(' '));
+                        return this.div('.feature-value', displayValue(part));
                       }
                     }));
                   }
