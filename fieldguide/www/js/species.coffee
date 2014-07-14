@@ -8,9 +8,12 @@ canonicalValue = (value) ->
   value.trim().toLowerCase().split(' ').join('_')
 
 displayValue = (value) ->
-  words = for word in value.split('_')
-    word[0].toUpperCase() + word[1..]
-  words.join(' ')
+  if value.length is 0
+    ''
+  else
+    words = for word in value.split('_')
+      word[0].toUpperCase() + word[1..]
+    words.join(' ')
 
 class Species
   constructor: (csvRow) ->

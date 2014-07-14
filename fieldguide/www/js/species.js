@@ -24,17 +24,21 @@
 
   displayValue = function(value) {
     var word, words;
-    words = (function() {
-      var _i, _len, _ref, _results;
-      _ref = value.split('_');
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        word = _ref[_i];
-        _results.push(word[0].toUpperCase() + word.slice(1));
-      }
-      return _results;
-    })();
-    return words.join(' ');
+    if (value.length === 0) {
+      return '';
+    } else {
+      words = (function() {
+        var _i, _len, _ref, _results;
+        _ref = value.split('_');
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          word = _ref[_i];
+          _results.push(word[0].toUpperCase() + word.slice(1));
+        }
+        return _results;
+      })();
+      return words.join(' ');
+    }
   };
 
   Species = (function() {
