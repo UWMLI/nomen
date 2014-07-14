@@ -45,13 +45,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
       return this.loadSpecies((function(_this) {
         return function() {
-          return _this.loadFeatures(function() {
-            _this.makeRows();
-            _this.showLikely();
-            _this.fillLikely();
-            _this.addSwipe();
-            return console.log('Loaded!');
-          });
+          _this.loadFeaturesFromSpecies();
+          _this.makeRows();
+          _this.showLikely();
+          _this.fillLikely();
+          _this.addSwipe();
+          return console.log('Loaded!');
         };
       })(this));
     };
@@ -71,23 +70,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
-
-    /*
-    scrollBlur: ->
-      $(window).scroll (e) ->
-        console.log($(window).scrollTop())
-        $('.blur').css('opacity', $(window).scrollTop() / 150)
-     */
-
     App.prototype.loadSpecies = function(callback) {
       return $.get('data/dataset.csv', (function(_this) {
         return function(str) {
-          var spec, _i, _len, _ref;
-          _this.species = $.parse(str).results.rows;
+          var spec, _i, _len, _ref, _ref1;
+          _ref = $.parse(str).results, _this.species = _ref.rows, _this.csvFields = _ref.fields;
           _this.speciesHash = {};
-          _ref = _this.species;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            spec = _ref[_i];
+          _ref1 = _this.species;
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            spec = _ref1[_i];
             _this.speciesHash[spec.Scientific_name] = spec;
           }
           return callback();
@@ -95,35 +86,54 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
-    App.prototype.loadFeatures = function(callback) {
-      return $.getJSON('data/plantfeatures.json', (function(_this) {
-        return function(json) {
-          var feature, value, values;
-          _this.featureRows = (function() {
-            var _results;
-            _results = [];
-            for (feature in json) {
-              values = json[feature];
-              _results.push((function() {
-                var _i, _len, _results1;
-                _results1 = [];
-                for (_i = 0, _len = values.length; _i < _len; _i++) {
-                  value = values[_i];
-                  _results1.push({
-                    display: value.split('_').join(' '),
-                    image: "data/plantfeatures/" + feature + "/" + feature + "-" + value + ".png",
-                    feature: feature,
-                    value: value
-                  });
-                }
-                return _results1;
-              })());
+    App.prototype.loadFeaturesFromSpecies = function() {
+      var feature, hsh, reachedFeatures, spec, value;
+      reachedFeatures = false;
+      return this.featureRows = (function() {
+        var _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
+        _ref = this.csvFields;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          feature = _ref[_i];
+          reachedFeatures || (reachedFeatures = feature === 'Flower_color');
+          if (!reachedFeatures) {
+            continue;
+          }
+          if (feature === 'Plant_height' || feature === 'Petiole_present') {
+            continue;
+          }
+          hsh = {};
+          _ref1 = this.species;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            spec = _ref1[_j];
+            _ref2 = spec[feature].toString().split(',');
+            for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+              value = _ref2[_k];
+              value = value.trim();
+              if (value.length === 0) {
+                continue;
+              }
+              hsh[value] = true;
             }
-            return _results;
-          })();
-          return callback();
-        };
-      })(this));
+          }
+          _results.push((function() {
+            var _l, _len3, _ref3, _results1;
+            _ref3 = Object.keys(hsh).sort();
+            _results1 = [];
+            for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+              value = _ref3[_l];
+              _results1.push({
+                display: value.split('_').join(' '),
+                image: "data/plantfeatures/" + feature + "/" + feature + "-" + (value.split(' ').join('_')) + ".png",
+                feature: feature,
+                value: value
+              });
+            }
+            return _results1;
+          })());
+        }
+        return _results;
+      }).call(this);
     };
 
     App.prototype.makeRows = function() {

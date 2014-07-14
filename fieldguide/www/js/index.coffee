@@ -22,12 +22,12 @@ class App
     $(document).scroll => @setBlur()
     $(document).bind('touchmove', (e) => @setBlur())
     @loadSpecies =>
-      @loadFeatures =>
-        @makeRows()
-        @showLikely()
-        @fillLikely()
-        @addSwipe()
-        console.log 'Loaded!'
+      @loadFeaturesFromSpecies()
+      @makeRows()
+      @showLikely()
+      @fillLikely()
+      @addSwipe()
+      console.log 'Loaded!'
 
   addSwipe: ->
     $('#specimen-content').on 'swipe', (event) =>
@@ -38,31 +38,31 @@ class App
       else
         @swipeLeft()
 
-  ###
-  scrollBlur: ->
-    $(window).scroll (e) ->
-      console.log($(window).scrollTop())
-      $('.blur').css('opacity', $(window).scrollTop() / 150)
-  ###
-
   loadSpecies: (callback) ->
     $.get 'data/dataset.csv', (str) =>
-      @species = $.parse(str).results.rows
+      {rows: @species, fields: @csvFields} = $.parse(str).results
       @speciesHash = {}
       for spec in @species
         @speciesHash[spec.Scientific_name] = spec
       callback()
 
-  loadFeatures: (callback) ->
-    $.getJSON 'data/plantfeatures.json', (json) =>
-      @featureRows =
-        for feature, values of json
-          for value in values
-            display: value.split('_').join(' ')
-            image: "data/plantfeatures/#{feature}/#{feature}-#{value}.png"
-            feature: feature
-            value: value
-      callback()
+  loadFeaturesFromSpecies: ->
+    reachedFeatures = false
+    @featureRows = for feature in @csvFields
+      reachedFeatures ||= feature is 'Flower_color'
+      continue unless reachedFeatures
+      continue if feature in ['Plant_height', 'Petiole_present']
+      hsh = {}
+      for spec in @species
+        for value in spec[feature].toString().split(',')
+          value = value.trim()
+          continue if value.length is 0
+          hsh[value] = true
+      for value in Object.keys(hsh).sort()
+        display: value.split('_').join(' ')
+        image: "data/plantfeatures/#{feature}/#{feature}-#{value.split(' ').join('_')}.png"
+        feature: feature
+        value: value
 
   makeRows: ->
     for row in @featureRows
