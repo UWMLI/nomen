@@ -124,10 +124,10 @@ class App
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
     for [spec, score] in species[0...10]
       appendTo $('#likely-content'), ->
-        setFn = (i) -> "app.setSpecimen('#{spec.Scientific_name}', #{i})"
-        @a href: '#specimen', 'data-transition': 'slide', ->
+        setFn = (i) -> "if (!event.wasImage) app.setSpecimen('#{spec.Scientific_name}', #{i});"
+        @a href: '#specimen', 'data-transition': 'slide', onclick: setFn(0), ->
           @div '.feature-row', ->
-            @div '.feature-name', onclick: setFn(0), ->
+            @div '.feature-name', ->
               @text "#{spec.Scientific_name} (#{score})"
             @div '.feature-boxes', ->
               if spec.Pictures.toString().match /^\s*$/
@@ -136,7 +136,7 @@ class App
                   @div '.feature-value', 'No Image'
               else
                 for image, ix in spec.Pictures.toString().split(/\s*,\s*/)
-                  @div '.feature-box', onclick: setFn(ix), ->
+                  @div '.feature-box', onclick: "#{setFn(ix)} event.wasImage = true;", ->
                     @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
                     result = image.match(/^(\w+)-(\w+)-(\w+)$/)
                     if result?

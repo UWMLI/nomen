@@ -265,16 +265,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         _results.push(appendTo($('#likely-content'), function() {
           var setFn;
           setFn = function(i) {
-            return "app.setSpecimen('" + spec.Scientific_name + "', " + i + ")";
+            return "if (!event.wasImage) app.setSpecimen('" + spec.Scientific_name + "', " + i + ");";
           };
           return this.a({
             href: '#specimen',
-            'data-transition': 'slide'
+            'data-transition': 'slide',
+            onclick: setFn(0)
           }, function() {
             return this.div('.feature-row', function() {
-              this.div('.feature-name', {
-                onclick: setFn(0)
-              }, function() {
+              this.div('.feature-name', function() {
                 return this.text("" + spec.Scientific_name + " (" + score + ")");
               });
               return this.div('.feature-boxes', function() {
@@ -292,7 +291,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   for (ix = _j = 0, _len1 = _ref2.length; _j < _len1; ix = ++_j) {
                     image = _ref2[ix];
                     _results1.push(this.div('.feature-box', {
-                      onclick: setFn(ix)
+                      onclick: "" + (setFn(ix)) + " event.wasImage = true;"
                     }, function() {
                       var part, place, result, scientific, __;
                       this.img('.feature-img', {
