@@ -124,10 +124,10 @@ class App
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
     for [spec, score] in species[0...10]
       appendTo $('#likely-content'), ->
-        setFn = "app.setSpecimen('#{spec.Scientific_name}')"
-        @a href: '#specimen', 'data-transition': 'slide', onclick: setFn, ->
+        setFn = (i) -> "app.setSpecimen('#{spec.Scientific_name}', #{i})"
+        @a href: '#specimen', 'data-transition': 'slide', ->
           @div '.feature-row', ->
-            @div '.feature-name', ->
+            @div '.feature-name', onclick: setFn(0), ->
               @text "#{spec.Scientific_name} (#{score})"
             @div '.feature-boxes', ->
               if spec.Pictures.toString().match /^\s*$/
@@ -135,15 +135,15 @@ class App
                   @img '.feature-img', src: 'data/noimage.png'
                   @div '.feature-value', 'No Image'
               else
-                for image in spec.Pictures.toString().split(/\s*,\s*/)
-                  @div '.feature-box', ->
+                for image, ix in spec.Pictures.toString().split(/\s*,\s*/)
+                  @div '.feature-box', onclick: setFn(ix), ->
                     @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
                     result = image.match(/^(\w+)-(\w+)-(\w+)$/)
                     if result?
                       [__, scientific, part, place] = result
                       @div '.feature-value', part.split('_').join(' ')
 
-  setSpecimen: (name) ->
+  setSpecimen: (name, ix) ->
     spec = @speciesHash[name]
     if spec.Pictures.toString().match /^\s*$/
       @imgs = ['data/noimage.png']
@@ -152,7 +152,7 @@ class App
         "data/plantphotos/#{id}.jpg"
     desc = spec.Description
     $('#specimen-name').html(name)
-    @imageIndex = 0
+    @imageIndex = ix
     @setImage()
     $('.specimen-text').html(desc)
 

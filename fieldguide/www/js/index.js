@@ -264,18 +264,21 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         _ref1 = _ref[_i], spec = _ref1[0], score = _ref1[1];
         _results.push(appendTo($('#likely-content'), function() {
           var setFn;
-          setFn = "app.setSpecimen('" + spec.Scientific_name + "')";
+          setFn = function(i) {
+            return "app.setSpecimen('" + spec.Scientific_name + "', " + i + ")";
+          };
           return this.a({
             href: '#specimen',
-            'data-transition': 'slide',
-            onclick: setFn
+            'data-transition': 'slide'
           }, function() {
             return this.div('.feature-row', function() {
-              this.div('.feature-name', function() {
+              this.div('.feature-name', {
+                onclick: setFn(0)
+              }, function() {
                 return this.text("" + spec.Scientific_name + " (" + score + ")");
               });
               return this.div('.feature-boxes', function() {
-                var image, _j, _len1, _ref2, _results1;
+                var image, ix, _j, _len1, _ref2, _results1;
                 if (spec.Pictures.toString().match(/^\s*$/)) {
                   return this.div('.feature-box', function() {
                     this.img('.feature-img', {
@@ -286,9 +289,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 } else {
                   _ref2 = spec.Pictures.toString().split(/\s*,\s*/);
                   _results1 = [];
-                  for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-                    image = _ref2[_j];
-                    _results1.push(this.div('.feature-box', function() {
+                  for (ix = _j = 0, _len1 = _ref2.length; _j < _len1; ix = ++_j) {
+                    image = _ref2[ix];
+                    _results1.push(this.div('.feature-box', {
+                      onclick: setFn(ix)
+                    }, function() {
                       var part, place, result, scientific, __;
                       this.img('.feature-img', {
                         src: "data/plantphotos/" + image + ".jpg"
@@ -310,7 +315,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return _results;
     };
 
-    App.prototype.setSpecimen = function(name) {
+    App.prototype.setSpecimen = function(name, ix) {
       var desc, id, spec;
       spec = this.speciesHash[name];
       if (spec.Pictures.toString().match(/^\s*$/)) {
@@ -329,7 +334,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       }
       desc = spec.Description;
       $('#specimen-name').html(name);
-      this.imageIndex = 0;
+      this.imageIndex = ix;
       this.setImage();
       return $('.specimen-text').html(desc);
     };
