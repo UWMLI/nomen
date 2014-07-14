@@ -45,7 +45,8 @@ class App
       for spec in @species
         @speciesHash[spec.name] = spec
       @featureRows = for feature, values of allFeatures(@species)
-        for value of values
+        values = (v for v of values).sort()
+        for value in values
           display: displayValue value
           image: "data/plantfeatures/#{feature}/#{feature}-#{value}.png"
           feature: feature

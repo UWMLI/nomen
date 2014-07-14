@@ -71,7 +71,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.loadSpecies = function(callback) {
       return $.get('data/dataset.csv', (function(_this) {
         return function(str) {
-          var csvRow, feature, spec, value, values, _i, _len, _ref;
+          var csvRow, feature, spec, v, value, values, _i, _len, _ref;
           _this.species = (function() {
             var _i, _len, _ref, _results;
             _ref = $.parse(str).results.rows;
@@ -94,10 +94,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             _results = [];
             for (feature in _ref1) {
               values = _ref1[feature];
-              _results.push((function() {
+              values = ((function() {
                 var _results1;
                 _results1 = [];
-                for (value in values) {
+                for (v in values) {
+                  _results1.push(v);
+                }
+                return _results1;
+              })()).sort();
+              _results.push((function() {
+                var _j, _len1, _results1;
+                _results1 = [];
+                for (_j = 0, _len1 = values.length; _j < _len1; _j++) {
+                  value = values[_j];
                   _results1.push({
                     display: displayValue(value),
                     image: "data/plantfeatures/" + feature + "/" + feature + "-" + value + ".png",
