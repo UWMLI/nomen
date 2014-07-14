@@ -23,7 +23,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     function App() {}
 
     App.prototype.initialize = function() {
-      return this.onDeviceReady();
+      return $(document).ready((function(_this) {
+        return function() {
+          return _this.onDeviceReady();
+        };
+      })(this));
     };
 
     App.prototype.onDeviceReady = function() {
@@ -45,8 +49,24 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             _this.makeRows();
             _this.showLikely();
             _this.fillLikely();
+            _this.addSwipe();
             return console.log('Loaded!');
           });
+        };
+      })(this));
+    };
+
+    App.prototype.addSwipe = function() {
+      return $('#specimen-content').on('swipe', (function(_this) {
+        return function(event) {
+          var end, start;
+          start = event.swipestart.coords[0];
+          end = event.swipestop.coords[0];
+          if (start < end) {
+            return _this.swipeRight();
+          } else {
+            return _this.swipeLeft();
+          }
         };
       })(this));
     };
@@ -291,19 +311,48 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.setSpecimen = function(name) {
-      var desc, id, img, spec;
+      var desc, id, spec;
       spec = this.speciesHash[name];
       if (spec.Pictures.toString().match(/^\s*$/)) {
-        img = 'data/noimage.png';
+        this.imgs = ['data/noimage.png'];
       } else {
-        id = spec.Pictures.toString().split(/\s*,\s*/)[0];
-        img = "data/plantphotos/" + id + ".jpg";
+        this.imgs = (function() {
+          var _i, _len, _ref, _results;
+          _ref = spec.Pictures.toString().split(/\s*,\s*/);
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            id = _ref[_i];
+            _results.push("data/plantphotos/" + id + ".jpg");
+          }
+          return _results;
+        })();
       }
       desc = spec.Description;
       $('#specimen-name').html(name);
-      $('.specimen-img').css('background-image', "url(" + img + ")");
-      $('.specimen-img-fake').prop('src', img);
+      this.imageIndex = 0;
+      this.setImage();
       return $('.specimen-text').html(desc);
+    };
+
+    App.prototype.setImage = function() {
+      var img;
+      img = this.imgs[this.imageIndex];
+      $('.specimen-img').css('background-image', "url(" + img + ")");
+      return $('.specimen-img-fake').prop('src', img);
+    };
+
+    App.prototype.swipeLeft = function() {
+      if (this.imageIndex > 0) {
+        this.imageIndex--;
+        return this.setImage();
+      }
+    };
+
+    App.prototype.swipeRight = function() {
+      if (this.imageIndex < this.imgs.length - 1) {
+        this.imageIndex++;
+        return this.setImage();
+      }
     };
 
     App.prototype.setBlur = function() {
@@ -312,8 +361,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       windowHeight = $(window).height();
       maxScroll = $(document).height() - windowHeight;
       if (maxScroll > 50) {
-        $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5));
-        return console.log(scroll);
+        return $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5));
       } else {
         return $('.blur').css('opacity', 0);
       }

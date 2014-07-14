@@ -12,7 +12,8 @@ appendTo = (element, muggexpr) ->
 
 class App
   initialize: ->
-    @onDeviceReady()
+    $(document).ready =>
+      @onDeviceReady()
     #document.addEventListener 'deviceready', @onDeviceReady, false
 
   onDeviceReady: ->
@@ -25,7 +26,17 @@ class App
         @makeRows()
         @showLikely()
         @fillLikely()
+        @addSwipe()
         console.log 'Loaded!'
+
+  addSwipe: ->
+    $('#specimen-content').on 'swipe', (event) =>
+      start = event.swipestart.coords[0]
+      end = event.swipestop.coords[0]
+      if start < end
+        @swipeRight()
+      else
+        @swipeLeft()
 
   ###
   scrollBlur: ->
@@ -135,15 +146,30 @@ class App
   setSpecimen: (name) ->
     spec = @speciesHash[name]
     if spec.Pictures.toString().match /^\s*$/
-      img = 'data/noimage.png'
+      @imgs = ['data/noimage.png']
     else
-      id = spec.Pictures.toString().split(/\s*,\s*/)[0]
-      img = "data/plantphotos/#{id}.jpg"
+      @imgs = for id in spec.Pictures.toString().split(/\s*,\s*/)
+        "data/plantphotos/#{id}.jpg"
     desc = spec.Description
     $('#specimen-name').html(name)
+    @imageIndex = 0
+    @setImage()
+    $('.specimen-text').html(desc)
+
+  setImage: ->
+    img = @imgs[@imageIndex]
     $('.specimen-img').css('background-image', "url(#{img})")
     $('.specimen-img-fake').prop('src', img)
-    $('.specimen-text').html(desc)
+
+  swipeLeft: ->
+    if @imageIndex > 0
+      @imageIndex--
+      @setImage()
+
+  swipeRight: ->
+    if @imageIndex < @imgs.length - 1
+      @imageIndex++
+      @setImage()
 
   setBlur: ->
     scroll = $(document).scrollTop()
@@ -151,7 +177,6 @@ class App
     maxScroll = $(document).height() - windowHeight
     if maxScroll > 50
       $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5))
-      console.log scroll
     else
       $('.blur').css('opacity', 0)
 
