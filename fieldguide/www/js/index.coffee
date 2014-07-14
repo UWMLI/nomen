@@ -162,13 +162,13 @@ class App
     $('.specimen-img-fake').prop('src', img)
 
   swipeLeft: ->
-    if @imageIndex > 0
-      @imageIndex--
+    if @imageIndex < @imgs.length - 1
+      @imageIndex++
       @setImage()
 
   swipeRight: ->
-    if @imageIndex < @imgs.length - 1
-      @imageIndex++
+    if @imageIndex > 0
+      @imageIndex--
       @setImage()
 
   setBlur: ->

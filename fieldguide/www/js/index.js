@@ -342,15 +342,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.swipeLeft = function() {
-      if (this.imageIndex > 0) {
-        this.imageIndex--;
+      if (this.imageIndex < this.imgs.length - 1) {
+        this.imageIndex++;
         return this.setImage();
       }
     };
 
     App.prototype.swipeRight = function() {
-      if (this.imageIndex < this.imgs.length - 1) {
-        this.imageIndex++;
+      if (this.imageIndex > 0) {
+        this.imageIndex--;
         return this.setImage();
       }
     };
