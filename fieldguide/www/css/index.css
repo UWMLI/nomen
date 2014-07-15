@@ -71,12 +71,14 @@ body {
   height: 100px;
 }
 
+#specimen {
+  background-color: black;
+}
+
 .specimen-img-box {
-  position: fixed;
-  top: 44px;
+  position: relative;
   width: 100%;
-  height: calc(100% - 44px);
-  z-index: 1;
+  height: 300px;
 }
 
 .specimen-img {
@@ -91,24 +93,25 @@ body {
   background-position: center center;
 }
 
+.specimen-img-gradient {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 90%,rgba(0,0,0,1) 100%); /* W3C */
+}
+
 .blur {
   -webkit-filter: blur(5px);
   -moz-filter: blur(5px);
   -o-filter: blur(5px);
   -ms-filter: blur(5px);
   filter: blur(5px);
+  opacity: 0;
 }
 
 .specimen-text-box {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  opacity: 0.7;
-}
-
-.specimen-img-fake {
-  height: calc(100% - 130px);
-  opacity: 0;
 }
 
 .specimen-img-fade {
@@ -118,15 +121,9 @@ body {
 }
 
 .specimen-text {
-  width: calc(100% - 40px);
-  background-color: black;
   text-align: justify;
   padding: 20px;
   text-shadow: none;
   color: white;
-}
-
-#specimen {
-  background-color: black;
 }
 

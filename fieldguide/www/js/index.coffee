@@ -18,24 +18,13 @@ class App
 
   onDeviceReady: ->
     FastClick.attach document.body
-    @setBlur()
-    $(document).scroll => @setBlur()
-    $(document).bind('touchmove', (e) => @setBlur())
     @loadSpecies =>
       @makeRows()
       @showLikely()
       @fillLikely()
-      @addSwipe()
+      @resizeImage()
+      $(window).resize => @resizeImage()
       console.log 'Loaded!'
-
-  addSwipe: ->
-    $('#specimen-content').on 'swipe', (event) =>
-      start = event.swipestart.coords[0]
-      end = event.swipestop.coords[0]
-      if start < end
-        @swipeRight()
-      else
-        @swipeLeft()
 
   loadSpecies: (callback) ->
     $.get 'data/dataset.csv', (str) =>
@@ -138,23 +127,8 @@ class App
     $('.specimen-img').css('background-image', "url(#{img})")
     $('.specimen-img-fake').prop('src', img)
 
-  swipeLeft: ->
-    if @imageIndex < @imgs.length - 1
-      @imageIndex++
-      @setImage()
-
-  swipeRight: ->
-    if @imageIndex > 0
-      @imageIndex--
-      @setImage()
-
-  setBlur: ->
-    scroll = $(document).scrollTop()
-    windowHeight = $(window).height()
-    maxScroll = $(document).height() - windowHeight
-    if maxScroll > 50
-      $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5))
-    else
-      $('.blur').css('opacity', 0)
+  resizeImage: ->
+    h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    $('.specimen-img-box').css('height', "#{h - 100}px")
 
 window.app = new App

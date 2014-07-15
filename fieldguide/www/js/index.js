@@ -31,39 +31,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      this.setBlur();
-      $(document).scroll((function(_this) {
-        return function() {
-          return _this.setBlur();
-        };
-      })(this));
-      $(document).bind('touchmove', (function(_this) {
-        return function(e) {
-          return _this.setBlur();
-        };
-      })(this));
       return this.loadSpecies((function(_this) {
         return function() {
           _this.makeRows();
           _this.showLikely();
           _this.fillLikely();
-          _this.addSwipe();
+          _this.resizeImage();
+          $(window).resize(function() {
+            return _this.resizeImage();
+          });
           return console.log('Loaded!');
-        };
-      })(this));
-    };
-
-    App.prototype.addSwipe = function() {
-      return $('#specimen-content').on('swipe', (function(_this) {
-        return function(event) {
-          var end, start;
-          start = event.swipestart.coords[0];
-          end = event.swipestop.coords[0];
-          if (start < end) {
-            return _this.swipeRight();
-          } else {
-            return _this.swipeLeft();
-          }
         };
       })(this));
     };
@@ -301,30 +278,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return $('.specimen-img-fake').prop('src', img);
     };
 
-    App.prototype.swipeLeft = function() {
-      if (this.imageIndex < this.imgs.length - 1) {
-        this.imageIndex++;
-        return this.setImage();
-      }
-    };
-
-    App.prototype.swipeRight = function() {
-      if (this.imageIndex > 0) {
-        this.imageIndex--;
-        return this.setImage();
-      }
-    };
-
-    App.prototype.setBlur = function() {
-      var maxScroll, scroll, windowHeight;
-      scroll = $(document).scrollTop();
-      windowHeight = $(window).height();
-      maxScroll = $(document).height() - windowHeight;
-      if (maxScroll > 50) {
-        return $('.blur').css('opacity', (scroll - 50) / (windowHeight * 0.5));
-      } else {
-        return $('.blur').css('opacity', 0);
-      }
+    App.prototype.resizeImage = function() {
+      var h;
+      h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      return $('.specimen-img-box').css('height', "" + (h - 100) + "px");
     };
 
     return App;
