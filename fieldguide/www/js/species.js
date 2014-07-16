@@ -9,7 +9,7 @@
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       val = _ref[_i];
-      val = val.trim().toLowerCase().split(' ').join('_');
+      val = canonicalValue(val);
       if (val.length === 0) {
         continue;
       }

@@ -1,6 +1,6 @@
 parseList = (str) ->
   for val in str.toString().split(',')
-    val = val.trim().toLowerCase().split(' ').join('_')
+    val = canonicalValue val
     continue if val.length is 0
     val
 
