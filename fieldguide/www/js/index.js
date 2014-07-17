@@ -263,7 +263,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           this.addPage(spec.name, img, spec.description, ix);
         }
       }
-      return this.resizeImage();
+      this.resizeImage();
+      return this.addSwipes(spec.pictures.length);
     };
 
     App.prototype.clearPages = function() {
@@ -315,6 +316,34 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           });
         });
       });
+    };
+
+    App.prototype.addSwipes = function(imgs) {
+      var ix, _fn, _i, _j, _ref, _ref1, _results;
+      if (imgs >= 2) {
+        _fn = function(ix) {
+          return $("#specimen" + ix + " .specimen-img-box").on('swipeleft', function() {
+            return $.mobile.changePage("#specimen" + (ix + 1), {
+              transition: "slide"
+            });
+          });
+        };
+        for (ix = _i = 0, _ref = imgs - 2; 0 <= _ref ? _i <= _ref : _i >= _ref; ix = 0 <= _ref ? ++_i : --_i) {
+          _fn(ix);
+        }
+        _results = [];
+        for (ix = _j = 1, _ref1 = imgs - 1; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; ix = 1 <= _ref1 ? ++_j : --_j) {
+          _results.push((function(ix) {
+            return $("#specimen" + ix + " .specimen-img-box").on('swiperight', function() {
+              return $.mobile.changePage("#specimen" + (ix - 1), {
+                transition: "slide",
+                reverse: true
+              });
+            });
+          })(ix));
+        }
+        return _results;
+      }
     };
 
     App.prototype.resizeImage = function() {

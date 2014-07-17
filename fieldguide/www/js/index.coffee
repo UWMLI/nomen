@@ -120,6 +120,7 @@ class App
         img = "data/plantphotos/#{image}.jpg"
         @addPage spec.name, img, spec.description, ix
     @resizeImage()
+    @addSwipes(spec.pictures.length)
 
   clearPages: ->
     i = 0
@@ -142,6 +143,19 @@ class App
             @div '.specimen-img-gradient', ''
           @div '.specimen-text-box', ->
             @div '.specimen-text', desc
+
+  addSwipes: (imgs) ->
+    if imgs >= 2
+      for ix in [0 .. imgs - 2]
+        do (ix) ->
+          $("#specimen#{ix} .specimen-img-box").on 'swipeleft', ->
+            # swipeleft means move one image over to the right
+            $.mobile.changePage "#specimen#{ix + 1}", { transition: "slide" }
+      for ix in [1 .. imgs - 1]
+        do (ix) ->
+          $("#specimen#{ix} .specimen-img-box").on 'swiperight', ->
+            # swiperight means move one image over to the left
+            $.mobile.changePage "#specimen#{ix - 1}", { transition: "slide", reverse: true }
 
   resizeImage: ->
     h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
