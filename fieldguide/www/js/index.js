@@ -197,13 +197,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         _ref1 = _ref[_i], spec = _ref1[0], score = _ref1[1];
         _results.push(appendTo($('#likely-content'), function() {
           var setFn;
-          setFn = function(i) {
-            return "if (!event.wasImage) app.setSpecimen('" + spec.name + "', " + i + ");";
-          };
+          setFn = "app.setSpecies('" + spec.name + "'); return true;";
           return this.a({
-            href: '#specimen',
+            href: '#specimen0',
             'data-transition': 'slide',
-            onclick: setFn(0)
+            onclick: setFn
           }, function() {
             return this.div('.feature-row', function() {
               this.div('.feature-name', function() {
@@ -223,18 +221,22 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   _results1 = [];
                   for (ix = _j = 0, _len1 = _ref2.length; _j < _len1; ix = ++_j) {
                     image = _ref2[ix];
-                    _results1.push(this.div('.feature-box', {
-                      onclick: "" + (setFn(ix)) + " event.wasImage = true;"
+                    _results1.push(this.a({
+                      href: "#specimen" + ix,
+                      'data-transition': 'slide',
+                      onclick: setFn
                     }, function() {
-                      var part, place, result, scientific, __;
-                      this.img('.feature-img', {
-                        src: "data/plantphotos/" + image + ".jpg"
+                      return this.div('.feature-box', function() {
+                        var part, place, result, scientific, __;
+                        this.img('.feature-img', {
+                          src: "data/plantphotos/" + image + ".jpg"
+                        });
+                        result = image.match(/^(\w+)-(\w+)-(\w+)$/);
+                        if (result != null) {
+                          __ = result[0], scientific = result[1], part = result[2], place = result[3];
+                          return this.div('.feature-value', displayValue(part));
+                        }
                       });
-                      result = image.match(/^(\w+)-(\w+)-(\w+)$/);
-                      if (result != null) {
-                        __ = result[0], scientific = result[1], part = result[2], place = result[3];
-                        return this.div('.feature-value', displayValue(part));
-                      }
                     }));
                   }
                   return _results1;
@@ -247,35 +249,72 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return _results;
     };
 
-    App.prototype.setSpecimen = function(name, ix) {
-      var desc, id, spec;
+    App.prototype.setSpecies = function(name) {
+      var image, img, ix, spec, _i, _len, _ref;
+      this.clearPages();
       spec = this.speciesHash[name];
-      this.imgs = (function() {
-        var _i, _len, _ref, _results;
-        if (spec.pictures.length === 0) {
-          return ['data/noimage.png'];
-        } else {
-          _ref = spec.pictures;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            id = _ref[_i];
-            _results.push("data/plantphotos/" + id + ".jpg");
-          }
-          return _results;
+      if (spec.pictures.length === 0) {
+        this.addPage(spec.name, 'data/noimage.png', spec.description, 0);
+      } else {
+        _ref = spec.pictures;
+        for (ix = _i = 0, _len = _ref.length; _i < _len; ix = ++_i) {
+          image = _ref[ix];
+          img = "data/plantphotos/" + image + ".jpg";
+          this.addPage(spec.name, img, spec.description, ix);
         }
-      })();
-      desc = spec.description;
-      $('#specimen-name').html(name);
-      this.imageIndex = ix;
-      this.setImage();
-      return $('.specimen-text').html(desc);
+      }
+      return this.resizeImage();
     };
 
-    App.prototype.setImage = function() {
-      var img;
-      img = this.imgs[this.imageIndex];
-      $('.specimen-img').css('background-image', "url(" + img + ")");
-      return $('.specimen-img-fake').prop('src', img);
+    App.prototype.clearPages = function() {
+      var i, page;
+      i = 0;
+      while (true) {
+        page = $("#specimen" + i);
+        if (page.length === 0) {
+          return;
+        }
+        page.remove();
+        i++;
+      }
+    };
+
+    App.prototype.addPage = function(name, img, desc, ix) {
+      return appendTo($('body'), function() {
+        return this.div("#specimen" + ix + " .specimen", {
+          'data-role': 'page'
+        }, function() {
+          this.div({
+            'data-role': 'header',
+            'data-position': 'fixed',
+            'data-tap-toggle': 'false'
+          }, function() {
+            this.h1(name);
+            return this.a('.ui-btn-left', {
+              'href': '#likely',
+              'data-icon': 'arrow-l',
+              'data-transition': 'slide',
+              'data-direction': 'reverse'
+            }, 'Back');
+          });
+          return this.div('.ui-content .specimen-content', {
+            'data-role': 'main'
+          }, function() {
+            this.div('.specimen-img-box', function() {
+              this.div('.specimen-img', {
+                style: "background-image: url(" + img + ");"
+              }, '');
+              this.div('.specimen-img .blur', {
+                style: "background-image: url(" + img + ");"
+              }, '');
+              return this.div('.specimen-img-gradient', '');
+            });
+            return this.div('.specimen-text-box', function() {
+              return this.div('.specimen-text', desc);
+            });
+          });
+        });
+      });
     };
 
     App.prototype.resizeImage = function() {

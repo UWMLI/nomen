@@ -90,8 +90,8 @@ class App
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
     for [spec, score] in species[0...10]
       appendTo $('#likely-content'), ->
-        setFn = (i) -> "if (!event.wasImage) app.setSpecimen('#{spec.name}', #{i});"
-        @a href: '#specimen', 'data-transition': 'slide', onclick: setFn(0), ->
+        setFn = "app.setSpecies('#{spec.name}'); return true;"
+        @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->
           @div '.feature-row', ->
             @div '.feature-name', ->
               @text "#{spec.name} (#{score})"
@@ -102,30 +102,46 @@ class App
                   @div '.feature-value', 'No Image'
               else
                 for image, ix in spec.pictures
-                  @div '.feature-box', onclick: "#{setFn(ix)} event.wasImage = true;", ->
-                    @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
-                    result = image.match(/^(\w+)-(\w+)-(\w+)$/)
-                    if result?
-                      [__, scientific, part, place] = result
-                      @div '.feature-value', displayValue part
+                  @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
+                    @div '.feature-box', ->
+                      @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
+                      result = image.match(/^(\w+)-(\w+)-(\w+)$/)
+                      if result?
+                        [__, scientific, part, place] = result
+                        @div '.feature-value', displayValue part
 
-  setSpecimen: (name, ix) ->
+  setSpecies: (name) ->
+    @clearPages()
     spec = @speciesHash[name]
-    @imgs =
-      if spec.pictures.length is 0
-        ['data/noimage.png']
-      else
-        "data/plantphotos/#{id}.jpg" for id in spec.pictures
-    desc = spec.description
-    $('#specimen-name').html(name)
-    @imageIndex = ix
-    @setImage()
-    $('.specimen-text').html(desc)
+    if spec.pictures.length is 0
+      @addPage spec.name, 'data/noimage.png', spec.description, 0
+    else
+      for image, ix in spec.pictures
+        img = "data/plantphotos/#{image}.jpg"
+        @addPage spec.name, img, spec.description, ix
+    @resizeImage()
 
-  setImage: ->
-    img = @imgs[@imageIndex]
-    $('.specimen-img').css('background-image', "url(#{img})")
-    $('.specimen-img-fake').prop('src', img)
+  clearPages: ->
+    i = 0
+    loop
+      page = $("#specimen#{i}")
+      return if page.length is 0
+      page.remove()
+      i++
+
+  addPage: (name, img, desc, ix) ->
+    appendTo $('body'), ->
+      @div "#specimen#{ix} .specimen", 'data-role': 'page', ->
+        @div 'data-role': 'header', 'data-position': 'fixed', 'data-tap-toggle': 'false', ->
+          @h1 name
+          @a '.ui-btn-left', 'href': '#likely', 'data-icon': 'arrow-l', 'data-transition': 'slide', 'data-direction': 'reverse', 'Back'
+        @div '.ui-content .specimen-content', 'data-role': 'main', ->
+          @div '.specimen-img-box', ->
+            @div '.specimen-img', style: "background-image: url(#{img});", ''
+            @div '.specimen-img .blur', style: "background-image: url(#{img});", ''
+            @div '.specimen-img-gradient', ''
+          @div '.specimen-text-box', ->
+            @div '.specimen-text', desc
 
   resizeImage: ->
     h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
