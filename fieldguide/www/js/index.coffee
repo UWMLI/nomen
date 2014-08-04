@@ -11,11 +11,6 @@ appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
-  initialize: ->
-    $(document).ready =>
-      @onDeviceReady()
-    #document.addEventListener 'deviceready', @onDeviceReady, false
-
   onDeviceReady: ->
     FastClick.attach document.body
     @loadSpecies =>

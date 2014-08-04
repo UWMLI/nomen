@@ -21,14 +21,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   App = (function() {
     function App() {}
 
-    App.prototype.initialize = function() {
-      return $(document).ready((function(_this) {
-        return function() {
-          return _this.onDeviceReady();
-        };
-      })(this));
-    };
-
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
       return this.loadSpecies((function(_this) {
