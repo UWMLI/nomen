@@ -78,7 +78,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   value = values[_j];
                   _results1.push({
                     display: displayValue(value),
-                    image: "data/plantfeatures/" + feature + "/" + feature + "-" + value + ".png",
+                    image: "data/features/" + feature + "/" + feature + "-" + value + ".png",
                     feature: feature,
                     value: value
                   });
@@ -221,7 +221,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                       return this.div('.feature-box', function() {
                         var ext, match, part, place, result, scientific;
                         this.img('.feature-img', {
-                          src: "data/plantphotos/" + image
+                          src: "data/photos/" + image
                         });
                         result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/);
                         if (result != null) {
@@ -251,7 +251,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         _ref = spec.pictures;
         for (ix = _i = 0, _len = _ref.length; _i < _len; ix = ++_i) {
           image = _ref[ix];
-          img = "data/plantphotos/" + image;
+          img = "data/photos/" + image;
           this.addPage(spec.name, img, spec.description, ix);
         }
       }

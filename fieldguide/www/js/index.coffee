@@ -32,7 +32,7 @@ class App
         values = (v for v of values).sort()
         for value in values
           display: displayValue value
-          image: "data/plantfeatures/#{feature}/#{feature}-#{value}.png"
+          image: "data/features/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
       callback()
@@ -99,7 +99,7 @@ class App
                 for image, ix in spec.pictures
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
                     @div '.feature-box', ->
-                      @img '.feature-img', src: "data/plantphotos/#{image}"
+                      @img '.feature-img', src: "data/photos/#{image}"
                       result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/)
                       if result?
                         [match, scientific, part, place, ext] = result
@@ -112,7 +112,7 @@ class App
       @addPage spec.name, 'data/noimage.png', spec.description, 0
     else
       for image, ix in spec.pictures
-        img = "data/plantphotos/#{image}"
+        img = "data/photos/#{image}"
         @addPage spec.name, img, spec.description, ix
     @resizeImage()
     @addSwipes(spec.pictures.length)
