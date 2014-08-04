@@ -44,22 +44,16 @@
   Species = (function() {
     function Species(csvRow) {
       var k, reachedFeatures, v;
-      this.name = csvRow.Scientific_name;
-      this.description = csvRow.Description;
-      this.pictures = parseList(csvRow.Pictures);
+      this.name = csvRow.name;
+      this.description = csvRow.description;
+      this.display_name = csvRow.display_name;
+      this.pictures = parseList(csvRow.pictures);
       this.features = {};
       reachedFeatures = false;
       for (k in csvRow) {
         v = csvRow[k];
         k = canonicalValue(k);
-        reachedFeatures || (reachedFeatures = k === 'flower_color');
-        if (!reachedFeatures) {
-          continue;
-        }
-        if (k === 'plant_height' || k === 'petiole_present') {
-          continue;
-        }
-        if (k === 'scientific_name' || k === 'description' || k === 'pictures') {
+        if (k === 'name' || k === 'display_name' || k === 'description' || k === 'pictures') {
           continue;
         }
         this.features[k] = parseList(v);

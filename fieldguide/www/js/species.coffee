@@ -17,17 +17,15 @@ displayValue = (value) ->
 
 class Species
   constructor: (csvRow) ->
-    @name = csvRow.Scientific_name
-    @description = csvRow.Description
-    @pictures = parseList csvRow.Pictures
+    @name = csvRow.name
+    @description = csvRow.description
+    @display_name = csvRow.display_name
+    @pictures = parseList csvRow.pictures
     @features = {}
     reachedFeatures = false
     for k, v of csvRow
       k = canonicalValue k
-      reachedFeatures ||= k is 'flower_color'
-      continue unless reachedFeatures
-      continue if k in ['plant_height', 'petiole_present']
-      continue if k in ['scientific_name', 'description', 'pictures']
+      continue if k in ['name', 'display_name', 'description', 'pictures']
       @features[k] = parseList v
 
   computeScore: (selected) ->

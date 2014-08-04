@@ -104,10 +104,10 @@ class App
                 for image, ix in spec.pictures
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
                     @div '.feature-box', ->
-                      @img '.feature-img', src: "data/plantphotos/#{image}.jpg"
-                      result = image.match(/^(\w+)-(\w+)-(\w+)$/)
+                      @img '.feature-img', src: "data/plantphotos/#{image}"
+                      result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/)
                       if result?
-                        [__, scientific, part, place] = result
+                        [match, scientific, part, place, ext] = result
                         @div '.feature-value', displayValue part
 
   setSpecies: (name) ->
@@ -117,7 +117,7 @@ class App
       @addPage spec.name, 'data/noimage.png', spec.description, 0
     else
       for image, ix in spec.pictures
-        img = "data/plantphotos/#{image}.jpg"
+        img = "data/plantphotos/#{image}"
         @addPage spec.name, img, spec.description, ix
     @resizeImage()
     @addSwipes(spec.pictures.length)
