@@ -23,22 +23,54 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      return this.loadSpecies((function(_this) {
+      return this.downloadPlants((function(_this) {
         return function() {
-          _this.makeRows();
-          _this.showLikely();
-          _this.fillLikely();
-          _this.resizeImage();
-          $(window).resize(function() {
-            return _this.resizeImage();
+          return _this.loadSpecies(function() {
+            _this.makeRows();
+            _this.showLikely();
+            _this.fillLikely();
+            _this.resizeImage();
+            $(window).resize(function() {
+              return _this.resizeImage();
+            });
+            return console.log('Loaded!');
           });
-          return console.log('Loaded!');
+        };
+      })(this));
+    };
+
+
+    /*
+    getFiles: (callback) ->
+      requestFileSystem PERSISTENT, 0, (fs) =>
+        resolveLocalFileSystemURL cordova.file.dataDirectory, (dir) =>
+          callback()
+          dir.getFile 'foo.txt', {create: true, exclusive: true}, ((foo) =>
+            alert foo.fullPath
+          ), (err) => alert err.code
+          dir.createReader().readEntries (ents) =>
+            alert ents.length
+     */
+
+    App.prototype.downloadPlants = function(callback) {
+      var from, to, transfer, unzip;
+      from = 'http://mli.doit.wisc.edu/plants.zip';
+      to = cordova.file.dataDirectory + '/plants.zip';
+      unzip = cordova.file.dataDirectory + '/plants';
+      transfer = new FileTransfer();
+      return transfer.download(from, to, (function(_this) {
+        return function(ent) {
+          return zip.unzip(to, unzip, function(code) {
+            _this.dataDir = unzip;
+            alert(code);
+            return callback();
+          });
         };
       })(this));
     };
 
     App.prototype.loadSpecies = function(callback) {
-      return $.get('data/dataset.csv', (function(_this) {
+      return $.get("" + this.dataDir + "/dataset.csv", (function(_this) {
         return function(str) {
           var csvRow, feature, spec, v, value, values, _i, _len, _ref;
           _this.species = (function() {
@@ -78,13 +110,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   value = values[_j];
                   _results1.push({
                     display: displayValue(value),
-                    image: "data/features/" + feature + "/" + feature + "-" + value + ".png",
+                    image: "" + this.dataDir + "/features/" + feature + "/" + feature + "-" + value + ".png",
                     feature: feature,
                     value: value
                   });
                 }
                 return _results1;
-              })());
+              }).call(this));
             }
             return _results;
           }).call(_this);
@@ -168,7 +200,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var score, spec, species, _i, _len, _ref, _ref1, _results;
+      var dataDir, score, spec, species, _i, _len, _ref, _ref1, _results;
       $('#likely-content').html('');
       species = (function() {
         var _i, _len, _ref, _results;
@@ -183,6 +215,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       species.sort(function(s1, s2) {
         return s2[1] - s1[1];
       });
+      dataDir = this.dataDir;
       _ref = species.slice(0, 10);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -221,7 +254,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                       return this.div('.feature-box', function() {
                         var ext, match, part, place, result, scientific;
                         this.img('.feature-img', {
-                          src: "data/photos/" + image
+                          src: "" + dataDir + "/photos/" + image
                         });
                         result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/);
                         if (result != null) {
@@ -251,7 +284,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         _ref = spec.pictures;
         for (ix = _i = 0, _len = _ref.length; _i < _len; ix = ++_i) {
           image = _ref[ix];
-          img = "data/photos/" + image;
+          img = "" + this.dataDir + "/photos/" + image;
           this.addPage(spec.name, img, spec.description, ix);
         }
       }

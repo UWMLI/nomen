@@ -13,16 +13,41 @@ appendTo = (element, muggexpr) ->
 class App
   onDeviceReady: ->
     FastClick.attach document.body
-    @loadSpecies =>
-      @makeRows()
-      @showLikely()
-      @fillLikely()
-      @resizeImage()
-      $(window).resize => @resizeImage()
-      console.log 'Loaded!'
+    @downloadPlants =>
+      @loadSpecies =>
+        @makeRows()
+        @showLikely()
+        @fillLikely()
+        @resizeImage()
+        $(window).resize => @resizeImage()
+        console.log 'Loaded!'
+
+  ###
+  getFiles: (callback) ->
+    requestFileSystem PERSISTENT, 0, (fs) =>
+      resolveLocalFileSystemURL cordova.file.dataDirectory, (dir) =>
+        callback()
+        dir.getFile 'foo.txt', {create: true, exclusive: true}, ((foo) =>
+          alert foo.fullPath
+        ), (err) => alert err.code
+        dir.createReader().readEntries (ents) =>
+          alert ents.length
+  ###
+
+  downloadPlants: (callback) ->
+    from = 'http://mli.doit.wisc.edu/plants.zip'
+    to = cordova.file.dataDirectory + '/plants.zip'
+    unzip = cordova.file.dataDirectory + '/plants'
+
+    transfer = new FileTransfer()
+    transfer.download from, to, (ent) =>
+      zip.unzip to, unzip, (code) =>
+        @dataDir = unzip
+        alert code
+        callback()
 
   loadSpecies: (callback) ->
-    $.get 'data/dataset.csv', (str) =>
+    $.get "#{@dataDir}/dataset.csv", (str) =>
       @species =
         new Species csvRow for csvRow in $.parse(str).results.rows
       @speciesHash = {}
@@ -32,7 +57,7 @@ class App
         values = (v for v of values).sort()
         for value in values
           display: displayValue value
-          image: "data/features/#{feature}/#{feature}-#{value}.png"
+          image: "#{@dataDir}/features/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
       callback()
@@ -83,6 +108,7 @@ class App
     $('#likely-content').html ''
     species = ([spec, spec.computeScore(@selected)] for spec in @species)
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
+    dataDir = @dataDir
     for [spec, score] in species[0...10]
       appendTo $('#likely-content'), ->
         setFn = "app.setSpecies('#{spec.name}'); return true;"
@@ -99,7 +125,7 @@ class App
                 for image, ix in spec.pictures
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
                     @div '.feature-box', ->
-                      @img '.feature-img', src: "data/photos/#{image}"
+                      @img '.feature-img', src: "#{dataDir}/photos/#{image}"
                       result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/)
                       if result?
                         [match, scientific, part, place, ext] = result
@@ -112,7 +138,7 @@ class App
       @addPage spec.name, 'data/noimage.png', spec.description, 0
     else
       for image, ix in spec.pictures
-        img = "data/photos/#{image}"
+        img = "#{@dataDir}/photos/#{image}"
         @addPage spec.name, img, spec.description, ix
     @resizeImage()
     @addSwipes(spec.pictures.length)
