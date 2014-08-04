@@ -42,9 +42,22 @@ class App
     transfer = new FileTransfer()
     transfer.download from, to, (ent) =>
       zip.unzip to, unzip, (code) =>
-        @dataDir = unzip
-        alert code
+        ent.remove () =>
+          @dataDir = unzip
+          @addDataButton '#plants', 'Plants'
+          callback code
+
+  deletePlants: (callback) ->
+    resolveLocalFileSystemURL @dataDir, (dir) =>
+      dir.removeRecursively () =>
         callback()
+
+  clearDataButtons: ->
+    $('.dataset-button').remove()
+
+  addDataButton: (id, text) ->
+    appendTo $('#home-content'), ->
+      @a '.dataset-button', href: id, 'data-role': 'button', text
 
   loadSpecies: (callback) ->
     $.get "#{@dataDir}/dataset.csv", (str) =>

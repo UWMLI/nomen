@@ -61,12 +61,37 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return transfer.download(from, to, (function(_this) {
         return function(ent) {
           return zip.unzip(to, unzip, function(code) {
-            _this.dataDir = unzip;
-            alert(code);
+            return ent.remove(function() {
+              _this.dataDir = unzip;
+              _this.addDataButton('#plants', 'Plants');
+              return callback(code);
+            });
+          });
+        };
+      })(this));
+    };
+
+    App.prototype.deletePlants = function(callback) {
+      return resolveLocalFileSystemURL(this.dataDir, (function(_this) {
+        return function(dir) {
+          return dir.removeRecursively(function() {
             return callback();
           });
         };
       })(this));
+    };
+
+    App.prototype.clearDataButtons = function() {
+      return $('.dataset-button').remove();
+    };
+
+    App.prototype.addDataButton = function(id, text) {
+      return appendTo($('#home-content'), function() {
+        return this.a('.dataset-button', {
+          href: id,
+          'data-role': 'button'
+        }, text);
+      });
     };
 
     App.prototype.loadSpecies = function(callback) {
