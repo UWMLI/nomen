@@ -28,11 +28,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
       this.resizeImage();
-      return $(window).resize((function(_this) {
+      $(window).resize((function(_this) {
         return function() {
           return _this.resizeImage();
         };
       })(this));
+      return this.refreshLibrary();
     };
 
     App.prototype.downloadZip = function(url, callback) {
@@ -95,6 +96,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.refreshLibrary = function(callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
       return this.library.scanLibrary((function(_this) {
         return function() {
           var dataset, id, _ref;

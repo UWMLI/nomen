@@ -19,6 +19,7 @@ class App
     FastClick.attach document.body
     @resizeImage()
     $(window).resize => @resizeImage()
+    @refreshLibrary()
 
   downloadZip: (url, callback = (->)) ->
     result = url.match /\/(\w+).zip$/
@@ -47,7 +48,7 @@ class App
       dir.removeRecursively =>
         @refreshLibrary callback
 
-  refreshLibrary: (callback) ->
+  refreshLibrary: (callback = (->)) ->
     @library.scanLibrary =>
       @clearDataButtons()
       for id, dataset of @library.datasets
