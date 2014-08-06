@@ -18,7 +18,9 @@ class App
   onDeviceReady: ->
     FastClick.attach document.body
     $(window).resize => @resizeImage()
-    @downloadZip 'http://mli.doit.wisc.edu/plants.zip', =>
+    @clearLibrary =>
+      @downloadZip 'http://mli.doit.wisc.edu/plants.zip', =>
+        # do-nothing callback
 
   downloadZip: (url, callback) ->
     result = url.match /\/(\w+).zip$/
@@ -39,6 +41,11 @@ class App
                     throw "Unzip operation on #{zipFile} returned #{code}"
     else
       throw "Couldn't get name of zip file"
+
+  clearLibrary: (callback) ->
+    resolveLocalFileSystemURL @library.dir, (dir) =>
+      dir.removeRecursively =>
+        @refreshLibrary callback
 
   refreshLibrary: (callback) ->
     @library.scanLibrary =>

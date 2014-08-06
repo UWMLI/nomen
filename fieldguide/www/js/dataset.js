@@ -46,6 +46,10 @@
           };
           return readEntries();
         };
+      })(this), (function(_this) {
+        return function() {
+          return callback();
+        };
       })(this));
     };
 

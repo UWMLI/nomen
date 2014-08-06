@@ -32,8 +32,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           return _this.resizeImage();
         };
       })(this));
-      return this.downloadZip('http://mli.doit.wisc.edu/plants.zip', (function(_this) {
-        return function() {};
+      return this.clearLibrary((function(_this) {
+        return function() {
+          return _this.downloadZip('http://mli.doit.wisc.edu/plants.zip', function() {});
+        };
       })(this));
     };
 
@@ -74,6 +76,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       } else {
         throw "Couldn't get name of zip file";
       }
+    };
+
+    App.prototype.clearLibrary = function(callback) {
+      return resolveLocalFileSystemURL(this.library.dir, (function(_this) {
+        return function(dir) {
+          return dir.removeRecursively(function() {
+            return _this.refreshLibrary(callback);
+          });
+        };
+      })(this));
     };
 
     App.prototype.refreshLibrary = function(callback) {

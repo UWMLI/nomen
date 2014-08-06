@@ -20,6 +20,9 @@ class Library
         else
           @addLibrary setsToAdd.pop(), readEntries
       readEntries()
+    , => callback()
+    # on error (lib dir doesn't exist), we just continue.
+    # @datasets is {} which is correct
 
   addLibrary: (dirEntry, callback) ->
     ds = new DataSet dirEntry.toURL()
