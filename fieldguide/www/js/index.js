@@ -19,39 +19,43 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   };
 
   App = (function() {
-    function App() {
-      this.library = new Library("" + cordova.file.dataDirectory + "/library/");
-      this.zips = "" + cordova.file.cacheDirectory + "/zips/";
+    function App(datadir) {
+      alert('cons');
+      this.library = new Library("" + datadir + "/library/");
+      this.zips = "" + datadir + "/zips/";
+      alert('after cons');
     }
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      return this.downloadPlants((function(_this) {
+      alert('before dl zip');
+      return this.downloadZip('http://mli.doit.wisc.edu/plants.zip', (function(_this) {
         return function() {
-          return _this.loadSpecies(function() {
-            _this.makeRows();
-            _this.showLikely();
-            _this.fillLikely();
-            _this.resizeImage();
-            $(window).resize(function() {
-              return _this.resizeImage();
-            });
-            return console.log('Loaded!');
+          alert('after dl zip');
+          _this.makeRows();
+          _this.showLikely();
+          _this.fillLikely();
+          _this.resizeImage();
+          $(window).resize(function() {
+            return _this.resizeImage();
           });
+          return console.log('Loaded!');
         };
       })(this));
     };
 
     App.prototype.downloadZip = function(url, callback) {
       var result, transfer, unzipTo, zipFile;
-      result = url.match(/\/(\w+\).zip$/);
+      result = url.match(/\/(\w+).zip$/);
       if (result != null) {
+        alert('got zip file name');
         zipFile = "" + this.zips + "/" + result[1] + ".zip";
         unzipTo = "" + this.library.dir + "/" + result[1];
         transfer = new FileTransfer();
         return transfer.download(url, zipFile, (function(_this) {
           return function(entry) {
             return zip.unzip(zipFile, unzipTo, function(code) {
+              alert(code);
               if (code === 0) {
                 return _this.refreshLibrary(callback);
               } else {
@@ -80,32 +84,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
-    App.prototype.downloadPlants = function(callback) {
-      var from, to, transfer, unzip;
-      from = 'http://mli.doit.wisc.edu/plants.zip';
-      to = cordova.file.dataDirectory + '/plants.zip';
-      unzip = cordova.file.dataDirectory + '/plants';
-      transfer = new FileTransfer();
-      return transfer.download(from, to, (function(_this) {
-        return function(ent) {
-          return zip.unzip(to, unzip, function(code) {
-            return ent.remove(function() {
-              _this.dataDir = unzip;
-              _this.addDataButton('#plants', 'Plants');
-              return callback(code);
-            });
+    App.prototype.deleteDataset = function(dataset, callback) {
+      return resolveLocalFileSystemURL(dataset.dir, (function(_this) {
+        return function(dir) {
+          return dir.removeRecursively(function() {
+            return _this.refreshLibrary(callback);
           });
         };
       })(this));
     };
-
-
-    /*
-    deletePlants: (callback) ->
-      resolveLocalFileSystemURL @dataDir, (dir) =>
-        dir.removeRecursively () =>
-          callback()
-     */
 
     App.prototype.clearDataButtons = function() {
       return $('.dataset-button').remove();
@@ -149,63 +136,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   value = values[_i];
                   _results1.push({
                     display: displayValue(value),
-                    image: "" + this.dataDir + "/features/" + feature + "/" + feature + "-" + value + ".png",
-                    feature: feature,
-                    value: value
-                  });
-                }
-                return _results1;
-              }).call(this));
-            }
-            return _results;
-          }).call(_this);
-          return callback();
-        };
-      })(this));
-    };
-
-    App.prototype.loadSpecies = function(callback) {
-      return $.get("" + this.dataDir + "/dataset.csv", (function(_this) {
-        return function(str) {
-          var csvRow, feature, spec, v, value, values, _i, _len, _ref;
-          _this.species = (function() {
-            var _i, _len, _ref, _results;
-            _ref = $.parse(str).results.rows;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              csvRow = _ref[_i];
-              _results.push(new Species(csvRow));
-            }
-            return _results;
-          })();
-          _this.speciesHash = {};
-          _ref = _this.species;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            spec = _ref[_i];
-            _this.speciesHash[spec.name] = spec;
-          }
-          _this.featureRows = (function() {
-            var _ref1, _results;
-            _ref1 = allFeatures(this.species);
-            _results = [];
-            for (feature in _ref1) {
-              values = _ref1[feature];
-              values = ((function() {
-                var _results1;
-                _results1 = [];
-                for (v in values) {
-                  _results1.push(v);
-                }
-                return _results1;
-              })()).sort();
-              _results.push((function() {
-                var _j, _len1, _results1;
-                _results1 = [];
-                for (_j = 0, _len1 = values.length; _j < _len1; _j++) {
-                  value = values[_j];
-                  _results1.push({
-                    display: displayValue(value),
-                    image: "" + this.dataDir + "/features/" + feature + "/" + feature + "-" + value + ".png",
+                    image: "" + this.dataset.dir + "/features/" + feature + "/" + feature + "-" + value + ".png",
                     feature: feature,
                     value: value
                   });
@@ -295,14 +226,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var dataDir, score, spec, species, _i, _len, _ref, _ref1, _results;
+      var dataDir, score, spec, species, __, _i, _len, _ref, _ref1, _results;
       $('#likely-content').html('');
       species = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.species;
+        var _ref, _results;
+        _ref = this.dataset.species;
         _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          spec = _ref[_i];
+        for (__ in _ref) {
+          spec = _ref[__];
           _results.push([spec, spec.computeScore(this.selected)]);
         }
         return _results;
@@ -372,7 +303,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.setSpecies = function(name) {
       var image, img, ix, spec, _i, _len, _ref;
       this.clearPages();
-      spec = this.speciesHash[name];
+      spec = this.dataset.species[name];
       if (spec.pictures.length === 0) {
         this.addPage(spec.name, 'data/noimage.png', spec.description, 0);
       } else {
@@ -476,6 +407,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
   })();
 
-  window.app = new App;
+  window.App = App;
 
 }).call(this);

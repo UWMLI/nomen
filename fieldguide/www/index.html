@@ -25,6 +25,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   <script type="text/javascript" src="lib/jquery-parse/js/jquery.parse.min.js"></script>
   <script type="text/javascript" src="lib/coffeemugg/js/coffeemugg.js"></script>
   <script type="text/javascript" src="js/species.js"></script>
+  <script type="text/javascript" src="js/dataset.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
 </head>
 
@@ -65,13 +66,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <script language="javascript">
   document.addEventListener('deviceready', function() {
+    var app = new App(cordova.file.dataDirectory);
     app.onDeviceReady();
   });
-  /*
-  $(document).ready(function() {
-    app.onDeviceReady();
-  });
-  */
 </script>
 
 </body>

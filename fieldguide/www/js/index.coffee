@@ -11,30 +11,35 @@ appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
-  constructor: ->
-    @library = new Library "#{cordova.file.dataDirectory}/library/"
-    @zips = "#{cordova.file.cacheDirectory}/zips/"
+  constructor: (datadir) ->
+    alert 'cons'
+    @library = new Library "#{datadir}/library/"
+    @zips = "#{datadir}/zips/"
+    alert 'after cons'
 
   onDeviceReady: ->
     FastClick.attach document.body
-    @downloadPlants =>
-      @loadSpecies =>
-        @makeRows()
-        @showLikely()
-        @fillLikely()
-        @resizeImage()
-        $(window).resize => @resizeImage()
-        console.log 'Loaded!'
+    alert 'before dl zip'
+    @downloadZip 'http://mli.doit.wisc.edu/plants.zip', =>
+      alert 'after dl zip'
+      @makeRows()
+      @showLikely()
+      @fillLikely()
+      @resizeImage()
+      $(window).resize => @resizeImage()
+      console.log 'Loaded!'
 
   downloadZip: (url, callback) ->
-    result = url.match /\/(\w+\).zip$/
+    result = url.match /\/(\w+).zip$/
     if result?
+      alert 'got zip file name'
       zipFile = "#{@zips}/#{result[1]}.zip"
       unzipTo = "#{@library.dir}/#{result[1]}"
       # TODO: make sure @zips and unzip exist
       transfer = new FileTransfer()
       transfer.download url, zipFile, (entry) =>
         zip.unzip zipFile, unzipTo, (code) =>
+          alert code
           if code is 0
             @refreshLibrary callback
           else
@@ -49,25 +54,10 @@ class App
         @addDataButton id, dataset.name
       callback()
 
-  downloadPlants: (callback) ->
-    from = 'http://mli.doit.wisc.edu/plants.zip'
-    to = cordova.file.dataDirectory + '/plants.zip'
-    unzip = cordova.file.dataDirectory + '/plants'
-
-    transfer = new FileTransfer()
-    transfer.download from, to, (ent) =>
-      zip.unzip to, unzip, (code) =>
-        ent.remove () =>
-          @dataDir = unzip
-          @addDataButton '#plants', 'Plants'
-          callback code
-
-  ###
-  deletePlants: (callback) ->
-    resolveLocalFileSystemURL @dataDir, (dir) =>
-      dir.removeRecursively () =>
-        callback()
-  ###
+  deleteDataset: (dataset, callback) ->
+    resolveLocalFileSystemURL dataset.dir, (dir) =>
+      dir.removeRecursively =>
+        @refreshLibrary callback
 
   clearDataButtons: ->
     $('.dataset-button').remove()
@@ -84,23 +74,7 @@ class App
         values = (v for v of values).sort()
         for value in values
           display: displayValue value
-          image: "#{@dataDir}/features/#{feature}/#{feature}-#{value}.png"
-          feature: feature
-          value: value
-      callback()
-
-  loadSpecies: (callback) ->
-    $.get "#{@dataDir}/dataset.csv", (str) =>
-      @species =
-        new Species csvRow for csvRow in $.parse(str).results.rows
-      @speciesHash = {}
-      for spec in @species
-        @speciesHash[spec.name] = spec
-      @featureRows = for feature, values of allFeatures(@species)
-        values = (v for v of values).sort()
-        for value in values
-          display: displayValue value
-          image: "#{@dataDir}/features/#{feature}/#{feature}-#{value}.png"
+          image: "#{@dataset.dir}/features/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
       callback()
@@ -149,7 +123,7 @@ class App
 
   fillLikely: ->
     $('#likely-content').html ''
-    species = ([spec, spec.computeScore(@selected)] for spec in @species)
+    species = ([spec, spec.computeScore(@selected)] for __, spec of @dataset.species)
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
     dataDir = @dataDir
     for [spec, score] in species[0...10]
@@ -176,7 +150,7 @@ class App
 
   setSpecies: (name) ->
     @clearPages()
-    spec = @speciesHash[name]
+    spec = @dataset.species[name]
     if spec.pictures.length is 0
       @addPage spec.name, 'data/noimage.png', spec.description, 0
     else
@@ -225,4 +199,4 @@ class App
     h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
     $('.specimen-img-box').css('height', "#{h - 100}px")
 
-window.app = new App
+window.App = App

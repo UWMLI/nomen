@@ -1,3 +1,5 @@
+alert 'Debug'
+
 parseList = (str) ->
   for val in str.toString().split(',')
     val = canonicalValue val
