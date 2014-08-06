@@ -66,7 +66,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <script language="javascript">
   document.addEventListener('deviceready', function() {
-    var app = new App(cordova.file.dataDirectory);
+    window.app = new App(cordova.file.dataDirectory);
     app.onDeviceReady();
   });
 </script>

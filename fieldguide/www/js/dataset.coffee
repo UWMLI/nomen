@@ -1,3 +1,5 @@
+toArray = (list) -> Array.prototype.slice.call(list || [], 0)
+
 class Library
   constructor: (@dir) ->
 
@@ -12,14 +14,15 @@ class Library
             if results.length is 0
               callback()
             else
-              setsToAdd = toArray results
+              setsToAdd =
+                res for res in toArray results when res.isDirectory
               readEntries()
         else
           @addLibrary setsToAdd.pop(), readEntries
       readEntries()
 
   addLibrary: (dirEntry, callback) ->
-    ds = new DataSet dir.toURL()
+    ds = new DataSet dirEntry.toURL()
     ds.loadInfo =>
       @datasets[ds.id] = ds
       callback()
@@ -29,8 +32,11 @@ class DataSet
 
   load: (callback) ->
     @loadInfo =>
-      @loadPics =>
-        @loadSpecies callback
+      @loadImages =>
+        alert 'loaded images'
+        @loadSpecies =>
+          alert 'loaded species'
+          callback()
 
   loadInfo: (callback) ->
     $.getJSON "#{@dir}/info.json", (json) =>
@@ -40,9 +46,12 @@ class DataSet
   loadImages: (callback) ->
     @speciesImages = {}
     resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
+      alert 'resolved'
       dirReader = dirEntry.createReader()
       readEntries = =>
+        alert 'reading'
         dirReader.readEntries (results) =>
+          alert results.length
           if results.length is 0
             callback()
           else
@@ -51,6 +60,7 @@ class DataSet
       readEntries()
 
   addImage: (fileEntry) ->
+    alert fileEntry.name
     result = fileEntry.name.match /^(\w+)-(\w+)-(\w+)\.(\w+)$/
     if result?
       [whole, name, part, source, ext] = result

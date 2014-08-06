@@ -12,16 +12,12 @@ appendTo = (element, muggexpr) ->
 
 class App
   constructor: (datadir) ->
-    alert 'cons'
     @library = new Library "#{datadir}/library/"
     @zips = "#{datadir}/zips/"
-    alert 'after cons'
 
   onDeviceReady: ->
     FastClick.attach document.body
-    alert 'before dl zip'
     @downloadZip 'http://mli.doit.wisc.edu/plants.zip', =>
-      alert 'after dl zip'
       @makeRows()
       @showLikely()
       @fillLikely()
@@ -32,14 +28,12 @@ class App
   downloadZip: (url, callback) ->
     result = url.match /\/(\w+).zip$/
     if result?
-      alert 'got zip file name'
       zipFile = "#{@zips}/#{result[1]}.zip"
       unzipTo = "#{@library.dir}/#{result[1]}"
       # TODO: make sure @zips and unzip exist
       transfer = new FileTransfer()
       transfer.download url, zipFile, (entry) =>
         zip.unzip zipFile, unzipTo, (code) =>
-          alert code
           if code is 0
             @refreshLibrary callback
           else
@@ -51,7 +45,7 @@ class App
     @library.scanLibrary =>
       @clearDataButtons()
       for id, dataset of @library.datasets
-        @addDataButton id, dataset.name
+        @addDataButton id, dataset.title
       callback()
 
   deleteDataset: (dataset, callback) ->

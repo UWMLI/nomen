@@ -20,18 +20,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
   App = (function() {
     function App(datadir) {
-      alert('cons');
       this.library = new Library("" + datadir + "/library/");
       this.zips = "" + datadir + "/zips/";
-      alert('after cons');
     }
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      alert('before dl zip');
       return this.downloadZip('http://mli.doit.wisc.edu/plants.zip', (function(_this) {
         return function() {
-          alert('after dl zip');
           _this.makeRows();
           _this.showLikely();
           _this.fillLikely();
@@ -48,14 +44,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       var result, transfer, unzipTo, zipFile;
       result = url.match(/\/(\w+).zip$/);
       if (result != null) {
-        alert('got zip file name');
         zipFile = "" + this.zips + "/" + result[1] + ".zip";
         unzipTo = "" + this.library.dir + "/" + result[1];
         transfer = new FileTransfer();
         return transfer.download(url, zipFile, (function(_this) {
           return function(entry) {
             return zip.unzip(zipFile, unzipTo, function(code) {
-              alert(code);
               if (code === 0) {
                 return _this.refreshLibrary(callback);
               } else {
@@ -77,7 +71,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref = _this.library.datasets;
           for (id in _ref) {
             dataset = _ref[id];
-            _this.addDataButton(id, dataset.name);
+            _this.addDataButton(id, dataset.title);
           }
           return callback();
         };
