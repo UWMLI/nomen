@@ -11,6 +11,10 @@ appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
+  constructor: ->
+    @library = new Library "#{cordova.file.dataDirectory}/library/"
+    @zips = "#{cordova.file.cacheDirectory}/zips/"
+
   onDeviceReady: ->
     FastClick.attach document.body
     @downloadPlants =>
@@ -22,17 +26,28 @@ class App
         $(window).resize => @resizeImage()
         console.log 'Loaded!'
 
-  ###
-  getFiles: (callback) ->
-    requestFileSystem PERSISTENT, 0, (fs) =>
-      resolveLocalFileSystemURL cordova.file.dataDirectory, (dir) =>
-        callback()
-        dir.getFile 'foo.txt', {create: true, exclusive: true}, ((foo) =>
-          alert foo.fullPath
-        ), (err) => alert err.code
-        dir.createReader().readEntries (ents) =>
-          alert ents.length
-  ###
+  downloadZip: (url, callback) ->
+    result = url.match /\/(\w+\).zip$/
+    if result?
+      zipFile = "#{@zips}/#{result[1]}.zip"
+      unzipTo = "#{@library.dir}/#{result[1]}"
+      # TODO: make sure @zips and unzip exist
+      transfer = new FileTransfer()
+      transfer.download url, zipFile, (entry) =>
+        zip.unzip zipFile, unzipTo, (code) =>
+          if code is 0
+            @refreshLibrary callback
+          else
+            throw "Unzip operation on #{zipFile} returned #{code}"
+    else
+      throw "Couldn't get name of zip file"
+
+  refreshLibrary: (callback) ->
+    @library.scanLibrary =>
+      @clearDataButtons()
+      for id, dataset of @library.datasets
+        @addDataButton id, dataset.name
+      callback()
 
   downloadPlants: (callback) ->
     from = 'http://mli.doit.wisc.edu/plants.zip'
@@ -47,17 +62,32 @@ class App
           @addDataButton '#plants', 'Plants'
           callback code
 
+  ###
   deletePlants: (callback) ->
     resolveLocalFileSystemURL @dataDir, (dir) =>
       dir.removeRecursively () =>
         callback()
+  ###
 
   clearDataButtons: ->
     $('.dataset-button').remove()
 
   addDataButton: (id, text) ->
+    setFn = "app.setDataset('#{id}', function(){}); return true;"
     appendTo $('#home-content'), ->
-      @a '.dataset-button', href: id, 'data-role': 'button', text
+      @a '.dataset-button', href: '#dataset', 'data-role': 'button', onclick: setFn, text
+
+  setDataset: (id, callback) ->
+    @dataset = @library.datasets[id]
+    @dataset.load =>
+      @featureRows = for feature, values of allFeatures @dataset.species
+        values = (v for v of values).sort()
+        for value in values
+          display: displayValue value
+          image: "#{@dataDir}/features/#{feature}/#{feature}-#{value}.png"
+          feature: feature
+          value: value
+      callback()
 
   loadSpecies: (callback) ->
     $.get "#{@dataDir}/dataset.csv", (str) =>

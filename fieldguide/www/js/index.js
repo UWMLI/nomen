@@ -19,7 +19,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   };
 
   App = (function() {
-    function App() {}
+    function App() {
+      this.library = new Library("" + cordova.file.dataDirectory + "/library/");
+      this.zips = "" + cordova.file.cacheDirectory + "/zips/";
+    }
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
@@ -39,18 +42,43 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
+    App.prototype.downloadZip = function(url, callback) {
+      var result, transfer, unzipTo, zipFile;
+      result = url.match(/\/(\w+\).zip$/);
+      if (result != null) {
+        zipFile = "" + this.zips + "/" + result[1] + ".zip";
+        unzipTo = "" + this.library.dir + "/" + result[1];
+        transfer = new FileTransfer();
+        return transfer.download(url, zipFile, (function(_this) {
+          return function(entry) {
+            return zip.unzip(zipFile, unzipTo, function(code) {
+              if (code === 0) {
+                return _this.refreshLibrary(callback);
+              } else {
+                throw "Unzip operation on " + zipFile + " returned " + code;
+              }
+            });
+          };
+        })(this));
+      } else {
+        throw "Couldn't get name of zip file";
+      }
+    };
 
-    /*
-    getFiles: (callback) ->
-      requestFileSystem PERSISTENT, 0, (fs) =>
-        resolveLocalFileSystemURL cordova.file.dataDirectory, (dir) =>
-          callback()
-          dir.getFile 'foo.txt', {create: true, exclusive: true}, ((foo) =>
-            alert foo.fullPath
-          ), (err) => alert err.code
-          dir.createReader().readEntries (ents) =>
-            alert ents.length
-     */
+    App.prototype.refreshLibrary = function(callback) {
+      return this.library.scanLibrary((function(_this) {
+        return function() {
+          var dataset, id, _ref;
+          _this.clearDataButtons();
+          _ref = _this.library.datasets;
+          for (id in _ref) {
+            dataset = _ref[id];
+            _this.addDataButton(id, dataset.name);
+          }
+          return callback();
+        };
+      })(this));
+    };
 
     App.prototype.downloadPlants = function(callback) {
       var from, to, transfer, unzip;
@@ -71,27 +99,69 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
-    App.prototype.deletePlants = function(callback) {
-      return resolveLocalFileSystemURL(this.dataDir, (function(_this) {
-        return function(dir) {
-          return dir.removeRecursively(function() {
-            return callback();
-          });
-        };
-      })(this));
-    };
+
+    /*
+    deletePlants: (callback) ->
+      resolveLocalFileSystemURL @dataDir, (dir) =>
+        dir.removeRecursively () =>
+          callback()
+     */
 
     App.prototype.clearDataButtons = function() {
       return $('.dataset-button').remove();
     };
 
     App.prototype.addDataButton = function(id, text) {
+      var setFn;
+      setFn = "app.setDataset('" + id + "', function(){}); return true;";
       return appendTo($('#home-content'), function() {
         return this.a('.dataset-button', {
-          href: id,
-          'data-role': 'button'
+          href: '#dataset',
+          'data-role': 'button',
+          onclick: setFn
         }, text);
       });
+    };
+
+    App.prototype.setDataset = function(id, callback) {
+      this.dataset = this.library.datasets[id];
+      return this.dataset.load((function(_this) {
+        return function() {
+          var feature, v, value, values;
+          _this.featureRows = (function() {
+            var _ref, _results;
+            _ref = allFeatures(this.dataset.species);
+            _results = [];
+            for (feature in _ref) {
+              values = _ref[feature];
+              values = ((function() {
+                var _results1;
+                _results1 = [];
+                for (v in values) {
+                  _results1.push(v);
+                }
+                return _results1;
+              })()).sort();
+              _results.push((function() {
+                var _i, _len, _results1;
+                _results1 = [];
+                for (_i = 0, _len = values.length; _i < _len; _i++) {
+                  value = values[_i];
+                  _results1.push({
+                    display: displayValue(value),
+                    image: "" + this.dataDir + "/features/" + feature + "/" + feature + "-" + value + ".png",
+                    feature: feature,
+                    value: value
+                  });
+                }
+                return _results1;
+              }).call(this));
+            }
+            return _results;
+          }).call(_this);
+          return callback();
+        };
+      })(this));
     };
 
     App.prototype.loadSpecies = function(callback) {

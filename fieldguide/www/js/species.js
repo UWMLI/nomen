@@ -47,7 +47,6 @@
       this.name = csvRow.name;
       this.description = csvRow.description;
       this.display_name = csvRow.display_name;
-      this.pictures = parseList(csvRow.pictures);
       this.features = {};
       reachedFeatures = false;
       for (k in csvRow) {
@@ -87,18 +86,18 @@
   })();
 
   allFeatures = function(specs) {
-    var feature, hsh, spec, value, values, _i, _j, _len, _len1, _ref;
+    var feature, hsh, k, spec, value, values, _i, _len, _ref;
     hsh = {};
-    for (_i = 0, _len = specs.length; _i < _len; _i++) {
-      spec = specs[_i];
+    for (k in specs) {
+      spec = specs[k];
       _ref = spec.features;
       for (feature in _ref) {
         values = _ref[feature];
         if (hsh[feature] == null) {
           hsh[feature] = {};
         }
-        for (_j = 0, _len1 = values.length; _j < _len1; _j++) {
-          value = values[_j];
+        for (_i = 0, _len = values.length; _i < _len; _i++) {
+          value = values[_i];
           hsh[feature][value] = true;
         }
       }
