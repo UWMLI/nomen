@@ -7,6 +7,8 @@ MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 ###
 
+# Shortcut for using CoffeeMugg to generate some HTML, append it to a JQuery
+# element, and direct JQuery Mobile to perform any triggers it needs to.
 appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
@@ -15,12 +17,15 @@ class App
     @library = new Library "#{datadir}/library/"
     @zips = "#{datadir}/zips/"
 
+  # Called after all the Cordova APIs are ready.
   onDeviceReady: ->
     FastClick.attach document.body
     @resizeImage()
     $(window).resize => @resizeImage()
     @refreshLibrary()
 
+  # Downloads a dataset from a URL, unzips it, and adds a button for it to the
+  # home screen (by calling refreshLibrary).
   downloadZip: (url, callback = (->)) ->
     result = url.match /\/(\w+).zip$/
     if result?
@@ -43,11 +48,15 @@ class App
     else
       throw "Couldn't get name of zip file"
 
+  # Deletes all datasets from the file system, by removing the whole library
+  # folder recursively.
   clearLibrary: (callback = (->)) ->
     resolveLocalFileSystemURL @library.dir, (dir) =>
       dir.removeRecursively =>
         @refreshLibrary callback
 
+  # Makes sure the buttons on the home screen accurately reflect the datasets
+  # we have in the file system.
   refreshLibrary: (callback = (->)) ->
     @library.scanLibrary =>
       @clearDataButtons()
@@ -55,19 +64,24 @@ class App
         @addDataButton id, dataset.title
       callback()
 
+  # Deletes the given dataset from the device's file system.
+  # Also deletes the button by calling refreshLibrary.
   deleteDataset: (dataset, callback) ->
     resolveLocalFileSystemURL dataset.dir, (dir) =>
       dir.removeRecursively =>
         @refreshLibrary callback
 
+  # Clears any existing dataset buttons on the home screen.
   clearDataButtons: ->
     $('.dataset-button').remove()
 
+  # Adds a button for a new dataset to the home screen.
   addDataButton: (id, text) ->
     setFn = "app.setDataset('#{id}', function(){}); return true;"
     appendTo $('#home-content'), ->
       @a '.dataset-button', href: '#dataset', 'data-role': 'button', onclick: setFn, text
 
+  # Executed when the user opens a dataset from the home screen.
   setDataset: (id, callback) ->
     @dataset = @library.datasets[id]
     @dataset.load =>
@@ -83,6 +97,7 @@ class App
       @fillLikely()
       callback()
 
+  # Fills the features page with rows of possible filtering criteria.
   makeRows: ->
     for row in @featureRows
       feature = row[0].feature
@@ -98,6 +113,7 @@ class App
     @selected = {}
     $('.feature-value').removeClass 'selected'
 
+  # Toggles a feature-value's selection (both in the app, and in appearance).
   toggleElement: (element, feature, value) ->
     @selected[feature] ?= {}
 
@@ -118,14 +134,17 @@ class App
     @showLikely()
     @fillLikely()
 
+  # Updates the "X Likely" button in the upper-right of the features page.
   showLikely: ->
     $('#likely-button').html "#{@getLikely().length} Likely"
 
+  # Computes how many species roughly match the criteria the user selected.
   getLikely: ->
     maxScore = Object.keys(@selected).length
     cutoff = maxScore * 0.9
     spec for __, spec of @dataset.species when spec.computeScore(@selected) >= cutoff
 
+  # Fills the "likely" page with rows of species images.
   fillLikely: ->
     $('#likely-content').html ''
     species =
@@ -153,6 +172,9 @@ class App
                       @img '.feature-img', src: image.toURL()
                       @div '.feature-value', displayValue part
 
+  # Executed when the user clicks on a species button from the "likely" page.
+  # Clears any existing species pages, and makes new ones for the species they
+  # clicked on.
   setSpecies: (name) ->
     @clearPages()
     spec = @dataset.species[name]
@@ -165,6 +187,7 @@ class App
     @resizeImage()
     @addSwipes pics.length
 
+  # Removes all the current JQM pages for species images.
   clearPages: ->
     i = 0
     loop
@@ -173,6 +196,7 @@ class App
       page.remove()
       i++
 
+  # Adds a JQM page containing one of a species' images.
   addPage: (name, img, desc, ix) ->
     appendTo $('body'), ->
       @div "#specimen#{ix} .specimen", 'data-role': 'page', ->
@@ -187,6 +211,8 @@ class App
           @div '.specimen-text-box', ->
             @div '.specimen-text', desc
 
+  # Adds swipe handlers to the image pages, so you can swipe left and right
+  # to move through a species' images.
   addSwipes: (imgs) ->
     if imgs >= 2
       for ix in [0 .. imgs - 2]
@@ -200,6 +226,7 @@ class App
             # swiperight means move one image over to the left
             $.mobile.changePage "#specimen#{ix - 1}", { transition: "slide", reverse: true }
 
+  # Dynamically resizes the species images so they roughly fill the screen.
   resizeImage: ->
     h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
     $('.specimen-img-box').css('height', "#{h - 100}px")
