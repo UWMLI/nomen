@@ -20,6 +20,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
   App = (function() {
     function App(datadir) {
+      this.datadir = datadir;
       this.library = new Library("" + datadir + "/library/");
       this.zips = "" + datadir + "/zips/";
     }
@@ -37,20 +38,36 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.downloadZip = function(url, callback) {
-      var result, transfer, unzipTo, zipFile;
+      var folderName, result, unzipTo, zipFile;
       result = url.match(/\/(\w+).zip$/);
       if (result != null) {
-        zipFile = "" + this.zips + "/" + result[1] + ".zip";
-        unzipTo = "" + this.library.dir + "/" + result[1];
-        transfer = new FileTransfer();
-        return transfer.download(url, zipFile, (function(_this) {
-          return function(entry) {
-            return zip.unzip(zipFile, unzipTo, function(code) {
-              if (code === 0) {
-                return _this.refreshLibrary(callback);
-              } else {
-                throw "Unzip operation on " + zipFile + " returned " + code;
-              }
+        folderName = result[1];
+        zipFile = "" + this.zips + "/" + folderName + ".zip";
+        unzipTo = "" + this.library.dir + "/" + folderName;
+        return resolveLocalFileSystemURL(this.datadir, (function(_this) {
+          return function(dir) {
+            return dir.getDirectory('zips', {
+              create: true
+            }, function() {
+              return dir.getDirectory('library', {
+                create: true
+              }, function(lib) {
+                return lib.getDirectory(folderName, {
+                  create: true
+                }, function() {
+                  var transfer;
+                  transfer = new FileTransfer();
+                  return transfer.download(url, zipFile, function(entry) {
+                    return zip.unzip(zipFile, unzipTo, function(code) {
+                      if (code === 0) {
+                        return _this.refreshLibrary(callback);
+                      } else {
+                        throw "Unzip operation on " + zipFile + " returned " + code;
+                      }
+                    });
+                  });
+                });
+              });
             });
           };
         })(this));

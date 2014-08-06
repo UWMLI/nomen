@@ -11,7 +11,7 @@ appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
-  constructor: (datadir) ->
+  constructor: (@datadir) ->
     @library = new Library "#{datadir}/library/"
     @zips = "#{datadir}/zips/"
 
@@ -23,16 +23,20 @@ class App
   downloadZip: (url, callback) ->
     result = url.match /\/(\w+).zip$/
     if result?
-      zipFile = "#{@zips}/#{result[1]}.zip"
-      unzipTo = "#{@library.dir}/#{result[1]}"
-      # TODO: make sure @zips and unzip exist
-      transfer = new FileTransfer()
-      transfer.download url, zipFile, (entry) =>
-        zip.unzip zipFile, unzipTo, (code) =>
-          if code is 0
-            @refreshLibrary callback
-          else
-            throw "Unzip operation on #{zipFile} returned #{code}"
+      folderName = result[1]
+      zipFile = "#{@zips}/#{folderName}.zip"
+      unzipTo = "#{@library.dir}/#{folderName}"
+      resolveLocalFileSystemURL @datadir, (dir) =>
+        dir.getDirectory 'zips', {create: yes}, =>
+          dir.getDirectory 'library', {create: yes}, (lib) =>
+            lib.getDirectory folderName, {create: yes}, =>
+              transfer = new FileTransfer()
+              transfer.download url, zipFile, (entry) =>
+                zip.unzip zipFile, unzipTo, (code) =>
+                  if code is 0
+                    @refreshLibrary callback
+                  else
+                    throw "Unzip operation on #{zipFile} returned #{code}"
     else
       throw "Couldn't get name of zip file"
 
