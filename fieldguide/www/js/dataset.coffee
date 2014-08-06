@@ -33,9 +33,7 @@ class DataSet
   load: (callback) ->
     @loadInfo =>
       @loadImages =>
-        alert 'loaded images'
         @loadSpecies =>
-          alert 'loaded species'
           callback()
 
   loadInfo: (callback) ->
@@ -46,12 +44,9 @@ class DataSet
   loadImages: (callback) ->
     @speciesImages = {}
     resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
-      alert 'resolved'
       dirReader = dirEntry.createReader()
       readEntries = =>
-        alert 'reading'
         dirReader.readEntries (results) =>
-          alert results.length
           if results.length is 0
             callback()
           else
@@ -60,7 +55,6 @@ class DataSet
       readEntries()
 
   addImage: (fileEntry) ->
-    alert fileEntry.name
     result = fileEntry.name.match /^(\w+)-(\w+)-(\w+)\.(\w+)$/
     if result?
       [whole, name, part, source, ext] = result

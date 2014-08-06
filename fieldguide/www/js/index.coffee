@@ -17,13 +17,8 @@ class App
 
   onDeviceReady: ->
     FastClick.attach document.body
+    $(window).resize => @resizeImage()
     @downloadZip 'http://mli.doit.wisc.edu/plants.zip', =>
-      @makeRows()
-      @showLikely()
-      @fillLikely()
-      @resizeImage()
-      $(window).resize => @resizeImage()
-      console.log 'Loaded!'
 
   downloadZip: (url, callback) ->
     result = url.match /\/(\w+).zip$/
@@ -64,6 +59,7 @@ class App
   setDataset: (id, callback) ->
     @dataset = @library.datasets[id]
     @dataset.load =>
+      alert 'loaded'
       @featureRows = for feature, values of allFeatures @dataset.species
         values = (v for v of values).sort()
         for value in values
@@ -71,6 +67,15 @@ class App
           image: "#{@dataset.dir}/features/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
+      alert 'loaded2'
+      @makeRows()
+      alert 'loaded3'
+      @showLikely()
+      alert 'loaded4'
+      @fillLikely()
+      alert 'loaded5'
+      @resizeImage()
+      alert 'loaded6'
       callback()
 
   makeRows: ->
@@ -113,13 +118,14 @@ class App
   getLikely: ->
     maxScore = Object.keys(@selected).length
     cutoff = maxScore * 0.9
-    spec for spec in @species when spec.computeScore(@selected) >= cutoff
+    spec for __, spec of @dataset.species when spec.computeScore(@selected) >= cutoff
 
   fillLikely: ->
     $('#likely-content').html ''
-    species = ([spec, spec.computeScore(@selected)] for __, spec of @dataset.species)
+    species =
+      [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
-    dataDir = @dataDir
+    specImages = @dataset.speciesImages
     for [spec, score] in species[0...10]
       appendTo $('#likely-content'), ->
         setFn = "app.setSpecies('#{spec.name}'); return true;"
@@ -133,14 +139,13 @@ class App
                   @img '.feature-img', src: 'data/noimage.png'
                   @div '.feature-value', 'No Image'
               else
-                for image, ix in spec.pictures
+                ix = 0
+                for part, image of specImages[spec.name]
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
                     @div '.feature-box', ->
-                      @img '.feature-img', src: "#{dataDir}/photos/#{image}"
-                      result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/)
-                      if result?
-                        [match, scientific, part, place, ext] = result
-                        @div '.feature-value', displayValue part
+                      @img '.feature-img', src: image.toURL()
+                      @div '.feature-value', displayValue part
+                  ix++
 
   setSpecies: (name) ->
     @clearPages()
@@ -149,7 +154,7 @@ class App
       @addPage spec.name, 'data/noimage.png', spec.description, 0
     else
       for image, ix in spec.pictures
-        img = "#{@dataDir}/photos/#{image}"
+        img = "#{@dataDir}/species/#{image}"
         @addPage spec.name, img, spec.description, ix
     @resizeImage()
     @addSwipes(spec.pictures.length)

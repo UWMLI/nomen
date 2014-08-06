@@ -26,17 +26,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      return this.downloadZip('http://mli.doit.wisc.edu/plants.zip', (function(_this) {
+      $(window).resize((function(_this) {
         return function() {
-          _this.makeRows();
-          _this.showLikely();
-          _this.fillLikely();
-          _this.resizeImage();
-          $(window).resize(function() {
-            return _this.resizeImage();
-          });
-          return console.log('Loaded!');
+          return _this.resizeImage();
         };
+      })(this));
+      return this.downloadZip('http://mli.doit.wisc.edu/plants.zip', (function(_this) {
+        return function() {};
       })(this));
     };
 
@@ -109,6 +105,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return this.dataset.load((function(_this) {
         return function() {
           var feature, v, value, values;
+          alert('loaded');
           _this.featureRows = (function() {
             var _ref, _results;
             _ref = allFeatures(this.dataset.species);
@@ -140,6 +137,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
             return _results;
           }).call(_this);
+          alert('loaded2');
+          _this.makeRows();
+          alert('loaded3');
+          _this.showLikely();
+          alert('loaded4');
+          _this.fillLikely();
+          alert('loaded5');
+          _this.resizeImage();
+          alert('loaded6');
           return callback();
         };
       })(this));
@@ -205,13 +211,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.getLikely = function() {
-      var cutoff, maxScore, spec, _i, _len, _ref, _results;
+      var cutoff, maxScore, spec, __, _ref, _results;
       maxScore = Object.keys(this.selected).length;
       cutoff = maxScore * 0.9;
-      _ref = this.species;
+      _ref = this.dataset.species;
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        spec = _ref[_i];
+      for (__ in _ref) {
+        spec = _ref[__];
         if (spec.computeScore(this.selected) >= cutoff) {
           _results.push(spec);
         }
@@ -220,7 +226,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var dataDir, score, spec, species, __, _i, _len, _ref, _ref1, _results;
+      var score, spec, specImages, species, __, _i, _len, _ref, _ref1, _results;
       $('#likely-content').html('');
       species = (function() {
         var _ref, _results;
@@ -235,7 +241,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       species.sort(function(s1, s2) {
         return s2[1] - s1[1];
       });
-      dataDir = this.dataDir;
+      specImages = this.dataset.speciesImages;
       _ref = species.slice(0, 10);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -253,7 +259,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 return this.text("" + spec.name + " (" + score + ")");
               });
               return this.div('.feature-boxes', function() {
-                var image, ix, _j, _len1, _ref2, _results1;
+                var image, ix, part, _ref2, _results1;
                 if (spec.pictures.length === 0) {
                   return this.div('.feature-box', function() {
                     this.img('.feature-img', {
@@ -262,27 +268,24 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                     return this.div('.feature-value', 'No Image');
                   });
                 } else {
-                  _ref2 = spec.pictures;
+                  ix = 0;
+                  _ref2 = specImages[spec.name];
                   _results1 = [];
-                  for (ix = _j = 0, _len1 = _ref2.length; _j < _len1; ix = ++_j) {
-                    image = _ref2[ix];
-                    _results1.push(this.a({
+                  for (part in _ref2) {
+                    image = _ref2[part];
+                    this.a({
                       href: "#specimen" + ix,
                       'data-transition': 'slide',
                       onclick: setFn
                     }, function() {
                       return this.div('.feature-box', function() {
-                        var ext, match, part, place, result, scientific;
                         this.img('.feature-img', {
-                          src: "" + dataDir + "/photos/" + image
+                          src: image.toURL()
                         });
-                        result = image.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/);
-                        if (result != null) {
-                          match = result[0], scientific = result[1], part = result[2], place = result[3], ext = result[4];
-                          return this.div('.feature-value', displayValue(part));
-                        }
+                        return this.div('.feature-value', displayValue(part));
                       });
-                    }));
+                    });
+                    _results1.push(ix++);
                   }
                   return _results1;
                 }
@@ -304,7 +307,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         _ref = spec.pictures;
         for (ix = _i = 0, _len = _ref.length; _i < _len; ix = ++_i) {
           image = _ref[ix];
-          img = "" + this.dataDir + "/photos/" + image;
+          img = "" + this.dataDir + "/species/" + image;
           this.addPage(spec.name, img, spec.description, ix);
         }
       }

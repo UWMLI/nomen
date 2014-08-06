@@ -73,9 +73,7 @@
       return this.loadInfo((function(_this) {
         return function() {
           return _this.loadImages(function() {
-            alert('loaded images');
             return _this.loadSpecies(function() {
-              alert('loaded species');
               return callback();
             });
           });
@@ -97,13 +95,10 @@
       return resolveLocalFileSystemURL("" + this.dir + "/species/", (function(_this) {
         return function(dirEntry) {
           var dirReader, readEntries;
-          alert('resolved');
           dirReader = dirEntry.createReader();
           readEntries = function() {
-            alert('reading');
             return dirReader.readEntries(function(results) {
               var image, _i, _len, _ref;
-              alert(results.length);
               if (results.length === 0) {
                 return callback();
               } else {
@@ -123,7 +118,6 @@
 
     DataSet.prototype.addImage = function(fileEntry) {
       var ext, name, part, result, source, whole, _base;
-      alert(fileEntry.name);
       result = fileEntry.name.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/);
       if (result != null) {
         whole = result[0], name = result[1], part = result[2], source = result[3], ext = result[4];
