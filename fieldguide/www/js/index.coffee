@@ -17,12 +17,10 @@ class App
 
   onDeviceReady: ->
     FastClick.attach document.body
+    @resizeImage()
     $(window).resize => @resizeImage()
-    @clearLibrary =>
-      @downloadZip 'http://mli.doit.wisc.edu/plants.zip', =>
-        # do-nothing callback
 
-  downloadZip: (url, callback) ->
+  downloadZip: (url, callback = (->)) ->
     result = url.match /\/(\w+).zip$/
     if result?
       folderName = result[1]
@@ -36,13 +34,15 @@ class App
               transfer.download url, zipFile, (entry) =>
                 zip.unzip zipFile, unzipTo, (code) =>
                   if code is 0
-                    @refreshLibrary callback
+                    resolveLocalFileSystemURL zipFile, (zipFileEntry) =>
+                      zipFileEntry.remove =>
+                        @refreshLibrary callback
                   else
                     throw "Unzip operation on #{zipFile} returned #{code}"
     else
       throw "Couldn't get name of zip file"
 
-  clearLibrary: (callback) ->
+  clearLibrary: (callback = (->)) ->
     resolveLocalFileSystemURL @library.dir, (dir) =>
       dir.removeRecursively =>
         @refreshLibrary callback
@@ -80,7 +80,6 @@ class App
       @makeRows()
       @showLikely()
       @fillLikely()
-      @resizeImage()
       callback()
 
   makeRows: ->

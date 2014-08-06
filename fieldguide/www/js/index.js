@@ -27,20 +27,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.onDeviceReady = function() {
       FastClick.attach(document.body);
-      $(window).resize((function(_this) {
+      this.resizeImage();
+      return $(window).resize((function(_this) {
         return function() {
           return _this.resizeImage();
-        };
-      })(this));
-      return this.clearLibrary((function(_this) {
-        return function() {
-          return _this.downloadZip('http://mli.doit.wisc.edu/plants.zip', function() {});
         };
       })(this));
     };
 
     App.prototype.downloadZip = function(url, callback) {
       var folderName, result, unzipTo, zipFile;
+      if (callback == null) {
+        callback = (function() {});
+      }
       result = url.match(/\/(\w+).zip$/);
       if (result != null) {
         folderName = result[1];
@@ -62,7 +61,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   return transfer.download(url, zipFile, function(entry) {
                     return zip.unzip(zipFile, unzipTo, function(code) {
                       if (code === 0) {
-                        return _this.refreshLibrary(callback);
+                        return resolveLocalFileSystemURL(zipFile, function(zipFileEntry) {
+                          return zipFileEntry.remove(function() {
+                            return _this.refreshLibrary(callback);
+                          });
+                        });
                       } else {
                         throw "Unzip operation on " + zipFile + " returned " + code;
                       }
@@ -79,6 +82,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.clearLibrary = function(callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
       return resolveLocalFileSystemURL(this.library.dir, (function(_this) {
         return function(dir) {
           return dir.removeRecursively(function() {
@@ -168,7 +174,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _this.makeRows();
           _this.showLikely();
           _this.fillLikely();
-          _this.resizeImage();
           return callback();
         };
       })(this));
