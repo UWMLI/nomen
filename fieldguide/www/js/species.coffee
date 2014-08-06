@@ -48,3 +48,4 @@ allFeatures = (specs) ->
 window.Species = Species
 window.allFeatures = allFeatures
 window.displayValue = displayValue
+window.canonicalValue = canonicalValue

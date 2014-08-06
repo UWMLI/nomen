@@ -111,4 +111,6 @@
 
   window.displayValue = displayValue;
 
+  window.canonicalValue = canonicalValue;
+
 }).call(this);

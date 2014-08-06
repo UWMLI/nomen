@@ -122,9 +122,9 @@
       if (result != null) {
         whole = result[0], name = result[1], part = result[2], source = result[3], ext = result[4];
         if ((_base = this.speciesImages)[name] == null) {
-          _base[name] = {};
+          _base[name] = [];
         }
-        return this.speciesImages[name][part] = fileEntry;
+        return this.speciesImages[name].push([part, fileEntry]);
       } else {
         throw "Species image filename couldn't be parsed";
       }
@@ -177,6 +177,11 @@
         }).call(this));
       }
       return _results;
+    };
+
+    DataSet.prototype.imagesForSpecies = function(spec) {
+      var _ref;
+      return (_ref = this.speciesImages[canonicalValue(spec.name)]) != null ? _ref : [];
     };
 
     return DataSet;

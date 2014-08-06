@@ -58,8 +58,8 @@ class DataSet
     result = fileEntry.name.match /^(\w+)-(\w+)-(\w+)\.(\w+)$/
     if result?
       [whole, name, part, source, ext] = result
-      @speciesImages[name] ?= {}
-      @speciesImages[name][part] = fileEntry
+      @speciesImages[name] ?= []
+      @speciesImages[name].push [part, fileEntry]
     else
       throw "Species image filename couldn't be parsed"
 
@@ -79,6 +79,9 @@ class DataSet
         @features[feature] ?= {}
         for value in values
           @features[feature][value] = true
+
+  imagesForSpecies: (spec) ->
+    @speciesImages[canonicalValue spec.name] ? []
 
 window.Library = Library
 window.DataSet = DataSet

@@ -105,7 +105,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return this.dataset.load((function(_this) {
         return function() {
           var feature, v, value, values;
-          alert('loaded');
           _this.featureRows = (function() {
             var _ref, _results;
             _ref = allFeatures(this.dataset.species);
@@ -137,15 +136,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
             return _results;
           }).call(_this);
-          alert('loaded2');
           _this.makeRows();
-          alert('loaded3');
           _this.showLikely();
-          alert('loaded4');
           _this.fillLikely();
-          alert('loaded5');
           _this.resizeImage();
-          alert('loaded6');
           return callback();
         };
       })(this));
@@ -226,7 +220,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikely = function() {
-      var score, spec, specImages, species, __, _i, _len, _ref, _ref1, _results;
+      var imagesFor, score, spec, species, __, _i, _len, _ref, _ref1, _results;
       $('#likely-content').html('');
       species = (function() {
         var _ref, _results;
@@ -241,7 +235,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       species.sort(function(s1, s2) {
         return s2[1] - s1[1];
       });
-      specImages = this.dataset.speciesImages;
+      imagesFor = (function(_this) {
+        return function(spec) {
+          return _this.dataset.imagesForSpecies(spec);
+        };
+      })(this);
       _ref = species.slice(0, 10);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -259,8 +257,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 return this.text("" + spec.name + " (" + score + ")");
               });
               return this.div('.feature-boxes', function() {
-                var image, ix, part, _ref2, _results1;
-                if (spec.pictures.length === 0) {
+                var image, ix, part, pics, _j, _len1, _ref2, _results1;
+                pics = imagesFor(spec);
+                if (pics.length === 0) {
                   return this.div('.feature-box', function() {
                     this.img('.feature-img', {
                       src: 'data/noimage.png'
@@ -268,12 +267,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                     return this.div('.feature-value', 'No Image');
                   });
                 } else {
-                  ix = 0;
-                  _ref2 = specImages[spec.name];
                   _results1 = [];
-                  for (part in _ref2) {
-                    image = _ref2[part];
-                    this.a({
+                  for (ix = _j = 0, _len1 = pics.length; _j < _len1; ix = ++_j) {
+                    _ref2 = pics[ix], part = _ref2[0], image = _ref2[1];
+                    _results1.push(this.a({
                       href: "#specimen" + ix,
                       'data-transition': 'slide',
                       onclick: setFn
@@ -284,8 +281,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                         });
                         return this.div('.feature-value', displayValue(part));
                       });
-                    });
-                    _results1.push(ix++);
+                    }));
                   }
                   return _results1;
                 }
@@ -298,17 +294,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.setSpecies = function(name) {
-      var image, img, ix, spec, _i, _len, _ref;
+      var image, ix, part, pics, spec, _i, _len, _ref, _ref1;
       this.clearPages();
       spec = this.dataset.species[name];
-      if (spec.pictures.length === 0) {
+      pics = this.dataset.imagesForSpecies(spec);
+      if (pics.length === 0) {
         this.addPage(spec.name, 'data/noimage.png', spec.description, 0);
       } else {
         _ref = spec.pictures;
         for (ix = _i = 0, _len = _ref.length; _i < _len; ix = ++_i) {
-          image = _ref[ix];
-          img = "" + this.dataDir + "/species/" + image;
-          this.addPage(spec.name, img, spec.description, ix);
+          _ref1 = _ref[ix], part = _ref1[0], image = _ref1[1];
+          this.addPage(spec.name, image.toURL(), spec.description, ix);
         }
       }
       this.resizeImage();
