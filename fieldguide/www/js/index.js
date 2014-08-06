@@ -151,7 +151,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
         feature = row[0].feature;
-        appendTo($('#plants-content'), function() {
+        appendTo($('#dataset-content'), function() {
           return this.div('.feature-row', function() {
             this.div('.feature-name', displayValue(feature));
             return this.div('.feature-boxes', function() {
@@ -174,7 +174,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           });
         });
       }
-      return this.selected = {};
+      this.selected = {};
+      return $('.feature-value').removeClass('selected');
     };
 
     App.prototype.toggleElement = function(element, feature, value) {
@@ -294,21 +295,20 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.setSpecies = function(name) {
-      var image, ix, part, pics, spec, _i, _len, _ref, _ref1;
+      var image, ix, part, pics, spec, _i, _len, _ref;
       this.clearPages();
       spec = this.dataset.species[name];
       pics = this.dataset.imagesForSpecies(spec);
       if (pics.length === 0) {
         this.addPage(spec.name, 'data/noimage.png', spec.description, 0);
       } else {
-        _ref = spec.pictures;
-        for (ix = _i = 0, _len = _ref.length; _i < _len; ix = ++_i) {
-          _ref1 = _ref[ix], part = _ref1[0], image = _ref1[1];
+        for (ix = _i = 0, _len = pics.length; _i < _len; ix = ++_i) {
+          _ref = pics[ix], part = _ref[0], image = _ref[1];
           this.addPage(spec.name, image.toURL(), spec.description, ix);
         }
       }
       this.resizeImage();
-      return this.addSwipes(spec.pictures.length);
+      return this.addSwipes(pics.length);
     };
 
     App.prototype.clearPages = function() {

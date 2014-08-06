@@ -75,7 +75,7 @@ class App
   makeRows: ->
     for row in @featureRows
       feature = row[0].feature
-      appendTo $('#plants-content'), ->
+      appendTo $('#dataset-content'), ->
         @div '.feature-row', ->
           @div '.feature-name', displayValue feature
           @div '.feature-boxes', ->
@@ -85,6 +85,7 @@ class App
                 @img '.feature-img', src: image
                 @div '.feature-value', display
     @selected = {}
+    $('.feature-value').removeClass 'selected'
 
   toggleElement: (element, feature, value) ->
     @selected[feature] ?= {}
@@ -148,10 +149,10 @@ class App
     if pics.length is 0
       @addPage spec.name, 'data/noimage.png', spec.description, 0
     else
-      for [part, image], ix in spec.pictures
+      for [part, image], ix in pics
         @addPage spec.name, image.toURL(), spec.description, ix
     @resizeImage()
-    @addSwipes(spec.pictures.length)
+    @addSwipes pics.length
 
   clearPages: ->
     i = 0

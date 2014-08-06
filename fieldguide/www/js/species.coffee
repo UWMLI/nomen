@@ -20,7 +20,6 @@ class Species
     @name = csvRow.name
     @description = csvRow.description
     @display_name = csvRow.display_name
-    # @pictures = parseList csvRow.pictures
     @features = {}
     reachedFeatures = false
     for k, v of csvRow
