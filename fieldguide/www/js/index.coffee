@@ -85,20 +85,20 @@ class App
   setDataset: (id, callback) ->
     @dataset = @library.datasets[id]
     @dataset.load =>
-      @featureRows = for feature, values of allFeatures @dataset.species
+      @featureRows = for feature, values of @dataset.features
         values = (v for v of values).sort()
         for value in values
           display: displayValue value
           image: "#{@dataset.dir}/features/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
-      @makeRows()
-      @showLikely()
-      @fillLikely()
+      @makeFeatureRows()
+      @showHowMany()
+      @fillLikelyPage()
       callback()
 
   # Fills the features page with rows of possible filtering criteria.
-  makeRows: ->
+  makeFeatureRows: ->
     for row in @featureRows
       feature = row[0].feature
       appendTo $('#dataset-content'), ->
@@ -131,11 +131,11 @@ class App
     else
       value.addClass 'selected'
 
-    @showLikely()
-    @fillLikely()
+    @showHowMany()
+    @fillLikelyPage()
 
   # Updates the "X Likely" button in the upper-right of the features page.
-  showLikely: ->
+  showHowMany: ->
     $('#likely-button').html "#{@getLikely().length} Likely"
 
   # Computes how many species roughly match the criteria the user selected.
@@ -145,7 +145,7 @@ class App
     spec for __, spec of @dataset.species when spec.computeScore(@selected) >= cutoff
 
   # Fills the "likely" page with rows of species images.
-  fillLikely: ->
+  fillLikelyPage: ->
     $('#likely-content').html ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species

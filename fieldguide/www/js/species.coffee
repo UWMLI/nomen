@@ -16,6 +16,7 @@ displayValue = (value) ->
     words.join(' ')
 
 class Species
+  # Creates a Species given one row from the species.csv file as an object.
   constructor: (csvRow) ->
     @name = csvRow.name
     @description = csvRow.description
@@ -27,6 +28,8 @@ class Species
       continue if k in ['name', 'display_name', 'description', 'pictures']
       @features[k] = parseList v
 
+  # If selected is an object from features to arrays of values,
+  # computes how many of them match the features of this species.
   computeScore: (selected) ->
     score = 0
     for feature, values of selected
@@ -35,16 +38,6 @@ class Species
       score++ if overlap.length != 0
     score
 
-allFeatures = (specs) ->
-  hsh = {}
-  for k, spec of specs
-    for feature, values of spec.features
-      hsh[feature] ?= {}
-      for value in values
-        hsh[feature][value] = true
-  hsh
-
 window.Species = Species
-window.allFeatures = allFeatures
 window.displayValue = displayValue
 window.canonicalValue = canonicalValue

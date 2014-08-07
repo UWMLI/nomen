@@ -146,7 +146,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           var feature, v, value, values;
           _this.featureRows = (function() {
             var _ref, _results;
-            _ref = allFeatures(this.dataset.species);
+            _ref = this.dataset.features;
             _results = [];
             for (feature in _ref) {
               values = _ref[feature];
@@ -175,15 +175,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
             return _results;
           }).call(_this);
-          _this.makeRows();
-          _this.showLikely();
-          _this.fillLikely();
+          _this.makeFeatureRows();
+          _this.showHowMany();
+          _this.fillLikelyPage();
           return callback();
         };
       })(this));
     };
 
-    App.prototype.makeRows = function() {
+    App.prototype.makeFeatureRows = function() {
       var feature, row, _i, _len, _ref;
       _ref = this.featureRows;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -235,11 +235,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       } else {
         value.addClass('selected');
       }
-      this.showLikely();
-      return this.fillLikely();
+      this.showHowMany();
+      return this.fillLikelyPage();
     };
 
-    App.prototype.showLikely = function() {
+    App.prototype.showHowMany = function() {
       return $('#likely-button').html("" + (this.getLikely().length) + " Likely");
     };
 
@@ -258,7 +258,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return _results;
     };
 
-    App.prototype.fillLikely = function() {
+    App.prototype.fillLikelyPage = function() {
       var imagesFor, score, spec, species, __, _i, _len, _ref, _ref1, _results;
       $('#likely-content').html('');
       species = (function() {
