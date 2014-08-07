@@ -89,12 +89,12 @@ class App
     @dataset = @library.datasets[id]
     @dataset.load =>
       @featureRows = for feature, values of @dataset.features
-        values = (v for v of values).sort()
-        for value in values
+        for value in Object.keys(values).sort()
           display: displayValue value
           image: "#{@dataset.dir}/features/#{feature}/#{feature}-#{value}.png"
           feature: feature
           value: value
+      $('#dataset-header').html @dataset.title
       @makeFeatureRows()
       @showHowMany()
       @fillLikelyPage()

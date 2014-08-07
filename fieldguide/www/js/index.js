@@ -143,26 +143,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       this.dataset = this.library.datasets[id];
       return this.dataset.load((function(_this) {
         return function() {
-          var feature, v, value, values;
+          var feature, value, values;
           _this.featureRows = (function() {
             var _ref, _results;
             _ref = this.dataset.features;
             _results = [];
             for (feature in _ref) {
               values = _ref[feature];
-              values = ((function() {
-                var _results1;
-                _results1 = [];
-                for (v in values) {
-                  _results1.push(v);
-                }
-                return _results1;
-              })()).sort();
               _results.push((function() {
-                var _i, _len, _results1;
+                var _i, _len, _ref1, _results1;
+                _ref1 = Object.keys(values).sort();
                 _results1 = [];
-                for (_i = 0, _len = values.length; _i < _len; _i++) {
-                  value = values[_i];
+                for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                  value = _ref1[_i];
                   _results1.push({
                     display: displayValue(value),
                     image: "" + this.dataset.dir + "/features/" + feature + "/" + feature + "-" + value + ".png",
@@ -175,6 +168,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
             return _results;
           }).call(_this);
+          $('#dataset-header').html(_this.dataset.title);
           _this.makeFeatureRows();
           _this.showHowMany();
           _this.fillLikelyPage();
