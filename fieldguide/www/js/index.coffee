@@ -166,7 +166,7 @@ class App
               pics = imagesFor spec
               if pics.length is 0
                 @div '.feature-box', ->
-                  @img '.feature-img', src: 'data/noimage.png'
+                  @img '.feature-img', src: 'img/noimage.png'
                   @div '.feature-value', 'No Image'
               else
                 for [part, image], ix in pics
@@ -182,7 +182,7 @@ class App
     spec = @dataset.species[name]
     pics = @dataset.imagesForSpecies spec
     if pics.length is 0
-      @addPage spec.name, 'data/noimage.png', spec.description, 0
+      @addPage spec.name, 'img/noimage.png', spec.description, 0
     else
       for [part, image], ix in pics
         @addPage spec.name, image.toURL(), spec.description, ix
