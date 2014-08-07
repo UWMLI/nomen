@@ -30,6 +30,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 </head>
 
 <body>
+
+<!-- Page where you select a dataset -->
 <div data-role="page" id="home">
   <div data-role="header" data-position="fixed">
     <h1>Field Guide</h1>
@@ -41,6 +43,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   </div>
 </div>
 
+<!-- Page where you choose features to filter a dataset by -->
 <div data-role="page" id="dataset">
   <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <h1 id="dataset-header">Dataset</h1>
@@ -52,6 +55,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   </div>
 </div>
 
+<!-- Page listing the top matching species for the selected criteria -->
 <div data-role="page" id="likely">
   <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <h1>Likely Choices</h1>
@@ -61,6 +65,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   <div data-role="main" class="ui-content" id="likely-content">
   </div>
 </div>
+
+<!-- Not shown here (dynamically generated): a page for each image of a species -->
 
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="lib/fastclick/js/fastclick.js"></script>
