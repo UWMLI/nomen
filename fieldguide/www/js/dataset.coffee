@@ -3,6 +3,7 @@ toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 class Library
   constructor: (@dir) ->
 
+  # Scan the library folder for datasets.
   scanLibrary: (callback) ->
     @datasets = {}
     resolveLocalFileSystemURL @dir, (dirEntry) =>
@@ -33,17 +34,20 @@ class Library
 class DataSet
   constructor: (@dir) ->
 
+  # Load all the dataset information at once.
   load: (callback) ->
     @loadInfo =>
       @loadImages =>
         @loadSpecies =>
           callback()
 
+  # Load just the metadata JSON file.
   loadInfo: (callback) ->
     $.getJSON "#{@dir}/info.json", (json) =>
       {@title, @id, @version} = json
       callback()
 
+  # Locate all images in the species images folder.
   loadImages: (callback) ->
     @speciesImages = {}
     resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
@@ -57,6 +61,7 @@ class DataSet
             readEntries()
       readEntries()
 
+  # Parse the species image filename to see which species and label it has.
   addImage: (fileEntry) ->
     result = fileEntry.name.match /^(\w+)-(\w+)-(\w+)\.(\w+)$/
     if result?
@@ -66,6 +71,7 @@ class DataSet
     else
       throw "Species image filename couldn't be parsed"
 
+  # Load the CSV file of species information.
   loadSpecies: (callback) ->
     $.get "#{@dir}/species.csv", (str) =>
       @species = {}
@@ -75,6 +81,7 @@ class DataSet
       @listFeatures()
       callback()
 
+  # Compute all features and values held by any species in the dataset.
   listFeatures: ->
     @features = {}
     for k, spec of @species
@@ -83,6 +90,7 @@ class DataSet
         for value in values
           @features[feature][value] = true
 
+  # Get all the images (found via loadImages) for a certain Species object.
   imagesForSpecies: (spec) ->
     @speciesImages[canonicalValue spec.name] ? []
 
