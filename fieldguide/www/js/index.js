@@ -287,7 +287,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           }, function() {
             return this.div('.feature-row', function() {
               this.div('.feature-name', function() {
-                return this.text("" + spec.name + " (" + score + ")");
+                return this.text("" + spec.display_name + " (" + score + ")");
               });
               return this.div('.feature-boxes', function() {
                 var image, ix, part, pics, _j, _len1, _ref2, _results1;
@@ -332,11 +332,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       spec = this.dataset.species[name];
       pics = this.dataset.imagesForSpecies(spec);
       if (pics.length === 0) {
-        this.addPage(spec.name, 'img/noimage.png', spec.description, 0);
+        this.addPage(spec.display_name, 'img/noimage.png', spec.description, 0);
       } else {
         for (ix = _i = 0, _len = pics.length; _i < _len; ix = ++_i) {
           _ref = pics[ix], part = _ref[0], image = _ref[1];
-          this.addPage(spec.name, image.toURL(), spec.description, ix);
+          this.addPage(spec.display_name, image.toURL(), spec.description, ix);
         }
       }
       this.resizeImage();

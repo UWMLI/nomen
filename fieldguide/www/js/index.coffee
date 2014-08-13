@@ -161,7 +161,7 @@ class App
         @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->
           @div '.feature-row', ->
             @div '.feature-name', ->
-              @text "#{spec.name} (#{score})"
+              @text "#{spec.display_name} (#{score})"
             @div '.feature-boxes', ->
               pics = imagesFor spec
               if pics.length is 0
@@ -182,10 +182,10 @@ class App
     spec = @dataset.species[name]
     pics = @dataset.imagesForSpecies spec
     if pics.length is 0
-      @addPage spec.name, 'img/noimage.png', spec.description, 0
+      @addPage spec.display_name, 'img/noimage.png', spec.description, 0
     else
       for [part, image], ix in pics
-        @addPage spec.name, image.toURL(), spec.description, ix
+        @addPage spec.display_name, image.toURL(), spec.description, ix
     @resizeImage()
     @addSwipes pics.length
 
