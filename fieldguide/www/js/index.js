@@ -158,7 +158,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                   value = _ref1[_i];
                   _results1.push({
                     display: displayValue(value),
-                    image: "" + this.dataset.dir + "/features/" + feature + "/" + feature + "-" + value + ".png",
+                    image: "" + this.dataset.dir + "/features/" + feature + "/" + value + ".png",
                     feature: feature,
                     value: value
                   });

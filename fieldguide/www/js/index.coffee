@@ -91,7 +91,7 @@ class App
       @featureRows = for feature, values of @dataset.features
         for value in Object.keys(values).sort()
           display: displayValue value
-          image: "#{@dataset.dir}/features/#{feature}/#{feature}-#{value}.png"
+          image: "#{@dataset.dir}/features/#{feature}/#{value}.png"
           feature: feature
           value: value
       $('#dataset-header').html @dataset.title
