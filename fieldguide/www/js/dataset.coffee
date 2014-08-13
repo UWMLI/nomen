@@ -63,11 +63,11 @@ class DataSet
 
   # Parse the species image filename to see which species and label it has.
   addImage: (fileEntry) ->
-    result = fileEntry.name.match /^(\w+)-(\w+)-(\w+)\.(\w+)$/
+    result = fileEntry.name.match /^(\w+)-([\w-]+)\.(\w+)$/
     if result?
-      [whole, name, part, source, ext] = result
+      [whole, name, label, ext] = result
       @speciesImages[name] ?= []
-      @speciesImages[name].push [part, fileEntry]
+      @speciesImages[name].push [label, fileEntry]
     else
       throw "Species image filename couldn't be parsed"
 

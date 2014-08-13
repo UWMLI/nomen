@@ -121,14 +121,14 @@
     };
 
     DataSet.prototype.addImage = function(fileEntry) {
-      var ext, name, part, result, source, whole, _base;
-      result = fileEntry.name.match(/^(\w+)-(\w+)-(\w+)\.(\w+)$/);
+      var ext, label, name, result, whole, _base;
+      result = fileEntry.name.match(/^(\w+)-([\w-]+)\.(\w+)$/);
       if (result != null) {
-        whole = result[0], name = result[1], part = result[2], source = result[3], ext = result[4];
+        whole = result[0], name = result[1], label = result[2], ext = result[3];
         if ((_base = this.speciesImages)[name] == null) {
           _base[name] = [];
         }
-        return this.speciesImages[name].push([part, fileEntry]);
+        return this.speciesImages[name].push([label, fileEntry]);
       } else {
         throw "Species image filename couldn't be parsed";
       }
