@@ -52,7 +52,7 @@
       for (k in csvRow) {
         v = csvRow[k];
         k = canonicalValue(k);
-        if (k === 'name' || k === 'display_name' || k === 'description' || k === 'pictures') {
+        if (k === 'name' || k === 'display_name' || k === 'description') {
           continue;
         }
         this.features[k] = parseList(v);

@@ -25,7 +25,7 @@ class Species
     reachedFeatures = false
     for k, v of csvRow
       k = canonicalValue k
-      continue if k in ['name', 'display_name', 'description', 'pictures']
+      continue if k in ['name', 'display_name', 'description']
       @features[k] = parseList v
 
   # If `selected` is an object from features to arrays of values,
