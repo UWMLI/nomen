@@ -21,6 +21,8 @@ class Species
     @name = csvRow.name
     @description = csvRow.description
     @display_name = csvRow.display_name
+    if @display_name.length is 0
+      @display_name = @name
     @features = {}
     reachedFeatures = false
     for k, v of csvRow

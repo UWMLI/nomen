@@ -47,6 +47,9 @@
       this.name = csvRow.name;
       this.description = csvRow.description;
       this.display_name = csvRow.display_name;
+      if (this.display_name.length === 0) {
+        this.display_name = this.name;
+      }
       this.features = {};
       reachedFeatures = false;
       for (k in csvRow) {
