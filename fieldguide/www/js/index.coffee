@@ -7,6 +7,8 @@ MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 ###
 
+'use strict'
+
 # Shortcut for
 # 1. using CoffeeMugg to generate some HTML
 # 2. appending it to a JQuery element

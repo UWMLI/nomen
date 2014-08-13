@@ -1,3 +1,5 @@
+'use strict'
+
 parseList = (str) ->
   for val in str.toString().split(',')
     val = canonicalValue val

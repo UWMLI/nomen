@@ -1,3 +1,5 @@
+'use strict'
+
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
 class Library

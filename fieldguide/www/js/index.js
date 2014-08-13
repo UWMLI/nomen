@@ -10,6 +10,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
  */
 
 (function() {
+  'use strict';
   var App, appendTo;
 
   appendTo = function(element, muggexpr) {
