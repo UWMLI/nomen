@@ -25,6 +25,36 @@
       })(this));
     };
 
+    Library.prototype.deleteDir = function(callback) {
+      return resolveLocalFileSystemURL(this.dir, (function(_this) {
+        return function(dir) {
+          return dir.removeRecursively(callback);
+        };
+      })(this), callback);
+    };
+
+    Library.prototype.deleteSet = function(id, callback) {
+      return resolveLocalFileSystemURL("" + this.dir + "/" + id, (function(_this) {
+        return function(dir) {
+          return dir.removeRecursively(callback);
+        };
+      })(this), callback);
+    };
+
+    Library.prototype.makeSet = function(id, callback) {
+      return this.deleteSet(id, (function(_this) {
+        return function() {
+          return resolveLocalFileSystemURL(_this.dir, function(dir) {
+            return dir.getDirectory(id, {
+              create: true
+            }, function(dirEntry) {
+              return callback(dirEntry);
+            });
+          });
+        };
+      })(this));
+    };
+
     Library.prototype.scanLibrary = function(callback) {
       this.datasets = {};
       return resolveLocalFileSystemURL(this.dir, (function(_this) {

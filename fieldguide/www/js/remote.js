@@ -43,26 +43,14 @@
       }
       transfer = new FileTransfer();
       return transfer.download(match[0].url, this.zipFile, (function(_this) {
-        return function(entry) {
-          return resolveLocalFileSystemURL(lib.dir, function(libDir) {
-            return libDir.getDirectory(id, {
-              create: true
-            }, function(setDir) {
-              return setDir.removeRecursively(function() {
-                return libDir.getDirectory(id, {
-                  create: true
-                }, function(setDir) {
-                  return zip.unzip(_this.zipFile, setDir.toURL(), function(code) {
-                    return resolveLocalFileSystemURL(_this.zipFile, function(zipFileEntry) {
-                      return zipFileEntry.remove(function() {
-                        if (code !== 0) {
-                          throw "Unzip operation on " + _this.zipFile + " returned " + code;
-                        }
-                        return callback();
-                      });
-                    });
-                  });
-                });
+        return function(zipEntry) {
+          return lib.makeSet(id, function(setEntry) {
+            return zip.unzip(_this.zipFile, setEntry.toURL(), function(code) {
+              return zipEntry.remove(function() {
+                if (code !== 0) {
+                  throw "Unzip operation on " + _this.zipFile + " returned " + code;
+                }
+                return callback();
               });
             });
           });

@@ -40,9 +40,8 @@ class App
   # Delete all datasets from the file system, by removing the whole library
   # folder recursively.
   clearLibrary: (callback = (->)) ->
-    resolveLocalFileSystemURL @library.dir, (dir) =>
-      dir.removeRecursively =>
-        @refreshLibrary callback
+    @library.deleteDir =>
+      @refreshLibrary callback
 
   # Ensure the buttons on the home screen accurately reflect the datasets
   # we have in the file system.

@@ -56,11 +56,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       if (callback == null) {
         callback = (function() {});
       }
-      return resolveLocalFileSystemURL(this.library.dir, (function(_this) {
-        return function(dir) {
-          return dir.removeRecursively(function() {
-            return _this.refreshLibrary(callback);
-          });
+      return this.library.deleteDir((function(_this) {
+        return function() {
+          return _this.refreshLibrary(callback);
         };
       })(this));
     };
