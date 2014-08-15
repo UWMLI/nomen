@@ -8,9 +8,22 @@
   };
 
   Library = (function() {
-    function Library(dir) {
-      this.dir = dir;
+    function Library(datadir) {
+      this.datadir = datadir;
+      this.dir = "" + this.datadir + "/library";
     }
+
+    Library.prototype.makeDir = function(callback) {
+      return resolveLocalFileSystemURL(this.datadir, (function(_this) {
+        return function(dir) {
+          return dir.getDirectory('library', {
+            create: true
+          }, function() {
+            return callback();
+          });
+        };
+      })(this));
+    };
 
     Library.prototype.scanLibrary = function(callback) {
       this.datasets = {};

@@ -22,8 +22,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   App = (function() {
     function App(datadir) {
       this.datadir = datadir;
-      this.library = new Library("" + datadir + "/library/");
-      this.zips = "" + datadir + "/zips/";
+      this.library = new Library(datadir);
+      this.remote = new Remote(datadir, 'http://mli.doit.wisc.edu/list.json');
     }
 
     App.prototype.onDeviceReady = function() {
@@ -37,50 +37,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return this.refreshLibrary();
     };
 
-    App.prototype.downloadZip = function(url, callback) {
-      var folderName, result, unzipTo, zipFile;
+    App.prototype.downloadZip = function(id, callback) {
       if (callback == null) {
         callback = (function() {});
       }
-      result = url.match(/\/(\w+).zip$/);
-      if (result != null) {
-        folderName = result[1];
-        zipFile = "" + this.zips + "/" + folderName + ".zip";
-        unzipTo = "" + this.library.dir + "/" + folderName;
-        return resolveLocalFileSystemURL(this.datadir, (function(_this) {
-          return function(dir) {
-            return dir.getDirectory('zips', {
-              create: true
-            }, function() {
-              return dir.getDirectory('library', {
-                create: true
-              }, function(lib) {
-                return lib.getDirectory(folderName, {
-                  create: true
-                }, function() {
-                  var transfer;
-                  transfer = new FileTransfer();
-                  return transfer.download(url, zipFile, function(entry) {
-                    return zip.unzip(zipFile, unzipTo, function(code) {
-                      if (code === 0) {
-                        return resolveLocalFileSystemURL(zipFile, function(zipFileEntry) {
-                          return zipFileEntry.remove(function() {
-                            return _this.refreshLibrary(callback);
-                          });
-                        });
-                      } else {
-                        throw "Unzip operation on " + zipFile + " returned " + code;
-                      }
-                    });
-                  });
-                });
-              });
+      return this.library.makeDir((function(_this) {
+        return function() {
+          return _this.remote.downloadList(function() {
+            return _this.remote.downloadDataset(id, _this.library, function() {
+              return _this.refreshLibrary(callback);
             });
-          };
-        })(this));
-      } else {
-        throw "Couldn't get name of zip file";
-      }
+          });
+        };
+      })(this));
     };
 
     App.prototype.clearLibrary = function(callback) {

@@ -19,8 +19,8 @@ appendTo = (element, muggexpr) ->
 
 class App
   constructor: (@datadir) ->
-    @library = new Library "#{datadir}/library/"
-    @zips = "#{datadir}/zips/"
+    @library = new Library datadir
+    @remote = new Remote datadir, 'http://mli.doit.wisc.edu/list.json'
 
   # Called after all the Cordova APIs are ready.
   onDeviceReady: ->
@@ -29,29 +29,13 @@ class App
     $(window).resize => @resizeImage()
     @refreshLibrary()
 
-  # Download a dataset from a URL, unzip it, and add a button for it to the
+  # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
-  downloadZip: (url, callback = (->)) ->
-    result = url.match /\/(\w+).zip$/
-    if result?
-      folderName = result[1]
-      zipFile = "#{@zips}/#{folderName}.zip"
-      unzipTo = "#{@library.dir}/#{folderName}"
-      resolveLocalFileSystemURL @datadir, (dir) =>
-        dir.getDirectory 'zips', {create: yes}, =>
-          dir.getDirectory 'library', {create: yes}, (lib) =>
-            lib.getDirectory folderName, {create: yes}, =>
-              transfer = new FileTransfer()
-              transfer.download url, zipFile, (entry) =>
-                zip.unzip zipFile, unzipTo, (code) =>
-                  if code is 0
-                    resolveLocalFileSystemURL zipFile, (zipFileEntry) =>
-                      zipFileEntry.remove =>
-                        @refreshLibrary callback
-                  else
-                    throw "Unzip operation on #{zipFile} returned #{code}"
-    else
-      throw "Couldn't get name of zip file"
+  downloadZip: (id, callback = (->)) ->
+    @library.makeDir =>
+      @remote.downloadList =>
+        @remote.downloadDataset id, @library, =>
+          @refreshLibrary callback
 
   # Delete all datasets from the file system, by removing the whole library
   # folder recursively.

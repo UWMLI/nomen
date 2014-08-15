@@ -3,7 +3,13 @@
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
 class Library
-  constructor: (@dir) ->
+  constructor: (@datadir) ->
+    @dir = "#{@datadir}/library"
+
+  makeDir: (callback) ->
+    resolveLocalFileSystemURL @datadir, (dir) =>
+      dir.getDirectory 'library', {create: yes}, =>
+        callback()
 
   # Scan the library folder for datasets.
   scanLibrary: (callback) ->
