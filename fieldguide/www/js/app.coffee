@@ -70,7 +70,7 @@ class App
 
   # Delete the dataset with the given ID from the device's file system.
   # Also deletes the button by calling refreshLibrary.
-  deleteDataset: (id, callback) ->
+  deleteDataset: (id, callback = (->)) ->
     @library.deleteSet id, =>
       @refreshLibrary callback
 
@@ -81,8 +81,13 @@ class App
   # Add a button for a new dataset to the home screen.
   addDataButton: (id, text) ->
     setFn = "app.goToDataset('#{id}');"
+    deleteFn = "app.deleteDataset('#{id}');"
     appendTo $('#home-content'), ->
-      @a '.dataset-button', 'data-role': 'button', onclick: setFn, text
+      @div '.ui-grid-a .dataset-button', ->
+        @div '.ui-block-a', ->
+          @a 'data-role': 'button', onclick: setFn, text
+        @div '.ui-block-b', ->
+          @a 'data-role': 'button', onclick: deleteFn, 'data-icon': 'delete', 'Delete'
 
   goToDataset: (id, callback = (->)) ->
     @setDataset id, =>

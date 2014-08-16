@@ -115,6 +115,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.deleteDataset = function(id, callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
       return this.library.deleteSet(id, (function(_this) {
         return function() {
           return _this.refreshLibrary(callback);
@@ -127,13 +130,25 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.addDataButton = function(id, text) {
-      var setFn;
+      var deleteFn, setFn;
       setFn = "app.goToDataset('" + id + "');";
+      deleteFn = "app.deleteDataset('" + id + "');";
       return appendTo($('#home-content'), function() {
-        return this.a('.dataset-button', {
-          'data-role': 'button',
-          onclick: setFn
-        }, text);
+        return this.div('.ui-grid-a .dataset-button', function() {
+          this.div('.ui-block-a', function() {
+            return this.a({
+              'data-role': 'button',
+              onclick: setFn
+            }, text);
+          });
+          return this.div('.ui-block-b', function() {
+            return this.a({
+              'data-role': 'button',
+              onclick: deleteFn,
+              'data-icon': 'delete'
+            }, 'Delete');
+          });
+        });
       });
     };
 
