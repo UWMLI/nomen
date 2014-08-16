@@ -37,6 +37,39 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return this.refreshLibrary();
     };
 
+    App.prototype.syncRemote = function(callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
+      return this.remote.downloadList((function(_this) {
+        return function() {
+          var dataset, _i, _len, _ref;
+          _this.clearRemoteButtons();
+          _ref = _this.remote.datasets;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            dataset = _ref[_i];
+            _this.addRemoteButton(dataset.id, dataset.title);
+          }
+          return callback();
+        };
+      })(this));
+    };
+
+    App.prototype.clearRemoteButtons = function() {
+      return $('#remote-content').html('');
+    };
+
+    App.prototype.addRemoteButton = function(id, text) {
+      var setFn;
+      setFn = "app.downloadZip('" + id + "');";
+      return appendTo($('#remote-content'), function() {
+        return this.a('.remote-button', {
+          'data-role': 'button',
+          onclick: setFn
+        }, text);
+      });
+    };
+
     App.prototype.downloadZip = function(id, callback) {
       if (callback == null) {
         callback = (function() {});

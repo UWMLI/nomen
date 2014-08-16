@@ -29,6 +29,22 @@ class App
     $(window).resize => @resizeImage()
     @refreshLibrary()
 
+  syncRemote: (callback = (->)) ->
+    @remote.downloadList =>
+      @clearRemoteButtons()
+      for dataset in @remote.datasets
+        @addRemoteButton dataset.id, dataset.title
+      callback()
+
+  clearRemoteButtons: ->
+    $('#remote-content').html ''
+
+  # Add a button for a new dataset to the home screen.
+  addRemoteButton: (id, text) ->
+    setFn = "app.downloadZip('#{id}');"
+    appendTo $('#remote-content'), ->
+      @a '.remote-button', 'data-role': 'button', onclick: setFn, text
+
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
   downloadZip: (id, callback = (->)) ->
