@@ -80,12 +80,17 @@ class App
 
   # Add a button for a new dataset to the home screen.
   addDataButton: (id, text) ->
-    setFn = "app.setDataset('#{id}', function(){}); return true;"
+    setFn = "app.goToDataset('#{id}');"
     appendTo $('#home-content'), ->
-      @a '.dataset-button', href: '#dataset', 'data-role': 'button', onclick: setFn, text
+      @a '.dataset-button', 'data-role': 'button', onclick: setFn, text
+
+  goToDataset: (id, callback = (->)) ->
+    @setDataset id, =>
+      $.mobile.changePage $('#dataset')
+      callback()
 
   # Executed when the user opens a dataset from the home screen.
-  setDataset: (id, callback) ->
+  setDataset: (id, callback = (->)) ->
     @dataset = @library.datasets[id]
     @dataset.load =>
       @featureRows = for feature, values of @dataset.features

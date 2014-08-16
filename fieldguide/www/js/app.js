@@ -128,17 +128,31 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.addDataButton = function(id, text) {
       var setFn;
-      setFn = "app.setDataset('" + id + "', function(){}); return true;";
+      setFn = "app.goToDataset('" + id + "');";
       return appendTo($('#home-content'), function() {
         return this.a('.dataset-button', {
-          href: '#dataset',
           'data-role': 'button',
           onclick: setFn
         }, text);
       });
     };
 
+    App.prototype.goToDataset = function(id, callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
+      return this.setDataset(id, (function(_this) {
+        return function() {
+          $.mobile.changePage($('#dataset'));
+          return callback();
+        };
+      })(this));
+    };
+
     App.prototype.setDataset = function(id, callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
       this.dataset = this.library.datasets[id];
       return this.dataset.load((function(_this) {
         return function() {
