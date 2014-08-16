@@ -33,7 +33,7 @@ class App
     @remote.downloadList =>
       @clearRemoteButtons()
       for dataset in @remote.datasets
-        @addRemoteButton dataset.id, dataset.title
+        @addRemoteButton dataset.id, "#{dataset.title} v#{dataset.version}"
       callback()
 
   clearRemoteButtons: ->
@@ -68,12 +68,11 @@ class App
         @addDataButton id, dataset.title
       callback()
 
-  # Delete the given dataset from the device's file system.
+  # Delete the dataset with the given ID from the device's file system.
   # Also deletes the button by calling refreshLibrary.
-  deleteDataset: (dataset, callback) ->
-    resolveLocalFileSystemURL dataset.dir, (dir) =>
-      dir.removeRecursively =>
-        @refreshLibrary callback
+  deleteDataset: (id, callback) ->
+    @library.deleteSet id, =>
+      @refreshLibrary callback
 
   # Clear any existing dataset buttons on the home screen.
   clearDataButtons: ->

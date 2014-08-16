@@ -48,7 +48,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref = _this.remote.datasets;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             dataset = _ref[_i];
-            _this.addRemoteButton(dataset.id, dataset.title);
+            _this.addRemoteButton(dataset.id, "" + dataset.title + " v" + dataset.version);
           }
           return callback();
         };
@@ -114,12 +114,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
-    App.prototype.deleteDataset = function(dataset, callback) {
-      return resolveLocalFileSystemURL(dataset.dir, (function(_this) {
-        return function(dir) {
-          return dir.removeRecursively(function() {
-            return _this.refreshLibrary(callback);
-          });
+    App.prototype.deleteDataset = function(id, callback) {
+      return this.library.deleteSet(id, (function(_this) {
+        return function() {
+          return _this.refreshLibrary(callback);
         };
       })(this));
     };
