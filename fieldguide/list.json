@@ -1,6 +1,6 @@
 [ { "title"  : "Plants"
   , "id"     : "plants"
   , "version": 1
-  , "url"    : "http://mli.doit.wisc.edu/plants.zip"
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/plants.zip"
   }
 ]

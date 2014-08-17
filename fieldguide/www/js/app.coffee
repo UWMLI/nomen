@@ -20,7 +20,8 @@ appendTo = (element, muggexpr) ->
 class App
   constructor: (@datadir) ->
     @library = new Library datadir
-    @remote = new Remote datadir, 'http://mli.doit.wisc.edu/list.json'
+    @remote = new Remote datadir,
+      'http://localhost:8888/EIFieldResearch/fieldguide/list.json'
 
   # Called after all the Cordova APIs are ready.
   onDeviceReady: ->

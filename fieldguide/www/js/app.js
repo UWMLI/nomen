@@ -23,7 +23,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     function App(datadir) {
       this.datadir = datadir;
       this.library = new Library(datadir);
-      this.remote = new Remote(datadir, 'http://mli.doit.wisc.edu/list.json');
+      this.remote = new Remote(datadir, 'http://localhost:8888/EIFieldResearch/fieldguide/list.json');
     }
 
     App.prototype.onDeviceReady = function() {
