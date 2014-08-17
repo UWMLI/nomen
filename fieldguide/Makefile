@@ -1,14 +1,19 @@
 coffee_files := $(wildcard www/js/*.coffee) $(wildcard www/lib/*/js/*.coffee)
 js_files     := $(coffee_files:%.coffee=%.js)
 
-all: $(js_files) plants.zip
+mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+datasets := plants pokemon
+zips     := $(datasets:%=%.zip)
+
+all: $(js_files) $(zips)
 
 clean:
-	rm -f plants.zip
+	rm -f $(zips)
 
 %.js: %.coffee
 	coffee -c $<
 
-plants.zip:
-	rm -f plants.zip
-	cd plants && zip -r ../plants.zip .
+%.zip: %/
+	rm -f $@
+	cd $< && zip -rq "$(mkfile_dir)/$@" .
