@@ -17,7 +17,7 @@ class Pokemon
   attr_reader :number, :obj
 
   def method_missing(sym, *args, &blk)
-    @obj[sym]
+    @obj[sym.to_s]
   end
 
   def imageURL
@@ -48,7 +48,7 @@ rows << %w{
 (1..5).each do |n|
   p = Pokemon.new(n)
   rows << [
-    p.obj['name'],
+    p.name,
     p.description,
   ]
   open("pokemon/species/#{p.obj['name'].downcase}-art.png", 'wb') do |f|
