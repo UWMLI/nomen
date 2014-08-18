@@ -130,6 +130,7 @@ class App
 
   # Fill the features page with rows of possible filtering criteria.
   makeFeatureRows: ->
+    $('#dataset-content').html ''
     for row in @featureRows
       feature = row[0].feature
       appendTo $('#dataset-content'), ->

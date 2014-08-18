@@ -227,6 +227,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.makeFeatureRows = function() {
       var feature, row, _i, _len, _ref;
+      $('#dataset-content').html('');
       _ref = this.featureRows;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
