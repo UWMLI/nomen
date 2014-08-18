@@ -40,7 +40,7 @@ class DataSet
       @speciesImages[name] ?= []
       @speciesImages[name].push [label, fileEntry]
     else
-      throw "Species image filename couldn't be parsed"
+      alert "Couldn't parse species image: #{fileEntry.name}"
 
   # Load the CSV file of species information.
   loadSpecies: (callback) ->

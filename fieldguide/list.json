@@ -3,4 +3,9 @@
   , "version": 1
   , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/plants.zip"
   }
+, { "title"  : "Kanto Pokémon"
+  , "id"     : "kanto-pokemon"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/pokemon.zip"
+  }
 ]

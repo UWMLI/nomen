@@ -69,7 +69,7 @@
         }
         return this.speciesImages[name].push([label, fileEntry]);
       } else {
-        throw "Species image filename couldn't be parsed";
+        return alert("Couldn't parse species image: " + fileEntry.name);
       }
     };
 
