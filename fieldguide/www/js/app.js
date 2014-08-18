@@ -328,7 +328,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.getLikely = function() {
       var cutoff, maxScore, spec, __, _ref, _results;
       maxScore = Object.keys(this.selected).length;
-      cutoff = maxScore * 0.9;
+      cutoff = maxScore;
       _ref = this.dataset.species;
       _results = [];
       for (__ in _ref) {
@@ -341,7 +341,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikelyPage = function() {
-      var spec, species, __;
+      var maxScore, score, spec, species, __;
       $('#likely-species').html('');
       species = (function() {
         var _ref, _results;
@@ -353,9 +353,26 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         }
         return _results;
       }).call(this);
-      species.sort(function(s1, s2) {
-        return s2[1] - s1[1];
-      });
+      maxScore = Object.keys(this.selected).length;
+      if (maxScore > 0) {
+        species = (function() {
+          var _i, _len, _ref, _results;
+          _results = [];
+          for (_i = 0, _len = species.length; _i < _len; _i++) {
+            _ref = species[_i], spec = _ref[0], score = _ref[1];
+            if (score > 0) {
+              _results.push([spec, score]);
+            }
+          }
+          return _results;
+        })();
+        species.sort(function(_arg, _arg1) {
+          var score1, score2, spec1, spec2;
+          spec1 = _arg[0], score1 = _arg[1];
+          spec2 = _arg1[0], score2 = _arg1[1];
+          return score2 - score1;
+        });
+      }
       this.speciesPending = species;
       return this.showSpecies();
     };

@@ -192,10 +192,10 @@ class App
   showHowMany: ->
     $('#likely-button').html "#{@getLikely().length} Likely"
 
-  # Compute how many species roughly match the criteria the user selected.
+  # Compute how many species match the criteria the user selected.
   getLikely: ->
     maxScore = Object.keys(@selected).length
-    cutoff = maxScore * 0.9
+    cutoff = maxScore
     spec for __, spec of @dataset.species when spec.computeScore(@selected) >= cutoff
 
   # Fill the "likely" page with rows of species images.
@@ -203,7 +203,12 @@ class App
     $('#likely-species').html ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
-    species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
+    maxScore = Object.keys(@selected).length
+    if maxScore > 0
+      species =
+        [spec, score] for [spec, score] in species when score > 0
+      species.sort ([spec1, score1], [spec2, score2]) ->
+        score2 - score1 # sorts by score descending
     @speciesPending = species
     @showSpecies()
 
