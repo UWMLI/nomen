@@ -204,9 +204,15 @@ class App
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
-    imagesFor = (spec) =>
-      @dataset.imagesForSpecies spec
-    for [spec, score] in species[0...10]
+    @speciesPending = species
+    @showSpecies()
+
+  # Add some more species to the list of likely candidates.
+  showSpecies: ->
+    toShow = @speciesPending[0..9]
+    @speciesPending = @speciesPending[10..]
+    dataset = @dataset
+    for [spec, score] in toShow
       appendTo $('#likely-content'), ->
         setFn = "app.setSpecies('#{spec.name}'); return true;"
         @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->
@@ -214,7 +220,7 @@ class App
             @div '.feature-name', ->
               @text "#{spec.display_name} (#{score})"
             @div '.feature-boxes', ->
-              pics = imagesFor spec
+              pics = dataset.imagesForSpecies spec
               if pics.length is 0
                 @div '.feature-box', ->
                   @img '.feature-img', src: 'img/noimage.png'

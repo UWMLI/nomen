@@ -341,7 +341,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.fillLikelyPage = function() {
-      var imagesFor, score, spec, species, __, _i, _len, _ref, _ref1, _results;
+      var spec, species, __;
       $('#likely-content').html('');
       species = (function() {
         var _ref, _results;
@@ -356,15 +356,18 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       species.sort(function(s1, s2) {
         return s2[1] - s1[1];
       });
-      imagesFor = (function(_this) {
-        return function(spec) {
-          return _this.dataset.imagesForSpecies(spec);
-        };
-      })(this);
-      _ref = species.slice(0, 10);
+      this.speciesPending = species;
+      return this.showSpecies();
+    };
+
+    App.prototype.showSpecies = function() {
+      var dataset, score, spec, toShow, _i, _len, _ref, _results;
+      toShow = this.speciesPending.slice(0, 10);
+      this.speciesPending = this.speciesPending.slice(10);
+      dataset = this.dataset;
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        _ref1 = _ref[_i], spec = _ref1[0], score = _ref1[1];
+      for (_i = 0, _len = toShow.length; _i < _len; _i++) {
+        _ref = toShow[_i], spec = _ref[0], score = _ref[1];
         _results.push(appendTo($('#likely-content'), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";
@@ -378,8 +381,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 return this.text("" + spec.display_name + " (" + score + ")");
               });
               return this.div('.feature-boxes', function() {
-                var image, ix, part, pics, _j, _len1, _ref2, _results1;
-                pics = imagesFor(spec);
+                var image, ix, part, pics, _j, _len1, _ref1, _results1;
+                pics = dataset.imagesForSpecies(spec);
                 if (pics.length === 0) {
                   return this.div('.feature-box', function() {
                     this.img('.feature-img', {
@@ -390,7 +393,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 } else {
                   _results1 = [];
                   for (ix = _j = 0, _len1 = pics.length; _j < _len1; ix = ++_j) {
-                    _ref2 = pics[ix], part = _ref2[0], image = _ref2[1];
+                    _ref1 = pics[ix], part = _ref1[0], image = _ref1[1];
                     _results1.push(this.a({
                       href: "#specimen" + ix,
                       'data-transition': 'slide',
