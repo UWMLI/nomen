@@ -38,7 +38,7 @@
         return _results;
       }).call(this);
       if (match[0] == null) {
-        throw "Couldn't find dataset in remote list: " + id;
+        alert("Couldn't find dataset in remote list: " + id);
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
@@ -48,7 +48,7 @@
             return zip.unzip(zipFile, setEntry.toURL(), function(code) {
               return zipEntry.remove(function() {
                 if (code !== 0) {
-                  throw "Unzip operation on " + zipFile + " returned " + code;
+                  alert("Unzip operation on " + zipFile + " returned " + code);
                 }
                 return callback();
               });
