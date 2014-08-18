@@ -37,11 +37,23 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <div data-role="page" id="home">
   <div data-role="header" data-position="fixed">
     <h1>Field Guide</h1>
-    <a class="ui-btn-left" onclick="app.clearLibrary();">Clear</a>
+    <a onclick="app.readyClear();" class="ui-btn-left" data-transition="pop">Clear</a>
     <a href="#remote" class="ui-btn-right" data-transition="slide">Download</a>
   </div>
 
   <div data-role="main" class="ui-content" id="home-content">
+  </div>
+</div>
+
+<div data-role="page" id="confirm-delete" data-dialog="true">
+  <div data-role="header">
+    <h1>Confirm Delete</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" id="confirm-delete-content">
+    <p id="confirm-delete-message">You sure?</p>
+    <a class="ui-btn ui-btn-inline" onclick="app.proceedDelete();" data-transition="pop" data-direction="reverse">Delete</a>
+    <a href="#home" class="ui-btn ui-btn-inline" data-transition="pop" data-direction="reverse">Cancel</a>
   </div>
 </div>
 

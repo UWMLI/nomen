@@ -8,7 +8,6 @@
       this.datadir = datadir;
       this.url = url;
       this.list = "" + this.datadir + "/remote.json";
-      this.zipFile = "" + this.datadir + "/temp.zip";
     }
 
     Remote.prototype.downloadList = function(callback) {
@@ -25,7 +24,7 @@
     };
 
     Remote.prototype.downloadDataset = function(id, lib, callback) {
-      var match, set, transfer;
+      var match, set, transfer, zipFile;
       match = (function() {
         var _i, _len, _ref, _results;
         _ref = this.datasets;
@@ -41,14 +40,15 @@
       if (match[0] == null) {
         throw "Couldn't find dataset in remote list: " + id;
       }
+      zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
-      return transfer.download(match[0].url, this.zipFile, (function(_this) {
+      return transfer.download(match[0].url, zipFile, (function(_this) {
         return function(zipEntry) {
           return lib.makeSet(id, function(setEntry) {
-            return zip.unzip(_this.zipFile, setEntry.toURL(), function(code) {
+            return zip.unzip(zipFile, setEntry.toURL(), function(code) {
               return zipEntry.remove(function() {
                 if (code !== 0) {
-                  throw "Unzip operation on " + _this.zipFile + " returned " + code;
+                  throw "Unzip operation on " + zipFile + " returned " + code;
                 }
                 return callback();
               });

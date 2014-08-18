@@ -98,6 +98,47 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this));
     };
 
+    App.prototype.readyClear = function() {
+      $('#confirm-delete-message').html('Are you sure you want to clear the library?');
+      this.deleteAction = (function(_this) {
+        return function(callback) {
+          return _this.clearLibrary(callback);
+        };
+      })(this);
+      return $.mobile.changePage('#confirm-delete', {
+        transition: 'pop'
+      });
+    };
+
+    App.prototype.readyDelete = function(id) {
+      var title;
+      title = this.library.datasets[id].title;
+      $('#confirm-delete-message').html("Are you sure you want to delete the dataset \"" + title + "\"?");
+      this.deleteAction = (function(_this) {
+        return function(callback) {
+          return _this.deleteDataset(id, callback);
+        };
+      })(this);
+      return $.mobile.changePage('#confirm-delete', {
+        transition: 'pop'
+      });
+    };
+
+    App.prototype.proceedDelete = function(callback) {
+      if (callback == null) {
+        callback = (function() {});
+      }
+      return this.deleteAction((function(_this) {
+        return function() {
+          $.mobile.changePage('#home', {
+            transition: 'pop',
+            reverse: true
+          });
+          return callback();
+        };
+      })(this));
+    };
+
     App.prototype.clearLibrary = function(callback) {
       if (callback == null) {
         callback = (function() {});
@@ -145,7 +186,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.addDataButton = function(id, text) {
       var deleteFn, setFn;
       setFn = "app.goToDataset('" + id + "');";
-      deleteFn = "app.deleteDataset('" + id + "');";
+      deleteFn = "app.readyDelete('" + id + "');";
       return appendTo($('#home-content'), function() {
         this.a('.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', {
           onclick: deleteFn

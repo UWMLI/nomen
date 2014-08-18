@@ -66,6 +66,24 @@ class App
           button.removeClass 'ui-state-disabled'
           @refreshLibrary callback
 
+  readyClear: ->
+    $('#confirm-delete-message').html 'Are you sure you want to clear the library?'
+    @deleteAction = (callback) =>
+      @clearLibrary callback
+    $.mobile.changePage '#confirm-delete', { transition: 'pop' }
+
+  readyDelete: (id) ->
+    title = @library.datasets[id].title
+    $('#confirm-delete-message').html "Are you sure you want to delete the dataset \"#{title}\"?"
+    @deleteAction = (callback) =>
+      @deleteDataset id, callback
+    $.mobile.changePage '#confirm-delete', { transition: 'pop' }
+
+  proceedDelete: (callback = (->)) ->
+    @deleteAction =>
+      $.mobile.changePage '#home', { transition: 'pop', reverse: true }
+      callback()
+
   # Delete all datasets from the file system, by removing the whole library
   # folder recursively.
   clearLibrary: (callback = (->)) ->
@@ -94,7 +112,7 @@ class App
   # Add a button for a new dataset to the home screen.
   addDataButton: (id, text) ->
     setFn = "app.goToDataset('#{id}');"
-    deleteFn = "app.deleteDataset('#{id}');"
+    deleteFn = "app.readyDelete('#{id}');"
     appendTo $('#home-content'), ->
       @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
       @a '.ui-btn .ui-btn-inline', onclick: setFn, text
