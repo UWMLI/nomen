@@ -342,7 +342,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.fillLikelyPage = function() {
       var spec, species, __;
-      $('#likely-content').html('');
+      $('#likely-species').html('');
       species = (function() {
         var _ref, _results;
         _ref = this.dataset.species;
@@ -364,11 +364,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       var dataset, score, spec, toShow, _i, _len, _ref, _results;
       toShow = this.speciesPending.slice(0, 10);
       this.speciesPending = this.speciesPending.slice(10);
+      if (this.speciesPending.length === 0) {
+        $('#likely-show-button').addClass('ui-state-disabled');
+      } else {
+        $('#likely-show-button').removeClass('ui-state-disabled');
+      }
       dataset = this.dataset;
       _results = [];
       for (_i = 0, _len = toShow.length; _i < _len; _i++) {
         _ref = toShow[_i], spec = _ref[0], score = _ref[1];
-        _results.push(appendTo($('#likely-content'), function() {
+        _results.push(appendTo($('#likely-species'), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";
           return this.a({

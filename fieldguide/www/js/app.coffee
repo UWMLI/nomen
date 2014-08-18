@@ -200,7 +200,7 @@ class App
 
   # Fill the "likely" page with rows of species images.
   fillLikelyPage: ->
-    $('#likely-content').html ''
+    $('#likely-species').html ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
     species.sort (s1, s2) -> s2[1] - s1[1] # sorts by score descending
@@ -211,9 +211,13 @@ class App
   showSpecies: ->
     toShow = @speciesPending[0..9]
     @speciesPending = @speciesPending[10..]
+    if @speciesPending.length is 0
+      $('#likely-show-button').addClass 'ui-state-disabled'
+    else
+      $('#likely-show-button').removeClass 'ui-state-disabled'
     dataset = @dataset
     for [spec, score] in toShow
-      appendTo $('#likely-content'), ->
+      appendTo $('#likely-species'), ->
         setFn = "app.setSpecies('#{spec.name}'); return true;"
         @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->
           @div '.feature-row', ->
