@@ -89,8 +89,9 @@ class App
     setFn = "app.goToDataset('#{id}');"
     deleteFn = "app.deleteDataset('#{id}');"
     appendTo $('#home-content'), ->
-      @a '.ui-btn', onclick: setFn, text
-      @a '.ui-btn .ui-mini .ui-icon-delete .ui-btn-icon-left', onclick: deleteFn, 'Delete'
+      @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
+      @a '.ui-btn .ui-btn-inline', onclick: setFn, text
+      @br ''
 
   goToDataset: (id, callback = (->)) ->
     @setDataset id, =>

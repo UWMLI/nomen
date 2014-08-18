@@ -139,12 +139,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       setFn = "app.goToDataset('" + id + "');";
       deleteFn = "app.deleteDataset('" + id + "');";
       return appendTo($('#home-content'), function() {
-        this.a('.ui-btn', {
-          onclick: setFn
-        }, text);
-        return this.a('.ui-btn .ui-mini .ui-icon-delete .ui-btn-icon-left', {
+        this.a('.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', {
           onclick: deleteFn
         }, 'Delete');
+        this.a('.ui-btn .ui-btn-inline', {
+          onclick: setFn
+        }, text);
+        return this.br('');
       });
     };
 
