@@ -171,7 +171,27 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       this.dataset = this.library.datasets[id];
       return this.dataset.load((function(_this) {
         return function() {
-          var feature, value, values;
+          var feature, naturalSort, value, values;
+          naturalSort = function(a, b) {
+            var anum, ares, arest, bnum, bres, brest, cmp, matchNum, __;
+            matchNum = function(x) {
+              return x.toString().match(/^([0-9]+)(.*)$/);
+            };
+            ares = matchNum(a);
+            bres = matchNum(b);
+            if ((ares != null) && (bres != null)) {
+              __ = ares[0], anum = ares[1], arest = ares[2];
+              __ = bres[0], bnum = bres[1], brest = bres[2];
+              cmp = anum - bnum;
+              if (cmp === 0) {
+                return arest.localeCompare(brest);
+              } else {
+                return cmp;
+              }
+            } else {
+              return a.localeCompare(b);
+            }
+          };
           _this.featureRows = (function() {
             var _ref, _results;
             _ref = this.dataset.features;
@@ -180,7 +200,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               values = _ref[feature];
               _results.push((function() {
                 var _i, _len, _ref1, _results1;
-                _ref1 = Object.keys(values).sort();
+                _ref1 = Object.keys(values).sort(naturalSort);
                 _results1 = [];
                 for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                   value = _ref1[_i];

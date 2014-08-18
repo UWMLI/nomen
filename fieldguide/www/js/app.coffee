@@ -99,8 +99,25 @@ class App
   setDataset: (id, callback = (->)) ->
     @dataset = @library.datasets[id]
     @dataset.load =>
+      # Compares two strings by
+      # 1. comparing numbers if they both start with a number
+      # 2. otherwise, or if they start with equal numbers, lexicographically
+      naturalSort = (a, b) ->
+        matchNum = (x) -> x.toString().match /^([0-9]+)(.*)$/
+        ares = matchNum a
+        bres = matchNum b
+        if ares? and bres?
+          [__, anum, arest] = ares
+          [__, bnum, brest] = bres
+          cmp = anum - bnum
+          if cmp is 0
+            arest.localeCompare brest
+          else
+            cmp
+        else
+          a.localeCompare b
       @featureRows = for feature, values of @dataset.features
-        for value in Object.keys(values).sort()
+        for value in Object.keys(values).sort(naturalSort)
           display: displayValue value
           image: "#{@dataset.dir}/features/#{feature}/#{value}.png"
           feature: feature
