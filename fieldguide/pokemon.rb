@@ -40,8 +40,21 @@ class Pokemon
   end
 
   def description
-    json = jsonURL "http://pokeapi.co#{@obj['descriptions'][0]['resource_uri']}"
+    json = jsonURL "http://pokeapi.co/#{@obj['descriptions'][0]['resource_uri']}"
     json['description']
+  end
+
+  def sprites
+    hsh = {}
+    @obj['sprites'].each do |spr|
+      json = jsonURL "http://pokeapi.co/#{spr['resource_uri']}"
+      url = "http://pokeapi.co/#{json['image']}"
+      json['name'].match(/^[^_]+_(.*)$/) do |md|
+        tag = md[1]
+        hsh[tag] = url
+      end
+    end
+    hsh
   end
 end
 
@@ -93,10 +106,21 @@ pokemon.each do |p|
     height_text,
   ]
 
-  image = "pokemon/species/#{p.name.downcase.gsub(' ', '_')}-art.png"
+  speciesFilename = p.name.downcase.gsub(' ', '_')
+
+  image = "pokemon/species/#{speciesFilename}-art.png"
   unless File.exists? image
     open(image, 'wb') do |f|
       f << open(p.imageURL).read
+    end
+  end
+
+  p.sprites.each_pair do |tag, url|
+    image = "pokemon/species/#{speciesFilename}-#{tag}.png"
+    unless File.exists? image
+      open(image, 'wb') do |f|
+        f << open(url).read
+      end
     end
   end
 
