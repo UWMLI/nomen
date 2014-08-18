@@ -30,11 +30,18 @@ class App
     $(window).resize => @resizeImage()
     @refreshLibrary()
 
-  syncRemote: (callback = (->)) ->
+  syncRemote: (button, callback = (->)) ->
+    original = button.html()
+    button.addClass 'ui-state-disabled'
+    button.html 'Syncing...'
     @remote.downloadList =>
       @clearRemoteButtons()
       for dataset in @remote.datasets
         @addRemoteButton dataset.id, "#{dataset.title} v#{dataset.version}"
+      setTimeout =>
+        button.html original
+        button.removeClass 'ui-state-disabled'
+      , 250
       callback()
 
   clearRemoteButtons: ->
@@ -50,8 +57,8 @@ class App
   # home screen (by calling refreshLibrary).
   downloadZip: (button, id, callback = (->)) ->
     button_text = button.html()
-    button.html "Downloading #{button_text}"
     button.addClass 'ui-state-disabled'
+    button.html "Downloading #{button_text}"
     @library.makeDir =>
       @remote.downloadList =>
         @remote.downloadDataset id, @library, =>
@@ -71,7 +78,7 @@ class App
     @library.scanLibrary =>
       @clearDataButtons()
       for id, dataset of @library.datasets
-        @addDataButton id, dataset.title
+        @addDataButton id, "#{dataset.title} v#{dataset.version}"
       callback()
 
   # Delete the dataset with the given ID from the device's file system.

@@ -37,10 +37,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       return this.refreshLibrary();
     };
 
-    App.prototype.syncRemote = function(callback) {
+    App.prototype.syncRemote = function(button, callback) {
+      var original;
       if (callback == null) {
         callback = (function() {});
       }
+      original = button.html();
+      button.addClass('ui-state-disabled');
+      button.html('Syncing...');
       return this.remote.downloadList((function(_this) {
         return function() {
           var dataset, _i, _len, _ref;
@@ -50,6 +54,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             dataset = _ref[_i];
             _this.addRemoteButton(dataset.id, "" + dataset.title + " v" + dataset.version);
           }
+          setTimeout(function() {
+            button.html(original);
+            return button.removeClass('ui-state-disabled');
+          }, 250);
           return callback();
         };
       })(this));
@@ -75,8 +83,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         callback = (function() {});
       }
       button_text = button.html();
-      button.html("Downloading " + button_text);
       button.addClass('ui-state-disabled');
+      button.html("Downloading " + button_text);
       return this.library.makeDir((function(_this) {
         return function() {
           return _this.remote.downloadList(function() {
@@ -112,7 +120,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref = _this.library.datasets;
           for (id in _ref) {
             dataset = _ref[id];
-            _this.addDataButton(id, dataset.title);
+            _this.addDataButton(id, "" + dataset.title + " v" + dataset.version);
           }
           return callback();
         };
