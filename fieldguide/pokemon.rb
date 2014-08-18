@@ -4,6 +4,7 @@ require 'open-uri'
 require 'json'
 require 'nokogiri'
 require 'csv'
+require 'bigdecimal'
 
 def jsonURL(url)
   JSON.parse open(url).read
@@ -71,12 +72,7 @@ rows << %w{
 }
 
 def showDeci(n)
-  s = n.to_s
-  if s.length > 1
-    s[0..-2] + '.' + s[-1..-1]
-  else
-    '0.' + s
-  end
+  (BigDecimal.new(n) / 10).to_s('F')
 end
 
 pokemon = (1..151).map { |n| Pokemon.new(n) }
