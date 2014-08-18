@@ -61,23 +61,28 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.addRemoteButton = function(id, text) {
       var setFn;
-      setFn = "app.downloadZip('" + id + "');";
+      setFn = "app.downloadZip($(this), '" + id + "');";
       return appendTo($('#remote-content'), function() {
-        return this.a('.remote-button', {
-          'data-role': 'button',
+        return this.a('.ui-btn .remote-button', {
           onclick: setFn
         }, text);
       });
     };
 
-    App.prototype.downloadZip = function(id, callback) {
+    App.prototype.downloadZip = function(button, id, callback) {
+      var button_text;
       if (callback == null) {
         callback = (function() {});
       }
+      button_text = button.html();
+      button.html("Downloading " + button_text);
+      button.addClass('ui-state-disabled');
       return this.library.makeDir((function(_this) {
         return function() {
           return _this.remote.downloadList(function() {
             return _this.remote.downloadDataset(id, _this.library, function() {
+              button.html(button_text);
+              button.removeClass('ui-state-disabled');
               return _this.refreshLibrary(callback);
             });
           });
@@ -126,7 +131,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.clearDataButtons = function() {
-      return $('.dataset-button').remove();
+      return $('#home-content').html('');
     };
 
     App.prototype.addDataButton = function(id, text) {
@@ -134,21 +139,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       setFn = "app.goToDataset('" + id + "');";
       deleteFn = "app.deleteDataset('" + id + "');";
       return appendTo($('#home-content'), function() {
-        return this.div('.ui-grid-a .dataset-button', function() {
-          this.div('.ui-block-a', function() {
-            return this.a({
-              'data-role': 'button',
-              onclick: setFn
-            }, text);
-          });
-          return this.div('.ui-block-b', function() {
-            return this.a({
-              'data-role': 'button',
-              onclick: deleteFn,
-              'data-icon': 'delete'
-            }, 'Delete');
-          });
-        });
+        this.a('.ui-btn', {
+          onclick: setFn
+        }, text);
+        return this.a('.ui-btn .ui-mini .ui-icon-delete .ui-btn-icon-left', {
+          onclick: deleteFn
+        }, 'Delete');
       });
     };
 

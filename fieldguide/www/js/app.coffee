@@ -42,16 +42,21 @@ class App
 
   # Add a button for a new dataset to the home screen.
   addRemoteButton: (id, text) ->
-    setFn = "app.downloadZip('#{id}');"
+    setFn = "app.downloadZip($(this), '#{id}');"
     appendTo $('#remote-content'), ->
-      @a '.remote-button', 'data-role': 'button', onclick: setFn, text
+      @a '.ui-btn .remote-button', onclick: setFn, text
 
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
-  downloadZip: (id, callback = (->)) ->
+  downloadZip: (button, id, callback = (->)) ->
+    button_text = button.html()
+    button.html "Downloading #{button_text}"
+    button.addClass 'ui-state-disabled'
     @library.makeDir =>
       @remote.downloadList =>
         @remote.downloadDataset id, @library, =>
+          button.html button_text
+          button.removeClass 'ui-state-disabled'
           @refreshLibrary callback
 
   # Delete all datasets from the file system, by removing the whole library
@@ -77,18 +82,15 @@ class App
 
   # Clear any existing dataset buttons on the home screen.
   clearDataButtons: ->
-    $('.dataset-button').remove()
+    $('#home-content').html ''
 
   # Add a button for a new dataset to the home screen.
   addDataButton: (id, text) ->
     setFn = "app.goToDataset('#{id}');"
     deleteFn = "app.deleteDataset('#{id}');"
     appendTo $('#home-content'), ->
-      @div '.ui-grid-a .dataset-button', ->
-        @div '.ui-block-a', ->
-          @a 'data-role': 'button', onclick: setFn, text
-        @div '.ui-block-b', ->
-          @a 'data-role': 'button', onclick: deleteFn, 'data-icon': 'delete', 'Delete'
+      @a '.ui-btn', onclick: setFn, text
+      @a '.ui-btn .ui-mini .ui-icon-delete .ui-btn-icon-left', onclick: deleteFn, 'Delete'
 
   goToDataset: (id, callback = (->)) ->
     @setDataset id, =>
