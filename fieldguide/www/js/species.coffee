@@ -22,10 +22,11 @@ class Species
   constructor: (csvRow) ->
     @name = csvRow.name
     @description = csvRow.description
-    if 'display_name' of csvRow
-      @display_name = csvRow.display_name
-    else
-      @display_name = @name
+    @display_name =
+      if 'display_name' of csvRow
+        csvRow.display_name
+      else
+        @name
     @features = {}
     reachedFeatures = false
     for k, v of csvRow

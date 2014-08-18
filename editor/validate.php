@@ -112,7 +112,7 @@ function validateDataset($dir) {
   return $errors;
 }
 
-$dir = realpath(dirname(__FILE__)) . '/../fieldguide/plants';
+$dir = realpath(dirname(__FILE__)) . '/../fieldguide/pokemon';
 printInfo($dir);
 $errs = validateDataset($dir);
 echo '<ul>';

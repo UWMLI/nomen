@@ -21,12 +21,12 @@ class Pokemon
     when 'Farfetchd'
       ['Farfetchd', 'Farfetch%27d']
     when 'Mr-mime'
-      ['Mr. Mime', 'Mr._Mime']
+      ['Mr Mime', 'Mr._Mime']
     else
       [@obj['name'], @obj['name']]
     end
   end
-  attr_reader :number, :obj
+  attr_reader :number, :obj, :name
 
   def method_missing(sym, *args, &blk)
     @obj[sym.to_s]
@@ -84,7 +84,7 @@ pokemon.each do |p|
     height_text,
   ]
 
-  image = "pokemon/species/#{p.name.downcase}-art.png"
+  image = "pokemon/species/#{p.name.downcase.gsub(' ', '_')}-art.png"
   unless File.exists? image
     open(image, 'wb') do |f|
       f << open(p.imageURL).read
@@ -98,3 +98,9 @@ CSV.open('pokemon/species.csv', 'wb') do |csv|
     csv << row
   end
 end
+
+File.write 'pokemon/info.json', {
+  title:   'Kanto Pokémon',
+  id:      'kanto-pokemon',
+  version: 1,
+}.to_json

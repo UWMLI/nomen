@@ -47,11 +47,7 @@
       var k, reachedFeatures, v;
       this.name = csvRow.name;
       this.description = csvRow.description;
-      if ('display_name' in csvRow) {
-        this.display_name = csvRow.display_name;
-      } else {
-        this.display_name = this.name;
-      }
+      this.display_name = 'display_name' in csvRow ? csvRow.display_name : this.name;
       this.features = {};
       reachedFeatures = false;
       for (k in csvRow) {
