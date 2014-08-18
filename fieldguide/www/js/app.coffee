@@ -104,18 +104,13 @@ class App
       # 2. otherwise, or if they start with equal numbers, lexicographically
       naturalSort = (a, b) ->
         matchNum = (x) -> x.toString().match /^([0-9]+)(.*)$/
-        ares = matchNum a
-        bres = matchNum b
-        if ares? and bres?
-          [__, anum, arest] = ares
-          [__, bnum, brest] = bres
-          cmp = anum - bnum
-          if cmp is 0
-            arest.localeCompare brest
-          else
-            cmp
+        [__, anum, arest] = matchNum(a) ? [null, 0, a]
+        [__, bnum, brest] = matchNum(b) ? [null, 0, b]
+        cmp = anum - bnum
+        if cmp is 0
+          arest.localeCompare brest
         else
-          a.localeCompare b
+          cmp
       @featureRows = for feature, values of @dataset.features
         for value in Object.keys(values).sort(naturalSort)
           display: displayValue value

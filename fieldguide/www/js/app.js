@@ -173,23 +173,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         return function() {
           var feature, naturalSort, value, values;
           naturalSort = function(a, b) {
-            var anum, ares, arest, bnum, bres, brest, cmp, matchNum, __;
+            var anum, arest, bnum, brest, cmp, matchNum, __, _ref, _ref1, _ref2, _ref3;
             matchNum = function(x) {
               return x.toString().match(/^([0-9]+)(.*)$/);
             };
-            ares = matchNum(a);
-            bres = matchNum(b);
-            if ((ares != null) && (bres != null)) {
-              __ = ares[0], anum = ares[1], arest = ares[2];
-              __ = bres[0], bnum = bres[1], brest = bres[2];
-              cmp = anum - bnum;
-              if (cmp === 0) {
-                return arest.localeCompare(brest);
-              } else {
-                return cmp;
-              }
+            _ref1 = (_ref = matchNum(a)) != null ? _ref : [null, 0, a], __ = _ref1[0], anum = _ref1[1], arest = _ref1[2];
+            _ref3 = (_ref2 = matchNum(b)) != null ? _ref2 : [null, 0, b], __ = _ref3[0], bnum = _ref3[1], brest = _ref3[2];
+            cmp = anum - bnum;
+            if (cmp === 0) {
+              return arest.localeCompare(brest);
             } else {
-              return a.localeCompare(b);
+              return cmp;
             }
           };
           _this.featureRows = (function() {
