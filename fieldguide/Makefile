@@ -10,10 +10,16 @@ all: $(js_files) $(zips)
 
 clean:
 	rm -f $(zips)
+	rm -rf pokemon/
 
 %.js: %.coffee
 	coffee -c $<
 
-%.zip: %/
+plants.zip:
 	rm -f $@
-	cd $< && zip -rq "$(mkfile_dir)/$@" .
+	cd $(@:%.zip=%) && zip -rq "$(mkfile_dir)/$@" .
+
+pokemon.zip: pokemon.rb
+	./pokemon.rb
+	rm -f $@
+	cd pokemon && zip -rq "$(mkfile_dir)/$@" .
