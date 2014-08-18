@@ -54,8 +54,17 @@ rows = []
 rows << %w{
   name
   description
-  height
+  height\ in\ meters
 }
+
+def showDeci(n)
+  s = n.to_s
+  if s.length > 1
+    s[0..-2] + '.' + s[-1..-1]
+  else
+    '0.' + s
+  end
+end
 
 pokemon = (1..151).map { |n| Pokemon.new(n) }
 
@@ -73,9 +82,9 @@ pokemon.each do |p|
 
   height = height_groups.select { |rng| rng.include? p.height.to_i }[0]
   height_text = if height.min == height.max
-    "#{height.min}"
+    "#{showDeci height.min}"
   else
-    "#{height.min} to #{height.max}"
+    "#{showDeci height.min} to #{showDeci height.max}"
   end
 
   rows << [
