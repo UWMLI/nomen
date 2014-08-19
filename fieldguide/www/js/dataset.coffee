@@ -65,4 +65,9 @@ class DataSet
   imagesForSpecies: (spec) ->
     @speciesImages[canonicalValue spec.name] ? []
 
+# Works for DataSet objects as well as simple entries in a Remote.
+datasetDisplay = (obj) ->
+  "#{obj.title} v#{obj.version}"
+
 window.DataSet = DataSet
+window.datasetDisplay = datasetDisplay

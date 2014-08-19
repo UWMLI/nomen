@@ -10,6 +10,18 @@
       this.list = "" + this.datadir + "/remote.json";
     }
 
+    Remote.prototype.getDataset = function(id) {
+      var set, _i, _len, _ref;
+      _ref = this.datasets;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        set = _ref[_i];
+        if (set.id === id) {
+          return set;
+        }
+      }
+      return null;
+    };
+
     Remote.prototype.downloadList = function(callback, errback) {
       var transfer;
       transfer = new FileTransfer();
@@ -23,39 +35,30 @@
       })(this), errback);
     };
 
-    Remote.prototype.downloadDataset = function(id, lib, callback) {
-      var match, set, transfer, zipFile;
-      match = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.datasets;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          set = _ref[_i];
-          if (set.id === id) {
-            _results.push(set);
-          }
-        }
-        return _results;
-      }).call(this);
-      if (match[0] == null) {
-        alert("Couldn't find dataset in remote list: " + id);
+    Remote.prototype.downloadDataset = function(id, lib, callback, errback) {
+      var dataset, transfer, zipFile;
+      dataset = this.getDataset(id);
+      if (dataset == null) {
+        errback("Couldn't find dataset: " + id);
+        return;
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
-      return transfer.download(match[0].url, zipFile, (function(_this) {
+      return transfer.download(dataset.url, zipFile, (function(_this) {
         return function(zipEntry) {
           return lib.makeSet(id, function(setEntry) {
             return zip.unzip(zipFile, setEntry.toURL(), function(code) {
               return zipEntry.remove(function() {
-                if (code !== 0) {
-                  alert("Unzip operation on " + zipFile + " returned " + code);
+                if (code === 0) {
+                  return callback();
+                } else {
+                  return errback("Unzip operation on " + zipFile + " returned " + code);
                 }
-                return callback();
               });
             });
           });
         };
-      })(this));
+      })(this), errback);
     };
 
     return Remote;

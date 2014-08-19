@@ -4,6 +4,11 @@ class Remote
   constructor: (@datadir, @url) ->
     @list = "#{@datadir}/remote.json"
 
+  getDataset: (id) ->
+    for set in @datasets
+      return set if set.id is id
+    null
+
   downloadList: (callback, errback) ->
     transfer = new FileTransfer()
     transfer.download @url, @list, (entry) =>
@@ -12,18 +17,21 @@ class Remote
         callback()
     , errback
 
-  downloadDataset: (id, lib, callback) ->
-    match =
-      set for set in @datasets when set.id is id
-    alert "Couldn't find dataset in remote list: #{id}" unless match[0]?
+  downloadDataset: (id, lib, callback, errback) ->
+    dataset = @getDataset id
+    unless dataset?
+      errback "Couldn't find dataset: #{id}"
+      return
     zipFile = "#{@datadir}/#{id}.zip"
     transfer = new FileTransfer()
-    transfer.download match[0].url, zipFile, (zipEntry) =>
+    transfer.download dataset.url, zipFile, (zipEntry) =>
       lib.makeSet id, (setEntry) =>
         zip.unzip zipFile, setEntry.toURL(), (code) =>
           zipEntry.remove =>
-            unless code is 0
-              alert "Unzip operation on #{zipFile} returned #{code}"
-            callback()
+            if code is 0
+              callback()
+            else
+              errback "Unzip operation on #{zipFile} returned #{code}"
+    , errback
 
 window.Remote = Remote

@@ -37,7 +37,7 @@ class App
     @remote.downloadList =>
       @clearRemoteButtons()
       for dataset in @remote.datasets
-        @addRemoteButton dataset.id, "#{dataset.title} v#{dataset.version}"
+        @addRemoteButton dataset.id, datasetDisplay dataset
       setTimeout =>
         button.html 'Synced'
         button.removeClass 'ui-state-disabled'
@@ -62,15 +62,20 @@ class App
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
   downloadZip: (button, id, callback = (->)) ->
-    button_text = button.html()
+    dataset = @remote.getDataset id
+    setname = datasetDisplay dataset
     button.addClass 'ui-state-disabled'
-    button.html "Downloading #{button_text}"
+    button.html "Downloading: #{setname}"
     @library.makeDir =>
-      @remote.downloadList =>
-        @remote.downloadDataset id, @library, =>
-          button.html button_text
+      @remote.downloadDataset id, @library, =>
+        button.html setname
+        button.removeClass 'ui-state-disabled'
+        @refreshLibrary callback
+      , =>
+        setTimeout =>
+          button.html "Failed: #{setname}"
           button.removeClass 'ui-state-disabled'
-          @refreshLibrary callback
+        , 250
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->
@@ -105,7 +110,7 @@ class App
     @library.scanLibrary =>
       @clearDataButtons()
       for id, dataset of @library.datasets
-        @addDataButton id, "#{dataset.title} v#{dataset.version}"
+        @addDataButton id, datasetDisplay dataset
       callback()
 
   # Delete the dataset with the given ID from the device's file system.

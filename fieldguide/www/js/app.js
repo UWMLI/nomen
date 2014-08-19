@@ -50,7 +50,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref = _this.remote.datasets;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             dataset = _ref[_i];
-            _this.addRemoteButton(dataset.id, "" + dataset.title + " v" + dataset.version);
+            _this.addRemoteButton(dataset.id, datasetDisplay(dataset));
           }
           setTimeout(function() {
             button.html('Synced');
@@ -83,21 +83,25 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.downloadZip = function(button, id, callback) {
-      var button_text;
+      var dataset, setname;
       if (callback == null) {
         callback = (function() {});
       }
-      button_text = button.html();
+      dataset = this.remote.getDataset(id);
+      setname = datasetDisplay(dataset);
       button.addClass('ui-state-disabled');
-      button.html("Downloading " + button_text);
+      button.html("Downloading: " + setname);
       return this.library.makeDir((function(_this) {
         return function() {
-          return _this.remote.downloadList(function() {
-            return _this.remote.downloadDataset(id, _this.library, function() {
-              button.html(button_text);
-              button.removeClass('ui-state-disabled');
-              return _this.refreshLibrary(callback);
-            });
+          return _this.remote.downloadDataset(id, _this.library, function() {
+            button.html(setname);
+            button.removeClass('ui-state-disabled');
+            return _this.refreshLibrary(callback);
+          }, function() {
+            return setTimeout(function() {
+              button.html("Failed: " + setname);
+              return button.removeClass('ui-state-disabled');
+            }, 250);
           });
         };
       })(this));
@@ -166,7 +170,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref = _this.library.datasets;
           for (id in _ref) {
             dataset = _ref[id];
-            _this.addDataButton(id, "" + dataset.title + " v" + dataset.version);
+            _this.addDataButton(id, datasetDisplay(dataset));
           }
           return callback();
         };
