@@ -2,7 +2,7 @@
 
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
-class DataSet
+class Dataset
   constructor: (@dir) ->
 
   # Load all the dataset information at once.
@@ -65,9 +65,9 @@ class DataSet
   imagesForSpecies: (spec) ->
     @speciesImages[canonicalValue spec.name] ? []
 
-# Works for DataSet objects as well as simple entries in a Remote.
+# Works for Dataset objects as well as simple entries in a Remote.
 datasetDisplay = (obj) ->
   "#{obj.title} v#{obj.version}"
 
-window.DataSet = DataSet
+window.Dataset = Dataset
 window.datasetDisplay = datasetDisplay

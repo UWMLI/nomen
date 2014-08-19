@@ -99,7 +99,7 @@
 
     Library.prototype.addLibrary = function(dirEntry, callback) {
       var ds;
-      ds = new DataSet(dirEntry.toURL());
+      ds = new Dataset(dirEntry.toURL());
       return ds.loadInfo((function(_this) {
         return function() {
           _this.datasets[ds.id] = ds;

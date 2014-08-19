@@ -54,7 +54,7 @@ class Library
     # @datasets is {} which is correct
 
   addLibrary: (dirEntry, callback) ->
-    ds = new DataSet dirEntry.toURL()
+    ds = new Dataset dirEntry.toURL()
     ds.loadInfo =>
       @datasets[ds.id] = ds
       callback()
