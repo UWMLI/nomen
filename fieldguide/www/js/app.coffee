@@ -30,6 +30,7 @@ class App
     $(window).resize => @resizeImage()
     @refreshLibrary()
 
+  # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (button, callback = (->)) ->
     original = button.html()
     button.addClass 'ui-state-disabled'
@@ -41,13 +42,14 @@ class App
       setTimeout =>
         button.html original
         button.removeClass 'ui-state-disabled'
-      , 250
+      , 250 # For user-friendliness, we show "Syncing..." for at least 250ms
       callback()
 
+  # Clear all buttons for remotely available datasets.
   clearRemoteButtons: ->
     $('#remote-content').html ''
 
-  # Add a button for a new dataset to the home screen.
+  # Add a button for a new downloadable dataset to the Download page.
   addRemoteButton: (id, text) ->
     setFn = "app.downloadZip($(this), '#{id}');"
     appendTo $('#remote-content'), ->
@@ -66,12 +68,14 @@ class App
           button.removeClass 'ui-state-disabled'
           @refreshLibrary callback
 
+  # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->
     $('#confirm-delete-message').html 'Are you sure you want to clear the library?'
     @deleteAction = (callback) =>
       @clearLibrary callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
 
+  # Sets up and loads the delete confirmation dialog for deleting a single set.
   readyDelete: (id) ->
     title = @library.datasets[id].title
     $('#confirm-delete-message').html "Are you sure you want to delete the dataset \"#{title}\"?"
@@ -79,6 +83,7 @@ class App
       @deleteDataset id, callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
 
+  # Performs a delete action after the user confirms it from the dialog.
   proceedDelete: (callback = (->)) ->
     @deleteAction =>
       $.mobile.changePage '#home', { transition: 'pop', reverse: true }
@@ -118,6 +123,7 @@ class App
       @a '.ui-btn .ui-btn-inline', onclick: setFn, text
       @br ''
 
+  # Loads a dataset, and then goes to the feature selection page.
   goToDataset: (id, callback = (->)) ->
     @setDataset id, =>
       $.mobile.changePage $('#dataset')
