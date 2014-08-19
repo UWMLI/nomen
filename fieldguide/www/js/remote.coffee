@@ -4,12 +4,13 @@ class Remote
   constructor: (@datadir, @url) ->
     @list = "#{@datadir}/remote.json"
 
-  downloadList: (callback) ->
+  downloadList: (callback, errback) ->
     transfer = new FileTransfer()
     transfer.download @url, @list, (entry) =>
       $.getJSON @list, (json) =>
         @datasets = json
         callback()
+    , errback
 
   downloadDataset: (id, lib, callback) ->
     match =

@@ -10,7 +10,7 @@
       this.list = "" + this.datadir + "/remote.json";
     }
 
-    Remote.prototype.downloadList = function(callback) {
+    Remote.prototype.downloadList = function(callback, errback) {
       var transfer;
       transfer = new FileTransfer();
       return transfer.download(this.url, this.list, (function(_this) {
@@ -20,7 +20,7 @@
             return callback();
           });
         };
-      })(this));
+      })(this), errback);
     };
 
     Remote.prototype.downloadDataset = function(id, lib, callback) {

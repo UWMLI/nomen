@@ -38,11 +38,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.syncRemote = function(button, callback) {
-      var original;
       if (callback == null) {
         callback = (function() {});
       }
-      original = button.html();
       button.addClass('ui-state-disabled');
       button.html('Syncing...');
       return this.remote.downloadList((function(_this) {
@@ -55,10 +53,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             _this.addRemoteButton(dataset.id, "" + dataset.title + " v" + dataset.version);
           }
           setTimeout(function() {
-            button.html(original);
+            button.html('Synced');
             return button.removeClass('ui-state-disabled');
           }, 250);
           return callback();
+        };
+      })(this), (function(_this) {
+        return function() {
+          return setTimeout(function() {
+            button.html('Sync failed');
+            return button.removeClass('ui-state-disabled');
+          }, 250);
         };
       })(this));
     };

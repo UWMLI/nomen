@@ -32,7 +32,6 @@ class App
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (button, callback = (->)) ->
-    original = button.html()
     button.addClass 'ui-state-disabled'
     button.html 'Syncing...'
     @remote.downloadList =>
@@ -40,10 +39,15 @@ class App
       for dataset in @remote.datasets
         @addRemoteButton dataset.id, "#{dataset.title} v#{dataset.version}"
       setTimeout =>
-        button.html original
+        button.html 'Synced'
         button.removeClass 'ui-state-disabled'
       , 250 # For user-friendliness, we show "Syncing..." for at least 250ms
       callback()
+    , =>
+      setTimeout =>
+        button.html 'Sync failed'
+        button.removeClass 'ui-state-disabled'
+      , 250
 
   # Clear all buttons for remotely available datasets.
   clearRemoteButtons: ->
