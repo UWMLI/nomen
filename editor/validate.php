@@ -112,11 +112,15 @@ function validateDataset($dir) {
   return $errors;
 }
 
-$dir = realpath(dirname(__FILE__)) . '/../fieldguide/pokemon';
-printInfo($dir);
-$errs = validateDataset($dir);
-echo '<ul>';
-foreach ($errs as $err) {
-  echo "<li>$err</li>";
+$datasets = count($argv) > 1 ? array_slice($argv, 1) : array('plants');
+foreach ($datasets as $dataset)
+{
+  $dir = realpath(dirname(__FILE__)) . "/../fieldguide/$dataset";
+  printInfo($dir);
+  $errs = validateDataset($dir);
+  echo '<ul>';
+  foreach ($errs as $err) {
+    echo "<li>$err</li>";
+  }
+  echo '</ul>';
 }
-echo '</ul>';
