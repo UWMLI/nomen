@@ -45,7 +45,7 @@
   indexCanon = function(obj, key) {
     var okey;
     for (okey in obj) {
-      if (canonicalValue(okey === key)) {
+      if ((canonicalValue(okey)) === key) {
         return obj[okey];
       }
     }

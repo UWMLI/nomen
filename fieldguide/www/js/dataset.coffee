@@ -38,6 +38,8 @@ class Dataset
     result = fileEntry.name.match /^(\w+)-([\w-]+)\.(\w+)$/
     if result?
       [whole, name, label, ext] = result
+      name = canonicalValue name
+      label = canonicalValue label
       @speciesImages[name] ?= []
       @speciesImages[name].push [label, fileEntry]
       return
@@ -45,6 +47,7 @@ class Dataset
     result = fileEntry.name.match /^(\w+)\.(\w+)$/
     if result?
       [whole, name, ext] = result
+      name = canonicalValue name
       @speciesImages[name] ?= []
       @speciesImages[name].push ['', fileEntry]
       return

@@ -64,6 +64,8 @@
       result = fileEntry.name.match(/^(\w+)-([\w-]+)\.(\w+)$/);
       if (result != null) {
         whole = result[0], name = result[1], label = result[2], ext = result[3];
+        name = canonicalValue(name);
+        label = canonicalValue(label);
         if ((_base = this.speciesImages)[name] == null) {
           _base[name] = [];
         }
@@ -73,6 +75,7 @@
       result = fileEntry.name.match(/^(\w+)\.(\w+)$/);
       if (result != null) {
         whole = result[0], name = result[1], ext = result[2];
+        name = canonicalValue(name);
         if ((_base1 = this.speciesImages)[name] == null) {
           _base1[name] = [];
         }

@@ -19,7 +19,7 @@ displayValue = (value) ->
 
 indexCanon = (obj, key) ->
   for okey of obj
-    if canonicalValue okey is key
+    if (canonicalValue okey) is key
       return obj[okey]
   return
 
