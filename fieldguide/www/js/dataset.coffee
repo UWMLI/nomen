@@ -2,14 +2,22 @@
 
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
+# Executes `action` for each entry left in the directory reader.
+readAll = (dirReader, action) ->
+  dirReader.readEntries (results) =>
+    if results.length isnt 0
+      action file for file in toArray results
+      readAll dirReader, action
+
 class Dataset
   constructor: (@dir) ->
 
   # Load all the dataset information at once.
   load: (callback) ->
     @loadInfo =>
-      @loadImages =>
-        @loadSpecies =>
+      # TODO: loadFeatureImages
+      @loadSpeciesImages =>
+        @loadSpeciesData =>
           callback()
 
   # Load just the metadata JSON file.
@@ -18,22 +26,30 @@ class Dataset
       {@title, @id, @version} = json
       callback()
 
+  # Locate all images in the features images folder.
+  loadFeatureImages: (callback) ->
+    @featureImages = {}
+    resolveLocalFileSystemURL "#{@dir}/features/", (dirEntry) =>
+      readAll dirEntry.createReader(), (fileEntry) =>
+        if fileEntry.isDirectory
+          readAll fileEntry.createReader(), (image) =>
+            @addFeatureImage image
+      callback()
+
   # Locate all images in the species images folder.
-  loadImages: (callback) ->
+  loadSpeciesImages: (callback) ->
     @speciesImages = {}
     resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
-      dirReader = dirEntry.createReader()
-      readEntries = =>
-        dirReader.readEntries (results) =>
-          if results.length is 0
-            callback()
-          else
-            @addImage image for image in toArray results
-            readEntries()
-      readEntries()
+      readAll dirEntry.createReader(), (image) =>
+        @addSpeciesImage image
+      callback()
+
+  # Parse the feature image filename to see which feature and value it is for.
+  addFeatureImage: (fileEntry) ->
+    # TODO
 
   # Parse the species image filename to see which species and label it has.
-  addImage: (fileEntry) ->
+  addSpeciesImage: (fileEntry) ->
     # General form: species-label.ext
     result = fileEntry.name.match /^(\w+)-([\w-]+)\.(\w+)$/
     if result?
@@ -54,7 +70,7 @@ class Dataset
     alert "Couldn't parse species image: #{fileEntry.name}"
 
   # Load the CSV file of species information.
-  loadSpecies: (callback) ->
+  loadSpeciesData: (callback) ->
     $.get "#{@dir}/species.csv", (str) =>
       @species = {}
       for csvRow in $.parse(str).results.rows
@@ -72,7 +88,7 @@ class Dataset
         for value in values
           @features[feature][value] = true
 
-  # Get all the images (found via loadImages) for a certain Species object.
+  # Get all the images (found via loadSpeciesImages) for a certain Species object.
   imagesForSpecies: (spec) ->
     @speciesImages[canonicalValue spec.name] ? []
 
