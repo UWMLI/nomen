@@ -60,17 +60,26 @@
     };
 
     Dataset.prototype.addImage = function(fileEntry) {
-      var ext, label, name, result, whole, _base;
+      var ext, label, name, result, whole, _base, _base1;
       result = fileEntry.name.match(/^(\w+)-([\w-]+)\.(\w+)$/);
       if (result != null) {
         whole = result[0], name = result[1], label = result[2], ext = result[3];
         if ((_base = this.speciesImages)[name] == null) {
           _base[name] = [];
         }
-        return this.speciesImages[name].push([label, fileEntry]);
-      } else {
-        return alert("Couldn't parse species image: " + fileEntry.name);
+        this.speciesImages[name].push([label, fileEntry]);
+        return;
       }
+      result = fileEntry.name.match(/^(\w+)\.(\w+)$/);
+      if (result != null) {
+        whole = result[0], name = result[1], ext = result[2];
+        if ((_base1 = this.speciesImages)[name] == null) {
+          _base1[name] = [];
+        }
+        this.speciesImages[name].push(['', fileEntry]);
+        return;
+      }
+      return alert("Couldn't parse species image: " + fileEntry.name);
     };
 
     Dataset.prototype.loadSpecies = function(callback) {

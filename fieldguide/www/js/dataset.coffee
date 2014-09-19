@@ -34,13 +34,21 @@ class Dataset
 
   # Parse the species image filename to see which species and label it has.
   addImage: (fileEntry) ->
+    # General form: species-label.ext
     result = fileEntry.name.match /^(\w+)-([\w-]+)\.(\w+)$/
     if result?
       [whole, name, label, ext] = result
       @speciesImages[name] ?= []
       @speciesImages[name].push [label, fileEntry]
-    else
-      alert "Couldn't parse species image: #{fileEntry.name}"
+      return
+    # Simple form: species.ext (empty label)
+    result = fileEntry.name.match /^(\w+)\.(\w+)$/
+    if result?
+      [whole, name, ext] = result
+      @speciesImages[name] ?= []
+      @speciesImages[name].push ['', fileEntry]
+      return
+    alert "Couldn't parse species image: #{fileEntry.name}"
 
   # Load the CSV file of species information.
   loadSpecies: (callback) ->
