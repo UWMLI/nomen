@@ -156,7 +156,7 @@ class App
       @featureRows = for feature, values of @dataset.features
         for value in Object.keys(values).sort(naturalSort)
           display: displayValue value
-          image: "#{@dataset.dir}/features/#{feature}/#{value}.png"
+          image: @dataset.imageForFeature(feature, value)?.toURL() ? 'img/noimage.png'
           feature: feature
           value: value
       $('#dataset-header').html @dataset.title

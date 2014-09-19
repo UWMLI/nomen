@@ -247,14 +247,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             for (feature in _ref) {
               values = _ref[feature];
               _results.push((function() {
-                var _i, _len, _ref1, _results1;
+                var _i, _len, _ref1, _ref2, _ref3, _results1;
                 _ref1 = Object.keys(values).sort(naturalSort);
                 _results1 = [];
                 for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                   value = _ref1[_i];
                   _results1.push({
                     display: displayValue(value),
-                    image: "" + this.dataset.dir + "/features/" + feature + "/" + value + ".png",
+                    image: (_ref2 = (_ref3 = this.dataset.imageForFeature(feature, value)) != null ? _ref3.toURL() : void 0) != null ? _ref2 : 'img/noimage.png',
                     feature: feature,
                     value: value
                   });

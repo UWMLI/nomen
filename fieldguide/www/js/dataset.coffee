@@ -2,12 +2,27 @@
 
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
-# Executes `action` for each entry left in the directory reader.
-readAll = (dirReader, action) ->
-  dirReader.readEntries (results) =>
-    if results.length isnt 0
-      action file for file in toArray results
-      readAll dirReader, action
+# Returns an array of all non-directory files recursively found in the
+# directory reader's remaining results.
+getAllFiles = (dirReader, callback) ->
+  files = []
+  readers = []
+  getSome = ->
+    dirReader.readEntries (results) ->
+      if results.length is 0
+        if readers.length is 0
+          callback files
+        else
+          dirReader = readers.pop()
+          getSome()
+      else
+        for file in toArray results
+          if file.isFile
+            files.push file
+          else if file.isDirectory
+            readers.push file.createReader()
+        getSome()
+  getSome()
 
 class Dataset
   constructor: (@dir) ->
@@ -15,10 +30,10 @@ class Dataset
   # Load all the dataset information at once.
   load: (callback) ->
     @loadInfo =>
-      # TODO: loadFeatureImages
-      @loadSpeciesImages =>
-        @loadSpeciesData =>
-          callback()
+      @loadFeatureImages =>
+        @loadSpeciesImages =>
+          @loadSpeciesData =>
+            callback()
 
   # Load just the metadata JSON file.
   loadInfo: (callback) ->
@@ -30,27 +45,36 @@ class Dataset
   loadFeatureImages: (callback) ->
     @featureImages = {}
     resolveLocalFileSystemURL "#{@dir}/features/", (dirEntry) =>
-      readAll dirEntry.createReader(), (fileEntry) =>
-        if fileEntry.isDirectory
-          readAll fileEntry.createReader(), (image) =>
-            @addFeatureImage image
-      callback()
+      getAllFiles dirEntry.createReader(), (images) =>
+        for image in images
+          @addFeatureImage image
+        callback()
 
   # Locate all images in the species images folder.
   loadSpeciesImages: (callback) ->
     @speciesImages = {}
     resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
-      readAll dirEntry.createReader(), (image) =>
-        @addSpeciesImage image
-      callback()
+      getAllFiles dirEntry.createReader(), (images) =>
+        for image in images
+          @addSpeciesImage image
+        callback()
 
   # Parse the feature image filename to see which feature and value it is for.
   addFeatureImage: (fileEntry) ->
-    # TODO
+    # Form: .../features/{feature}/{value}.{ext}
+    result = fileEntry.fullPath.match /features\/(\w+)\/(\w+)\.(\w+)$/
+    if result?
+      [whole, feature, value, ext] = result
+      feature = canonicalValue feature
+      value = canonicalValue value
+      @featureImages[feature] ?= {}
+      @featureImages[feature][value] = fileEntry
+      return
+    console.log "Couldn't parse feature image: #{fileEntry.fullPath}"
 
   # Parse the species image filename to see which species and label it has.
   addSpeciesImage: (fileEntry) ->
-    # General form: species-label.ext
+    # General form: {species}-{label}.{ext}
     result = fileEntry.name.match /^(\w+)-([\w-]+)\.(\w+)$/
     if result?
       [whole, name, label, ext] = result
@@ -59,7 +83,7 @@ class Dataset
       @speciesImages[name] ?= []
       @speciesImages[name].push [label, fileEntry]
       return
-    # Simple form: species.ext (empty label)
+    # Simple form: {species}.{ext} (empty label)
     result = fileEntry.name.match /^(\w+)\.(\w+)$/
     if result?
       [whole, name, ext] = result
@@ -67,7 +91,7 @@ class Dataset
       @speciesImages[name] ?= []
       @speciesImages[name].push ['', fileEntry]
       return
-    alert "Couldn't parse species image: #{fileEntry.name}"
+    console.log "Couldn't parse species image: #{fileEntry.name}"
 
   # Load the CSV file of species information.
   loadSpeciesData: (callback) ->
@@ -91,6 +115,11 @@ class Dataset
   # Get all the images (found via loadSpeciesImages) for a certain Species object.
   imagesForSpecies: (spec) ->
     @speciesImages[canonicalValue spec.name] ? []
+
+  # Gets the image (found via loadFeatureImages) for a feature/value pair,
+  # or `undefined` if none is found.
+  imageForFeature: (feature, value) ->
+    (@featureImages[canonicalValue feature] ? {})[canonicalValue value]
 
 # Works for Dataset objects as well as simple entries in a Remote.
 datasetDisplay = (obj) ->
