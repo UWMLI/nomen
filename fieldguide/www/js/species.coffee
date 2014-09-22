@@ -28,7 +28,8 @@ class Species
         when 'description'  then @description  = v
         when 'display_name' then @display_name = v
         else @features[k] = parseList v
-    @display_name ?= @name
+    # Use name as display_name if display_name is undefined or ''
+    @display_name = @name unless @display_name?.length
 
   # If `selected` is an object from features to arrays of values,
   # compute how many of them match the features of this species.

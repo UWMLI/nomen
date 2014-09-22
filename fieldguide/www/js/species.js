@@ -44,7 +44,7 @@
 
   Species = (function() {
     function Species(csvRow) {
-      var k, v;
+      var k, v, _ref;
       this.features = {};
       for (k in csvRow) {
         v = csvRow[k];
@@ -63,7 +63,7 @@
             this.features[k] = parseList(v);
         }
       }
-      if (this.display_name == null) {
+      if (!((_ref = this.display_name) != null ? _ref.length : void 0)) {
         this.display_name = this.name;
       }
     }
