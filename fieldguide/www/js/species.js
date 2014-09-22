@@ -45,6 +45,7 @@
   Species = (function() {
     function Species(csvRow) {
       var k, v;
+      this.features = {};
       for (k in csvRow) {
         v = csvRow[k];
         k = canonicalValue(k);
@@ -52,7 +53,7 @@
           case 'name':
             this.name = v;
             break;
-          case 'descripton':
+          case 'description':
             this.description = v;
             break;
           case 'display_name':

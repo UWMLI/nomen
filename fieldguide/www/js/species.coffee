@@ -20,11 +20,12 @@ displayValue = (value) ->
 class Species
   # Create a Species given one row from the species.csv file as an object.
   constructor: (csvRow) ->
+    @features = {}
     for k, v of csvRow
       k = canonicalValue k
       switch k
         when 'name'         then @name         = v
-        when 'descripton'   then @description  = v
+        when 'description'  then @description  = v
         when 'display_name' then @display_name = v
         else @features[k] = parseList v
     @display_name ?= @name
