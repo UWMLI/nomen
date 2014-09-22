@@ -30,7 +30,6 @@ class Species
     @description = indexCanon csvRow, 'description'
     @display_name = (indexCanon csvRow, 'display_name') ? @name
     @features = {}
-    reachedFeatures = false
     for k, v of csvRow
       k = canonicalValue k
       continue if k in ['name', 'display_name', 'description']

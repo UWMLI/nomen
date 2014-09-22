@@ -53,12 +53,11 @@
 
   Species = (function() {
     function Species(csvRow) {
-      var k, reachedFeatures, v, _ref;
+      var k, v, _ref;
       this.name = indexCanon(csvRow, 'name');
       this.description = indexCanon(csvRow, 'description');
       this.display_name = (_ref = indexCanon(csvRow, 'display_name')) != null ? _ref : this.name;
       this.features = {};
-      reachedFeatures = false;
       for (k in csvRow) {
         v = csvRow[k];
         k = canonicalValue(k);

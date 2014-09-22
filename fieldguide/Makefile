@@ -6,7 +6,11 @@ mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 datasets := plants pokemon
 zips     := $(datasets:%=%.zip)
 
-all: $(js_files) $(zips)
+all: js zips
+
+js: $(js_files)
+
+zips: $(zips)
 
 clean:
 	rm -f $(zips)
