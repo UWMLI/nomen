@@ -37,8 +37,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <div data-role="page" id="home">
   <div data-role="header" data-position="fixed">
     <h1>Field Guide</h1>
-    <a onclick="app.readyClear();" class="ui-btn-left" data-transition="pop">Clear</a>
-    <a href="#remote" class="ui-btn-right" data-transition="slide">Download</a>
+    <div data-role="navbar">
+      <ul>
+        <li>
+          <a href="#remote" data-transition="slide">Download</a>
+        </li>
+        <li>
+          <a onclick="app.readyClear();" data-transition="pop">Clear</a>
+        </li>
+        <li>
+          <a href="#about" data-transition="pop">About</a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div data-role="main" class="ui-content" id="home-content">
@@ -97,6 +108,22 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 </div>
 
 <!-- Not shown here (dynamically generated): a page for each image of a species -->
+
+<!-- About page -->
+<div data-role="page" id="about" data-dialog="true">
+  <div data-role="header">
+    <h1>About</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" id="confirm-delete-content">
+    <p>Field Identification Tool</p>
+    <ul>
+      <li>David Gagnon &mdash; Project Lead</li>
+      <li>Michael Tolly &mdash; Developer</li>
+      <li>Tyler Anlauf &mdash; Graphic Design</li>
+    </ul>
+  </div>
+</div>
 
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="lib/fastclick/js/fastclick.js"></script>
