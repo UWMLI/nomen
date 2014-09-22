@@ -17,23 +17,17 @@ displayValue = (value) ->
       word[0].toUpperCase() + word[1..]
     words.join(' ')
 
-indexCanon = (obj, key) ->
-  for okey of obj
-    if (canonicalValue okey) is key
-      return obj[okey]
-  return
-
 class Species
   # Create a Species given one row from the species.csv file as an object.
   constructor: (csvRow) ->
-    @name = indexCanon csvRow, 'name'
-    @description = indexCanon csvRow, 'description'
-    @display_name = (indexCanon csvRow, 'display_name') ? @name
-    @features = {}
     for k, v of csvRow
       k = canonicalValue k
-      continue if k in ['name', 'display_name', 'description']
-      @features[k] = parseList v
+      switch k
+        when 'name'         then @name         = v
+        when 'descripton'   then @description  = v
+        when 'display_name' then @display_name = v
+        else @features[k] = parseList v
+    @display_name ?= @name
 
   # If `selected` is an object from features to arrays of values,
   # compute how many of them match the features of this species.
