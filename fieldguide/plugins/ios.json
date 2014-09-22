@@ -35,6 +35,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" onload=\"true\" value=\"CDVStatusBar\" /></feature>",
                             "count": 1
                         },
@@ -48,10 +52,6 @@
                         },
                         {
                             "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
                             "count": 1
                         }
                     ],
@@ -69,13 +69,13 @@
         "org.apache.cordova.file": {
             "PACKAGE_NAME": "edu.wisc.fieldguide"
         },
+        "org.apache.cordova.file-transfer": {
+            "PACKAGE_NAME": "edu.wisc.fieldguide"
+        },
         "org.apache.cordova.statusbar": {
             "PACKAGE_NAME": "edu.wisc.fieldguide"
         },
         "org.chromium.zip": {
-            "PACKAGE_NAME": "edu.wisc.fieldguide"
-        },
-        "org.apache.cordova.file-transfer": {
             "PACKAGE_NAME": "edu.wisc.fieldguide"
         }
     },
