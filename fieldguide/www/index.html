@@ -103,7 +103,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <script language="javascript">
   document.addEventListener('deviceready', function() {
-    window.app = new App(cordova.file.dataDirectory);
+    window.app = new App({
+      'appdir': cordova.file.applicationDirectory,
+      'datadir': cordova.file.dataDirectory,
+    });
     app.onDeviceReady();
   });
 </script>

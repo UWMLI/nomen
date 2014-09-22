@@ -18,9 +18,12 @@ appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
-  constructor: (@datadir) ->
-    @library = new Library datadir
-    @remote = new Remote datadir,
+  constructor: ({@datadir, @appdir}) ->
+    # Library stored in read/write storage, data downloaded from remote
+    @library = new Library @datadir
+    # Library stored inside the app, read-only
+    @libraryStatic = new Library "#{@appdir}/www"
+    @remote = new Remote @datadir,
       'http://localhost:8888/EIFieldResearch/fieldguide/list.json'
 
   # Called after all the Cordova APIs are ready.
@@ -79,6 +82,7 @@ class App
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->
+    console.log @appdir
     $('#confirm-delete-message').html 'Are you sure you want to clear the library?'
     @deleteAction = (callback) =>
       @clearLibrary callback
@@ -107,11 +111,14 @@ class App
   # Ensure the buttons on the home screen accurately reflect the datasets
   # we have in the file system.
   refreshLibrary: (callback = (->)) ->
+    @clearDataButtons()
     @library.scanLibrary =>
-      @clearDataButtons()
       for id, dataset of @library.datasets
-        @addDataButton id, datasetDisplay dataset
-      callback()
+        @addDataButton id, datasetDisplay(dataset), true
+      @libraryStatic.scanLibrary =>
+        for id, dataset of @libraryStatic.datasets
+          @addDataButton id, datasetDisplay(dataset), false
+        callback()
 
   # Delete the dataset with the given ID from the device's file system.
   # Also deletes the button by calling refreshLibrary.
@@ -124,11 +131,12 @@ class App
     $('#home-content').html ''
 
   # Add a button for a new dataset to the home screen.
-  addDataButton: (id, text) ->
+  addDataButton: (id, text, canDelete) ->
     setFn = "app.goToDataset('#{id}');"
     deleteFn = "app.readyDelete('#{id}');"
     appendTo $('#home-content'), ->
-      @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
+      if canDelete
+        @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
       @a '.ui-btn .ui-btn-inline', onclick: setFn, text
       @br ''
 
@@ -140,7 +148,7 @@ class App
 
   # Executed when the user opens a dataset from the home screen.
   setDataset: (id, callback = (->)) ->
-    @dataset = @library.datasets[id]
+    @dataset = @library.datasets[id] ? @libraryStatic.datasets[id]
     @dataset.load =>
       # Compares two strings by
       # 1. comparing numbers if they both start with a number
