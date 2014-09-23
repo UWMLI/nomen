@@ -67,32 +67,44 @@
     };
 
     Dataset.prototype.loadFeatureImages = function(callback) {
+      var useImages;
       this.featureImages = {};
-      return resolveLocalFileSystemURL("" + this.dir + "/features/", (function(_this) {
-        return function(dirEntry) {
-          return getAllFiles(dirEntry.createReader(), function(images) {
-            var image, _i, _len;
-            for (_i = 0, _len = images.length; _i < _len; _i++) {
-              image = images[_i];
-              _this.addFeatureImage(image);
-            }
-            return callback();
+      useImages = (function(_this) {
+        return function(images) {
+          var image, _i, _len;
+          for (_i = 0, _len = images.length; _i < _len; _i++) {
+            image = images[_i];
+            _this.addFeatureImage(image);
+          }
+          return callback();
+        };
+      })(this);
+      return $.getJSON("" + this.dir + "/features.json", useImages).fail((function(_this) {
+        return function() {
+          return resolveLocalFileSystemURL("" + _this.dir + "/features/", function(dirEntry) {
+            return getAllFiles(dirEntry.createReader(), useImages);
           });
         };
       })(this));
     };
 
     Dataset.prototype.loadSpeciesImages = function(callback) {
+      var useImages;
       this.speciesImages = {};
-      return resolveLocalFileSystemURL("" + this.dir + "/species/", (function(_this) {
-        return function(dirEntry) {
-          return getAllFiles(dirEntry.createReader(), function(images) {
-            var image, _i, _len;
-            for (_i = 0, _len = images.length; _i < _len; _i++) {
-              image = images[_i];
-              _this.addSpeciesImage(image);
-            }
-            return callback();
+      useImages = (function(_this) {
+        return function(images) {
+          var image, _i, _len;
+          for (_i = 0, _len = images.length; _i < _len; _i++) {
+            image = images[_i];
+            _this.addSpeciesImage(image);
+          }
+          return callback();
+        };
+      })(this);
+      return $.getJSON("" + this.dir + "/species.json", useImages).fail((function(_this) {
+        return function() {
+          return resolveLocalFileSystemURL("" + _this.dir + "/species/", function(dirEntry) {
+            return getAllFiles(dirEntry.createReader(), useImages);
           });
         };
       })(this));

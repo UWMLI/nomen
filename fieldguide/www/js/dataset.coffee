@@ -44,20 +44,30 @@ class Dataset
   # Locate all images in the features images folder.
   loadFeatureImages: (callback) ->
     @featureImages = {}
-    resolveLocalFileSystemURL "#{@dir}/features/", (dirEntry) =>
-      getAllFiles dirEntry.createReader(), (images) =>
-        for image in images
-          @addFeatureImage image
-        callback()
+    useImages = (images) =>
+      for image in images
+        @addFeatureImage image
+      callback()
+    # First, try to load a JSON file and use that as the file listing.
+    $.getJSON "#{@dir}/features.json", useImages
+    # Otherwise, actually do the directory traversal.
+    .fail =>
+      resolveLocalFileSystemURL "#{@dir}/features/", (dirEntry) =>
+        getAllFiles dirEntry.createReader(), useImages
 
   # Locate all images in the species images folder.
   loadSpeciesImages: (callback) ->
     @speciesImages = {}
-    resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
-      getAllFiles dirEntry.createReader(), (images) =>
-        for image in images
-          @addSpeciesImage image
-        callback()
+    useImages = (images) =>
+      for image in images
+        @addSpeciesImage image
+      callback()
+    # First, try to load a JSON file and use that as the file listing.
+    $.getJSON "#{@dir}/species.json", useImages
+    # Otherwise, actually do the directory traversal.
+    .fail =>
+      resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
+        getAllFiles dirEntry.createReader(), useImages
 
   # Parse the feature image filename to see which feature and value it is for.
   addFeatureImage: (fileEntry) ->
