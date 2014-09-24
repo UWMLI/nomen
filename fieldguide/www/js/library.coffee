@@ -38,15 +38,9 @@ class Library
       else
         @addLibrary urls.pop(), => processDirs urls
     # First, try loading library.json to get the subdirectory listing.
-    $.getJSON "#{@datadir}/library.json", (urls) =>
-      fixedURLs = for url in urls
-        if url.match(/^https?:\/\//)?
-          url
-        else
-          "#{@datadir}/#{url}"
-      processDirs fixedURLs
+    getJSONList "#{@datadir}/library.json", processDirs
     # If that fails, then actually traverse the directories.
-    .fail =>
+    , =>
       resolveLocalFileSystemURL @dir, (dirEntry) =>
         dirReader = dirEntry.createReader()
         getSubdirs dirEntry.createReader(), (dirs) =>

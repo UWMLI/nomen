@@ -18,20 +18,12 @@ class Dataset
       callback()
 
   # Loads a directory listing either from a JSON file or by recursive traversal.
-  # The JSON file should be an array of strings, each of which is either a
-  # relative URL (relative to `dir`) or an absolute URL (starting with
-  # "http://" or "https://").
+  # The JSON file should be an array of paths; see getJSONList for details.
   loadDirectory: (json, dir, callback) ->
     # First, try to load the JSON file.
-    $.getJSON json, (urls) =>
-      fixedURLs = for url in urls
-        if url.match(/^https?:\/\//)?
-          url
-        else
-          "#{dir}/#{url}"
-      callback fixedURLs
+    getJSONList json, callback
     # If that fails, then do the directory traversal.
-    .fail =>
+    , =>
       resolveLocalFileSystemURL dir, (dirEntry) =>
         getAllFiles dirEntry.createReader(), (entries) =>
           urls =

@@ -32,25 +32,7 @@
     };
 
     Dataset.prototype.loadDirectory = function(json, dir, callback) {
-      return $.getJSON(json, (function(_this) {
-        return function(urls) {
-          var fixedURLs, url;
-          fixedURLs = (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = urls.length; _i < _len; _i++) {
-              url = urls[_i];
-              if (url.match(/^https?:\/\//) != null) {
-                _results.push(url);
-              } else {
-                _results.push("" + dir + "/" + url);
-              }
-            }
-            return _results;
-          })();
-          return callback(fixedURLs);
-        };
-      })(this)).fail((function(_this) {
+      return getJSONList(json, callback, (function(_this) {
         return function() {
           return resolveLocalFileSystemURL(dir, function(dirEntry) {
             return getAllFiles(dirEntry.createReader(), function(entries) {
