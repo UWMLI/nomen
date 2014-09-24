@@ -160,29 +160,43 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.refreshLibrary = function(callback) {
+      var scanStatic;
       if (callback == null) {
         callback = (function() {});
       }
       this.clearDataButtons();
-      return this.library.scanLibrary((function(_this) {
+      scanStatic = (function(_this) {
         return function() {
-          var dataset, id, _ref;
-          _ref = _this.library.datasets;
-          for (id in _ref) {
-            dataset = _ref[id];
-            _this.addDataButton(id, datasetDisplay(dataset), true);
-          }
-          return _this.libraryStatic.scanLibrary(function() {
-            var _ref1;
-            _ref1 = _this.libraryStatic.datasets;
-            for (id in _ref1) {
-              dataset = _ref1[id];
-              _this.addDataButton(id, datasetDisplay(dataset), false);
-            }
+          if (_this.libraryStatic != null) {
+            return _this.libraryStatic.scanLibrary(function() {
+              var dataset, id, _ref;
+              _ref = _this.libraryStatic.datasets;
+              for (id in _ref) {
+                dataset = _ref[id];
+                _this.addDataButton(id, datasetDisplay(dataset), false);
+              }
+              return callback();
+            });
+          } else {
             return callback();
-          });
+          }
         };
-      })(this));
+      })(this);
+      if (this.library != null) {
+        return this.library.scanLibrary((function(_this) {
+          return function() {
+            var dataset, id, _ref;
+            _ref = _this.library.datasets;
+            for (id in _ref) {
+              dataset = _ref[id];
+              _this.addDataButton(id, datasetDisplay(dataset), true);
+            }
+            return scanStatic();
+          };
+        })(this));
+      } else {
+        return scanStatic();
+      }
     };
 
     App.prototype.deleteDataset = function(id, callback) {
@@ -230,21 +244,21 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.setDataset = function(id, callback) {
-      var _ref;
+      var _ref, _ref1, _ref2;
       if (callback == null) {
         callback = (function() {});
       }
-      this.dataset = (_ref = this.library.datasets[id]) != null ? _ref : this.libraryStatic.datasets[id];
+      this.dataset = (_ref = (_ref1 = this.library) != null ? _ref1.datasets[id] : void 0) != null ? _ref : (_ref2 = this.libraryStatic) != null ? _ref2.datasets[id] : void 0;
       return this.dataset.load((function(_this) {
         return function() {
           var feature, naturalSort, value, values;
           naturalSort = function(a, b) {
-            var anum, arest, bnum, brest, matchNum, __, _ref1, _ref2, _ref3, _ref4;
+            var anum, arest, bnum, brest, matchNum, __, _ref3, _ref4, _ref5, _ref6;
             matchNum = function(x) {
               return x.toString().match(/^([0-9]+)(.*)$/);
             };
-            _ref2 = (_ref1 = matchNum(a)) != null ? _ref1 : [null, Infinity, a], __ = _ref2[0], anum = _ref2[1], arest = _ref2[2];
-            _ref4 = (_ref3 = matchNum(b)) != null ? _ref3 : [null, Infinity, b], __ = _ref4[0], bnum = _ref4[1], brest = _ref4[2];
+            _ref4 = (_ref3 = matchNum(a)) != null ? _ref3 : [null, Infinity, a], __ = _ref4[0], anum = _ref4[1], arest = _ref4[2];
+            _ref6 = (_ref5 = matchNum(b)) != null ? _ref5 : [null, Infinity, b], __ = _ref6[0], bnum = _ref6[1], brest = _ref6[2];
             if (anum === bnum) {
               return arest.localeCompare(brest);
             } else {
@@ -252,20 +266,20 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
           };
           _this.featureRows = (function() {
-            var _ref1, _results;
-            _ref1 = this.dataset.features;
+            var _ref3, _results;
+            _ref3 = this.dataset.features;
             _results = [];
-            for (feature in _ref1) {
-              values = _ref1[feature];
+            for (feature in _ref3) {
+              values = _ref3[feature];
               _results.push((function() {
-                var _i, _len, _ref2, _ref3, _results1;
-                _ref2 = Object.keys(values).sort(naturalSort);
+                var _i, _len, _ref4, _ref5, _results1;
+                _ref4 = Object.keys(values).sort(naturalSort);
                 _results1 = [];
-                for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-                  value = _ref2[_i];
+                for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                  value = _ref4[_i];
                   _results1.push({
                     display: displayValue(value),
-                    image: (_ref3 = this.dataset.imageForFeature(feature, value)) != null ? _ref3 : 'img/noimage.png',
+                    image: (_ref5 = this.dataset.imageForFeature(feature, value)) != null ? _ref5 : 'img/noimage.png',
                     feature: feature,
                     value: value
                   });

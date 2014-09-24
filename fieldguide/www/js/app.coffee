@@ -116,13 +116,21 @@ class App
   # we have in the file system.
   refreshLibrary: (callback = (->)) ->
     @clearDataButtons()
-    @library.scanLibrary =>
-      for id, dataset of @library.datasets
-        @addDataButton id, datasetDisplay(dataset), true
-      @libraryStatic.scanLibrary =>
-        for id, dataset of @libraryStatic.datasets
-          @addDataButton id, datasetDisplay(dataset), false
+    scanStatic = =>
+      if @libraryStatic?
+        @libraryStatic.scanLibrary =>
+          for id, dataset of @libraryStatic.datasets
+            @addDataButton id, datasetDisplay(dataset), false
+          callback()
+      else
         callback()
+    if @library?
+      @library.scanLibrary =>
+        for id, dataset of @library.datasets
+          @addDataButton id, datasetDisplay(dataset), true
+        scanStatic()
+    else
+      scanStatic()
 
   # Delete the dataset with the given ID from the device's file system.
   # Also deletes the button by calling refreshLibrary.
@@ -152,7 +160,7 @@ class App
 
   # Executed when the user opens a dataset from the home screen.
   setDataset: (id, callback = (->)) ->
-    @dataset = @library.datasets[id] ? @libraryStatic.datasets[id]
+    @dataset = @library?.datasets[id] ? @libraryStatic?.datasets[id]
     @dataset.load =>
       # Compares two strings by
       # 1. comparing numbers if they both start with a number
