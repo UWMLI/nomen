@@ -82,7 +82,6 @@ class App
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->
-    console.log @appdir
     $('#confirm-delete-message').html 'Are you sure you want to clear the library?'
     @deleteAction = (callback) =>
       @clearLibrary callback

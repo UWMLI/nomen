@@ -109,7 +109,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.readyClear = function() {
-      console.log(this.appdir);
       $('#confirm-delete-message').html('Are you sure you want to clear the library?');
       this.deleteAction = (function(_this) {
         return function(callback) {

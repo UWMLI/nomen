@@ -32,21 +32,31 @@ class Library
   # Scan the library folder for datasets.
   scanLibrary: (callback) ->
     @datasets = {}
-    resolveLocalFileSystemURL @dir, (dirEntry) =>
-      dirReader = dirEntry.createReader()
-      getSubdirs dirEntry.createReader(), (dirs) =>
-        processDirs = =>
-          if dirs.length is 0
-            callback()
-          else
-            @addLibrary dirs.pop(), processDirs
-        processDirs()
-    , => callback()
-    # on error (lib dir doesn't exist), we just continue.
-    # @datasets is {} which is correct
+    processDirs = (urls) =>
+      if urls.length is 0
+        callback()
+      else
+        @addLibrary urls.pop(), => processDirs urls
+    # First, try loading library.json to get the subdirectory listing.
+    $.getJSON "#{@datadir}/library.json", (urls) =>
+      fixedURLs = for url in urls
+        if url.match(/^https?:\/\//)?
+          url
+        else
+          "#{@datadir}/#{url}"
+      processDirs fixedURLs
+    # If that fails, then actually traverse the directories.
+    .fail =>
+      resolveLocalFileSystemURL @dir, (dirEntry) =>
+        dirReader = dirEntry.createReader()
+        getSubdirs dirEntry.createReader(), (dirs) =>
+          processDirs(dir.toURL() for dir in dirs)
+      # If the dir doesn't exist, there are no entries,
+      # and @datasets is already {} so we just callback.
+      , callback
 
-  addLibrary: (dirEntry, callback) ->
-    ds = new Dataset dirEntry.toURL()
+  addLibrary: (url, callback) ->
+    ds = new Dataset url
     ds.loadInfo =>
       @datasets[ds.id] = ds
       callback()

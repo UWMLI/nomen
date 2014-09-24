@@ -52,33 +52,62 @@
     };
 
     Library.prototype.scanLibrary = function(callback) {
+      var processDirs;
       this.datasets = {};
-      return resolveLocalFileSystemURL(this.dir, (function(_this) {
-        return function(dirEntry) {
-          var dirReader;
-          dirReader = dirEntry.createReader();
-          return getSubdirs(dirEntry.createReader(), function(dirs) {
-            var processDirs;
-            processDirs = function() {
-              if (dirs.length === 0) {
-                return callback();
-              } else {
-                return _this.addLibrary(dirs.pop(), processDirs);
-              }
-            };
-            return processDirs();
-          });
+      processDirs = (function(_this) {
+        return function(urls) {
+          if (urls.length === 0) {
+            return callback();
+          } else {
+            return _this.addLibrary(urls.pop(), function() {
+              return processDirs(urls);
+            });
+          }
         };
-      })(this), (function(_this) {
+      })(this);
+      return $.getJSON("" + this.datadir + "/library.json", (function(_this) {
+        return function(urls) {
+          var fixedURLs, url;
+          fixedURLs = (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = urls.length; _i < _len; _i++) {
+              url = urls[_i];
+              if (url.match(/^https?:\/\//) != null) {
+                _results.push(url);
+              } else {
+                _results.push("" + this.datadir + "/" + url);
+              }
+            }
+            return _results;
+          }).call(_this);
+          return processDirs(fixedURLs);
+        };
+      })(this)).fail((function(_this) {
         return function() {
-          return callback();
+          return resolveLocalFileSystemURL(_this.dir, function(dirEntry) {
+            var dirReader;
+            dirReader = dirEntry.createReader();
+            return getSubdirs(dirEntry.createReader(), function(dirs) {
+              var dir;
+              return processDirs((function() {
+                var _i, _len, _results;
+                _results = [];
+                for (_i = 0, _len = dirs.length; _i < _len; _i++) {
+                  dir = dirs[_i];
+                  _results.push(dir.toURL());
+                }
+                return _results;
+              })());
+            });
+          }, callback);
         };
       })(this));
     };
 
-    Library.prototype.addLibrary = function(dirEntry, callback) {
+    Library.prototype.addLibrary = function(url, callback) {
       var ds;
-      ds = new Dataset(dirEntry.toURL());
+      ds = new Dataset(url);
       return ds.loadInfo((function(_this) {
         return function() {
           _this.datasets[ds.id] = ds;
