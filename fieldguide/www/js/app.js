@@ -24,6 +24,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       this.library = readWriteDir != null ? new Library(readWriteDir) : null;
       this.libraryStatic = readOnlyDir != null ? new Library(readOnlyDir) : null;
       this.remote = (readWriteDir != null) && (remoteURL != null) ? new Remote(readWriteDir, remoteURL) : null;
+      if (readWriteDir == null) {
+        $('#clear-button').addClass('ui-state-disabled');
+      }
+      if (!((readWriteDir != null) && (remoteURL != null))) {
+        $('#download-button').addClass('ui-state-disabled');
+      }
     }
 
     App.prototype.onDeviceReady = function() {

@@ -30,6 +30,10 @@ class App
         new Remote readWriteDir, remoteURL
       else
         null
+    unless readWriteDir?
+      $('#clear-button').addClass 'ui-state-disabled'
+    unless readWriteDir? and remoteURL?
+      $('#download-button').addClass 'ui-state-disabled'
 
   # Called after all the Cordova APIs are ready.
   onDeviceReady: ->
