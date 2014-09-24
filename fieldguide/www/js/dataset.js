@@ -82,12 +82,11 @@
     };
 
     Dataset.prototype.addFeatureImage = function(url) {
-      var ext, feature, result, sep, value, whole, _base;
-      result = url.match(/(^|\/)(\w+)\/(\w+)\.(\w+)$/);
+      var feature, result, value, _base;
+      result = url.match(/(?:^|\/)([\w]+)\/([\w]+)\.\w+$/);
       if (result != null) {
-        whole = result[0], sep = result[1], feature = result[2], value = result[3], ext = result[4];
-        feature = canonicalValue(feature);
-        value = canonicalValue(value);
+        feature = canonicalValue(result[1]);
+        value = canonicalValue(result[2]);
         if ((_base = this.featureImages)[feature] == null) {
           _base[feature] = {};
         }
@@ -98,22 +97,21 @@
     };
 
     Dataset.prototype.addSpeciesImage = function(url) {
-      var ext, label, name, result, sep, whole, _base, _base1;
-      result = url.match(/(^|\/)(\w+)-([\w-]+)\.(\w+)$/);
+      var label, name, result, _base, _base1;
+      result = url.match(/(?:^|\/)([\w]+)-([\w-]+)\.\w+$/);
       if (result != null) {
-        whole = result[0], sep = result[1], name = result[2], label = result[3], ext = result[4];
-        name = canonicalValue(name);
-        label = canonicalValue(label);
+        name = canonicalValue(result[1]);
+        label = canonicalValue(result[2]);
         if ((_base = this.speciesImages)[name] == null) {
           _base[name] = [];
         }
         this.speciesImages[name].push([label, url]);
         return;
       }
+      result = url.match(/(?:^|\/)([\w]+)\.\w+$/);
       result = url.match(/(^|\/)(\w+)\.(\w+)$/);
       if (result != null) {
-        whole = result[0], sep = result[1], name = result[2], ext = result[3];
-        name = canonicalValue(name);
+        name = canonicalValue(result[1]);
         if ((_base1 = this.speciesImages)[name] == null) {
           _base1[name] = [];
         }
