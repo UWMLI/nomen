@@ -151,7 +151,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       <li>
         <a onclick="window.open('https://github.com/jaekwon/coffeemugg', '_system', 'location=yes');" href="#">CoffeeMugg</a>
         by
-        <a onclick="window.open('https://github.com/jaekwon', '_system', 'location=yes');" href="#">jaekwon</a>
+        <a onclick="window.open('https://github.com/jaekwon', '_system', 'location=yes');" href="#">Jae Kwon</a>
       </li>
     </ul>
   </div>
@@ -161,13 +161,22 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <script type="text/javascript" src="lib/fastclick/js/fastclick.js"></script>
 
 <script language="javascript">
-  document.addEventListener('deviceready', function() {
-    window.app = new App({
-      'appdir': cordova.file.applicationDirectory,
-      'datadir': cordova.file.dataDirectory,
-    });
+  if (typeof cordova === 'undefined') {
+    console.log('Not running in Cordova.');
+    var readOnly = 'http://localhost:8888/EIFieldResearch/fieldguide/www/';
+    window.app = new App(null, readOnly, null);
     app.onDeviceReady();
-  });
+  }
+  else {
+    console.log('Running in Cordova.');
+    document.addEventListener('deviceready', function() {
+      var readWrite = cordova.file.dataDirectory;
+      var readOnly = cordova.file.applicationDirectory + '/www';
+      var remoteURL = 'http://localhost:8888/EIFieldResearch/fieldguide/list.json';
+      window.app = new App(readWrite, readOnly, remoteURL);
+      app.onDeviceReady();
+    });
+  }
 </script>
 
 </body>

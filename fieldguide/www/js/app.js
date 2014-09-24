@@ -20,11 +20,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   };
 
   App = (function() {
-    function App(_arg) {
-      this.datadir = _arg.datadir, this.appdir = _arg.appdir;
-      this.library = new Library(this.datadir);
-      this.libraryStatic = new Library("" + this.appdir + "/www");
-      this.remote = new Remote(this.datadir, 'http://localhost:8888/EIFieldResearch/fieldguide/list.json');
+    function App(readWriteDir, readOnlyDir, remoteURL) {
+      this.library = readWriteDir != null ? new Library(readWriteDir) : null;
+      this.libraryStatic = readOnlyDir != null ? new Library(readOnlyDir) : null;
+      this.remote = (readWriteDir != null) && (remoteURL != null) ? new Remote(readWriteDir, remoteURL) : null;
     }
 
     App.prototype.onDeviceReady = function() {

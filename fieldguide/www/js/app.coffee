@@ -18,13 +18,18 @@ appendTo = (element, muggexpr) ->
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
-  constructor: ({@datadir, @appdir}) ->
+  constructor: (readWriteDir, readOnlyDir, remoteURL) ->
     # Library stored in read/write storage, data downloaded from remote
-    @library = new Library @datadir
+    @library =
+      if readWriteDir? then new Library readWriteDir else null
     # Library stored inside the app, read-only
-    @libraryStatic = new Library "#{@appdir}/www"
-    @remote = new Remote @datadir,
-      'http://localhost:8888/EIFieldResearch/fieldguide/list.json'
+    @libraryStatic =
+      if readOnlyDir? then new Library readOnlyDir else null
+    @remote =
+      if readWriteDir? and remoteURL?
+        new Remote readWriteDir, remoteURL
+      else
+        null
 
   # Called after all the Cordova APIs are ready.
   onDeviceReady: ->
