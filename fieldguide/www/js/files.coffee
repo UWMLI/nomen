@@ -19,7 +19,7 @@ getJSONList = (json, success, failure) ->
       if url.match(/^https?:\/\//)?
         url
       else
-        "#{dir}/#{url}"
+        "#{dir}#{url}"
     success fixedURLs
   .fail failure
 

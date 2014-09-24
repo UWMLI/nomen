@@ -21,7 +21,7 @@
           if (url.match(/^https?:\/\//) != null) {
             _results.push(url);
           } else {
-            _results.push("" + dir + "/" + url);
+            _results.push("" + dir + url);
           }
         }
         return _results;
