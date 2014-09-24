@@ -260,14 +260,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             for (feature in _ref1) {
               values = _ref1[feature];
               _results.push((function() {
-                var _i, _len, _ref2, _ref3, _ref4, _results1;
+                var _i, _len, _ref2, _ref3, _results1;
                 _ref2 = Object.keys(values).sort(naturalSort);
                 _results1 = [];
                 for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
                   value = _ref2[_i];
                   _results1.push({
                     display: displayValue(value),
-                    image: (_ref3 = (_ref4 = this.dataset.imageForFeature(feature, value)) != null ? _ref4.toURL() : void 0) != null ? _ref3 : 'img/noimage.png',
+                    image: (_ref3 = this.dataset.imageForFeature(feature, value)) != null ? _ref3 : 'img/noimage.png',
                     feature: feature,
                     value: value
                   });
@@ -445,7 +445,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                     }, function() {
                       return this.div('.feature-box', function() {
                         this.img('.feature-img', {
-                          src: image.toURL()
+                          src: image
                         });
                         return this.div('.feature-value', displayValue(part));
                       });
@@ -471,7 +471,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       } else {
         for (ix = _i = 0, _len = pics.length; _i < _len; ix = ++_i) {
           _ref = pics[ix], part = _ref[0], image = _ref[1];
-          this.addPage(spec.display_name, image.toURL(), spec.description, ix);
+          this.addPage(spec.display_name, image, spec.description, ix);
         }
       }
       this.resizeImage();

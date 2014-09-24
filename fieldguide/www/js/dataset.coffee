@@ -41,67 +41,74 @@ class Dataset
       {@title, @id, @version} = json
       callback()
 
+  # Loads a directory listing either from a JSON file or by recursive traversal.
+  # The JSON file should be an array of strings, each of which is either a
+  # relative URL (relative to `dir`) or an absolute URL (starting with
+  # "http://" or "https://").
+  loadDirectory: (json, dir, callback) ->
+    # First, try to load the JSON file.
+    $.getJSON json, (urls) =>
+      fixedURLs = for url in urls
+        if url.match(/^https?:\/\//)?
+          url
+        else
+          "#{dir}/#{url}"
+      callback fixedURLs
+    # If that fails, then do the directory traversal.
+    .fail =>
+      resolveLocalFileSystemURL dir, (dirEntry) =>
+        getAllFiles dirEntry.createReader(), (entries) =>
+          urls =
+            entry.toURL() for entry in entries
+          callback urls
+
   # Locate all images in the features images folder.
   loadFeatureImages: (callback) ->
     @featureImages = {}
-    useImages = (images) =>
-      for image in images
-        @addFeatureImage image
+    @loadDirectory "#{@dir}/features.json", "#{@dir}/features/", (images) =>
+      @addFeatureImage image for image in images
       callback()
-    # First, try to load a JSON file and use that as the file listing.
-    $.getJSON "#{@dir}/features.json", useImages
-    # Otherwise, actually do the directory traversal.
-    .fail =>
-      resolveLocalFileSystemURL "#{@dir}/features/", (dirEntry) =>
-        getAllFiles dirEntry.createReader(), useImages
 
   # Locate all images in the species images folder.
   loadSpeciesImages: (callback) ->
     @speciesImages = {}
-    useImages = (images) =>
-      for image in images
-        @addSpeciesImage image
+    @loadDirectory "#{@dir}/species.json", "#{@dir}/species/", (images) =>
+      @addSpeciesImage image for image in images
       callback()
-    # First, try to load a JSON file and use that as the file listing.
-    $.getJSON "#{@dir}/species.json", useImages
-    # Otherwise, actually do the directory traversal.
-    .fail =>
-      resolveLocalFileSystemURL "#{@dir}/species/", (dirEntry) =>
-        getAllFiles dirEntry.createReader(), useImages
 
   # Parse the feature image filename to see which feature and value it is for.
-  addFeatureImage: (fileEntry) ->
-    # Form: .../features/{feature}/{value}.{ext}
-    result = fileEntry.fullPath.match /features\/(\w+)\/(\w+)\.(\w+)$/
+  addFeatureImage: (url) ->
+    # Form: {feature}/{value}.{ext}
+    result = url.match /(^|\/)(\w+)\/(\w+)\.(\w+)$/
     if result?
-      [whole, feature, value, ext] = result
+      [whole, sep, feature, value, ext] = result
       feature = canonicalValue feature
       value = canonicalValue value
       @featureImages[feature] ?= {}
-      @featureImages[feature][value] = fileEntry
+      @featureImages[feature][value] = url
       return
-    console.log "Couldn't parse feature image: #{fileEntry.fullPath}"
+    console.log "Couldn't parse feature image: #{url}"
 
   # Parse the species image filename to see which species and label it has.
-  addSpeciesImage: (fileEntry) ->
+  addSpeciesImage: (url) ->
     # General form: {species}-{label}.{ext}
-    result = fileEntry.name.match /^(\w+)-([\w-]+)\.(\w+)$/
+    result = url.match /(^|\/)(\w+)-([\w-]+)\.(\w+)$/
     if result?
-      [whole, name, label, ext] = result
+      [whole, sep, name, label, ext] = result
       name = canonicalValue name
       label = canonicalValue label
       @speciesImages[name] ?= []
-      @speciesImages[name].push [label, fileEntry]
+      @speciesImages[name].push [label, url]
       return
     # Simple form: {species}.{ext} (empty label)
-    result = fileEntry.name.match /^(\w+)\.(\w+)$/
+    result = url.match /(^|\/)(\w+)\.(\w+)$/
     if result?
-      [whole, name, ext] = result
+      [whole, sep, name, ext] = result
       name = canonicalValue name
       @speciesImages[name] ?= []
-      @speciesImages[name].push ['', fileEntry]
+      @speciesImages[name].push ['', url]
       return
-    console.log "Couldn't parse species image: #{fileEntry.name}"
+    console.log "Couldn't parse species image: #{url}"
 
   # Load the CSV file of species information.
   loadSpeciesData: (callback) ->

@@ -164,7 +164,7 @@ class App
       @featureRows = for feature, values of @dataset.features
         for value in Object.keys(values).sort(naturalSort)
           display: displayValue value
-          image: @dataset.imageForFeature(feature, value)?.toURL() ? 'img/noimage.png'
+          image: @dataset.imageForFeature(feature, value) ? 'img/noimage.png'
           feature: feature
           value: value
       $('#dataset-header').html @dataset.title
@@ -261,7 +261,7 @@ class App
                 for [part, image], ix in pics
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
                     @div '.feature-box', ->
-                      @img '.feature-img', src: image.toURL()
+                      @img '.feature-img', src: image
                       @div '.feature-value', displayValue part
 
   # Executed when the user clicks on a species button from the "likely" page.
@@ -274,7 +274,7 @@ class App
       @addPage spec.display_name, 'img/noimage.png', spec.description, 0
     else
       for [part, image], ix in pics
-        @addPage spec.display_name, image.toURL(), spec.description, ix
+        @addPage spec.display_name, image, spec.description, ix
     @resizeImage()
     @addSwipes pics.length
 

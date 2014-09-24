@@ -66,10 +66,49 @@
       })(this));
     };
 
+    Dataset.prototype.loadDirectory = function(json, dir, callback) {
+      return $.getJSON(json, (function(_this) {
+        return function(urls) {
+          var fixedURLs, url;
+          fixedURLs = (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = urls.length; _i < _len; _i++) {
+              url = urls[_i];
+              if (url.match(/^https?:\/\//) != null) {
+                _results.push(url);
+              } else {
+                _results.push("" + dir + "/" + url);
+              }
+            }
+            return _results;
+          })();
+          return callback(fixedURLs);
+        };
+      })(this)).fail((function(_this) {
+        return function() {
+          return resolveLocalFileSystemURL(dir, function(dirEntry) {
+            return getAllFiles(dirEntry.createReader(), function(entries) {
+              var entry, urls;
+              urls = (function() {
+                var _i, _len, _results;
+                _results = [];
+                for (_i = 0, _len = entries.length; _i < _len; _i++) {
+                  entry = entries[_i];
+                  _results.push(entry.toURL());
+                }
+                return _results;
+              })();
+              return callback(urls);
+            });
+          });
+        };
+      })(this));
+    };
+
     Dataset.prototype.loadFeatureImages = function(callback) {
-      var useImages;
       this.featureImages = {};
-      useImages = (function(_this) {
+      return this.loadDirectory("" + this.dir + "/features.json", "" + this.dir + "/features/", (function(_this) {
         return function(images) {
           var image, _i, _len;
           for (_i = 0, _len = images.length; _i < _len; _i++) {
@@ -78,20 +117,12 @@
           }
           return callback();
         };
-      })(this);
-      return $.getJSON("" + this.dir + "/features.json", useImages).fail((function(_this) {
-        return function() {
-          return resolveLocalFileSystemURL("" + _this.dir + "/features/", function(dirEntry) {
-            return getAllFiles(dirEntry.createReader(), useImages);
-          });
-        };
       })(this));
     };
 
     Dataset.prototype.loadSpeciesImages = function(callback) {
-      var useImages;
       this.speciesImages = {};
-      useImages = (function(_this) {
+      return this.loadDirectory("" + this.dir + "/species.json", "" + this.dir + "/species/", (function(_this) {
         return function(images) {
           var image, _i, _len;
           for (_i = 0, _len = images.length; _i < _len; _i++) {
@@ -100,56 +131,49 @@
           }
           return callback();
         };
-      })(this);
-      return $.getJSON("" + this.dir + "/species.json", useImages).fail((function(_this) {
-        return function() {
-          return resolveLocalFileSystemURL("" + _this.dir + "/species/", function(dirEntry) {
-            return getAllFiles(dirEntry.createReader(), useImages);
-          });
-        };
       })(this));
     };
 
-    Dataset.prototype.addFeatureImage = function(fileEntry) {
-      var ext, feature, result, value, whole, _base;
-      result = fileEntry.fullPath.match(/features\/(\w+)\/(\w+)\.(\w+)$/);
+    Dataset.prototype.addFeatureImage = function(url) {
+      var ext, feature, result, sep, value, whole, _base;
+      result = url.match(/(^|\/)(\w+)\/(\w+)\.(\w+)$/);
       if (result != null) {
-        whole = result[0], feature = result[1], value = result[2], ext = result[3];
+        whole = result[0], sep = result[1], feature = result[2], value = result[3], ext = result[4];
         feature = canonicalValue(feature);
         value = canonicalValue(value);
         if ((_base = this.featureImages)[feature] == null) {
           _base[feature] = {};
         }
-        this.featureImages[feature][value] = fileEntry;
+        this.featureImages[feature][value] = url;
         return;
       }
-      return console.log("Couldn't parse feature image: " + fileEntry.fullPath);
+      return console.log("Couldn't parse feature image: " + url);
     };
 
-    Dataset.prototype.addSpeciesImage = function(fileEntry) {
-      var ext, label, name, result, whole, _base, _base1;
-      result = fileEntry.name.match(/^(\w+)-([\w-]+)\.(\w+)$/);
+    Dataset.prototype.addSpeciesImage = function(url) {
+      var ext, label, name, result, sep, whole, _base, _base1;
+      result = url.match(/(^|\/)(\w+)-([\w-]+)\.(\w+)$/);
       if (result != null) {
-        whole = result[0], name = result[1], label = result[2], ext = result[3];
+        whole = result[0], sep = result[1], name = result[2], label = result[3], ext = result[4];
         name = canonicalValue(name);
         label = canonicalValue(label);
         if ((_base = this.speciesImages)[name] == null) {
           _base[name] = [];
         }
-        this.speciesImages[name].push([label, fileEntry]);
+        this.speciesImages[name].push([label, url]);
         return;
       }
-      result = fileEntry.name.match(/^(\w+)\.(\w+)$/);
+      result = url.match(/(^|\/)(\w+)\.(\w+)$/);
       if (result != null) {
-        whole = result[0], name = result[1], ext = result[2];
+        whole = result[0], sep = result[1], name = result[2], ext = result[3];
         name = canonicalValue(name);
         if ((_base1 = this.speciesImages)[name] == null) {
           _base1[name] = [];
         }
-        this.speciesImages[name].push(['', fileEntry]);
+        this.speciesImages[name].push(['', url]);
         return;
       }
-      return console.log("Couldn't parse species image: " + fileEntry.name);
+      return console.log("Couldn't parse species image: " + url);
     };
 
     Dataset.prototype.loadSpeciesData = function(callback) {
