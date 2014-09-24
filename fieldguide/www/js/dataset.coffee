@@ -1,29 +1,5 @@
 'use strict'
 
-toArray = (list) -> Array.prototype.slice.call(list || [], 0)
-
-# Returns an array of all non-directory files recursively found in the
-# directory reader's remaining results.
-getAllFiles = (dirReader, callback) ->
-  files = []
-  readers = []
-  getSome = ->
-    dirReader.readEntries (results) ->
-      if results.length is 0
-        if readers.length is 0
-          callback files
-        else
-          dirReader = readers.pop()
-          getSome()
-      else
-        for file in toArray results
-          if file.isFile
-            files.push file
-          else if file.isDirectory
-            readers.push file.createReader()
-        getSome()
-  getSome()
-
 class Dataset
   constructor: (@dir) ->
 
