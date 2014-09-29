@@ -2,5 +2,5 @@
 
 require 'json'
 
-File.write 'features.json', JSON.dump(`echo features/*/*`.split)
-File.write 'species.json', JSON.dump(`echo species/*`.split)
+File.write 'features.json', JSON.dump(`ls features/*/*`.split("\n"))
+File.write 'species.json', JSON.dump(`ls species/*`.split("\n"))
