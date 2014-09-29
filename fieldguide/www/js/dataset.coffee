@@ -46,12 +46,13 @@ class Dataset
 
   # Parse the feature image filename to see which feature and value it is for.
   addFeatureImage: (url) ->
+    url = decodeURI url
     # Form: {feature}/{value}.{ext}
     result = url.match ///
       (?: ^ | \/)
-      ([\w ]+) \/ # {feature}/
-      ([\w ]+)    # {value}
-      \. \w+ $    # .{ext}
+      ([\w\ \-]+) \/ # {feature}/
+      ([\w\ \-]+)    # {value}
+      \. \w+ $      # .{ext}
     ///
     if result?
       feature = canonicalValue result[1]
@@ -63,11 +64,12 @@ class Dataset
 
   # Parse the species image filename to see which species and label it has.
   addSpeciesImage: (url) ->
+    url = decodeURI url
     # General form: {species}-{label}.{ext}
     result = url.match ///
       (?: ^ | \/ )
-      ([\w ]+) - # {species}-
-      ([\w -]+)  # {label}
+      ([\w\ ]+) - # {species}-
+      ([\w\ -]+)  # {label}
       \. \w+ $   # .{ext}
     ///
     if result?
@@ -79,10 +81,9 @@ class Dataset
     # Simple form: {species}.{ext} (empty label)
     result = url.match ///
       (?: ^ | \/ )
-      ([\w ]+) # {species}
+      ([\w\ ]+) # {species}
       \. \w+ $ # .{ext}
     ///
-    result = url.match /(^|\/)(\w+)\.(\w+)$/
     if result?
       name = canonicalValue result[1]
       @speciesImages[name] ?= []

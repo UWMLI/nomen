@@ -23,6 +23,10 @@ plants.zip:
 	rm -f $@
 	cd $(@:%.zip=%) && zip -rq "$(mkfile_dir)/$@" .
 
+colors.zip:
+	rm -f $@
+	cd $(@:%.zip=%) && zip -rq "$(mkfile_dir)/$@" .
+
 pokemon.zip: pokemon.rb
 	./pokemon.rb
 	rm -f $@

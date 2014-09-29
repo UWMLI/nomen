@@ -83,7 +83,8 @@
 
     Dataset.prototype.addFeatureImage = function(url) {
       var feature, result, value, _base;
-      result = url.match(/(?:^|\/)([\w]+)\/([\w]+)\.\w+$/);
+      url = decodeURI(url);
+      result = url.match(/(?:^|\/)([\w \-]+)\/([\w \-]+)\.\w+$/);
       if (result != null) {
         feature = canonicalValue(result[1]);
         value = canonicalValue(result[2]);
@@ -98,7 +99,8 @@
 
     Dataset.prototype.addSpeciesImage = function(url) {
       var label, name, result, _base, _base1;
-      result = url.match(/(?:^|\/)([\w]+)-([\w-]+)\.\w+$/);
+      url = decodeURI(url);
+      result = url.match(/(?:^|\/)([\w ]+)-([\w -]+)\.\w+$/);
       if (result != null) {
         name = canonicalValue(result[1]);
         label = canonicalValue(result[2]);
@@ -108,8 +110,7 @@
         this.speciesImages[name].push([label, url]);
         return;
       }
-      result = url.match(/(?:^|\/)([\w]+)\.\w+$/);
-      result = url.match(/(^|\/)(\w+)\.(\w+)$/);
+      result = url.match(/(?:^|\/)([\w ]+)\.\w+$/);
       if (result != null) {
         name = canonicalValue(result[1]);
         if ((_base1 = this.speciesImages)[name] == null) {

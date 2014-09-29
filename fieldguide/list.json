@@ -3,6 +3,11 @@
   , "version": 1
   , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/plants.zip"
   }
+, { "title"  : "Colors"
+  , "id"     : "colors"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/colors.zip"
+  }
 , { "title"  : "Kanto Pokémon"
   , "id"     : "kanto-pokemon"
   , "version": 1
