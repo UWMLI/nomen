@@ -3,7 +3,7 @@ js_files     := $(coffee_files:%.coffee=%.js)
 
 mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-datasets := plants pokemon
+datasets := plants pokemon colors
 zips     := $(datasets:%=%.zip)
 
 all: js zips
@@ -19,15 +19,6 @@ clean:
 %.js: %.coffee
 	coffee -c $<
 
-plants.zip:
+%.zip:
 	rm -f $@
 	cd $(@:%.zip=%) && zip -rq "$(mkfile_dir)/$@" .
-
-colors.zip:
-	rm -f $@
-	cd $(@:%.zip=%) && zip -rq "$(mkfile_dir)/$@" .
-
-pokemon.zip: pokemon.rb
-	./pokemon.rb
-	rm -f $@
-	cd pokemon && zip -rq "$(mkfile_dir)/$@" .
