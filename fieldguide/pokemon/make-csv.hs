@@ -30,20 +30,24 @@ data Color
   = Black | Blue | Brown | Gray | Green | Pink | Purple | Red | White | Yellow
   deriving (Eq, Ord, Show, Read, Enum, Bounded)
 
+-- | Reads all the Pokémon data from text files.
 readPokémon :: IO [Pokémon]
 readPokémon = do
   names   <- fmap lines              $ readFile "names.txt"
   descs   <- fmap lines              $ readFile "descriptions.txt"
   heights <- fmap (map read . lines) $ readFile "heights.txt"
   let allColors = [minBound .. maxBound] :: [Color]
-  colorToPokes <- forM allColors $ \col -> do
-    pokes <- fmap lines $ readFile $ "colors/" ++ map toLower (show col) ++ ".txt"
-    return (col, pokes)
+  colorToPokes <- forM allColors $ \c -> do
+    pokes <- fmap lines $ readFile $ "colors/" ++ map toLower (show c) ++ ".txt"
+    return (c, pokes)
   let pokesOfColor c = fromJust $ lookup c colorToPokes
       pokeToColor p = head $ filter (elem p . pokesOfColor) allColors
       colors = map pokeToColor names
   return $ zipWith4 Pokémon names descs heights colors
 
+-- | Splits the Pokémon heights into a few groups for classification,
+-- possibly mangles their display names into nice filenames,
+-- and spits out rows for the final CSV file.
 toRows :: [Pokémon] -> [NamedRecord]
 toRows pokes = let
   heightGroups = splitInto 6 $ map height pokes
@@ -77,6 +81,7 @@ splitInto n xs = let
   ranges = map (\chunk -> (head chunk, last chunk)) $ snd best
   in ranges
 
+-- | Statistical variance, the measure of how uneven the set of numbers is.
 variance :: [Double] -> Double
 variance ns = let
   len = fromIntegral $ length ns :: Double
@@ -98,6 +103,7 @@ combinations n (x : xs) = let
   without = combinations n xs
   in with ++ without
 
+-- | Splits a list into chunks at multiple indexes.
 splitAtAll :: [Int] -> [a] -> [[a]]
 splitAtAll []       xs = [xs]
 splitAtAll (n : ns) xs = case splitAt n xs of
