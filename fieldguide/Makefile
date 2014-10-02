@@ -19,6 +19,13 @@ clean:
 %.js: %.coffee
 	coffee -c $<
 
-%.zip:
+%.zip: %/species.csv
 	rm -f $@
-	cd $(@:%.zip=%) && zip -rq "$(mkfile_dir)/$@" .
+	cd $(@:%.zip=%) && zip -r "$(mkfile_dir)/$@" . \
+		-i info.json \
+		-i species.csv \
+		-i "species/*" \
+		-i "features/*"
+
+pokemon/species.csv:
+	cd pokemon && cabal run
