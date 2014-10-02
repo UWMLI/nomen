@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wall #-}
 module Main (main) where
 
 import Data.List (sort, zipWith4)
@@ -99,7 +98,6 @@ combinations n (x : xs) = let
   without = combinations n xs
   in with ++ without
 
--- | Given a series of split points, 
 splitAtAll :: [Int] -> [a] -> [[a]]
 splitAtAll []       xs = [xs]
 splitAtAll (n : ns) xs = case splitAt n xs of
