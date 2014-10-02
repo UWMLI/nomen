@@ -1,10 +1,7 @@
 'use strict'
 
 parseList = (str) ->
-  for val in str.toString().split(',')
-    val = canonicalValue val
-    continue if val.length is 0
-    val
+  v for v in str.toString().split(',').map(canonicalValue) when v.length isnt 0
 
 canonicalValue = (value) ->
   value.trim().toLowerCase().split(' ').join('_')

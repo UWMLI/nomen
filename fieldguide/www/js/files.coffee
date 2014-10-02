@@ -5,7 +5,7 @@ toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 # Reads a JSON file containing an array of paths. The paths can be:
 # * relative to the folder containing the JSON file
 # * absolute, starting with "http://" or "https://"
-getJSONList = (json, success, failure) ->
+getJSONList = (json, success, failure) ->>
   # First, get the dir of the json file to make relative paths absolute.
   slashIndex = json.lastIndexOf '/'
   dir =
@@ -14,7 +14,7 @@ getJSONList = (json, success, failure) ->
     else
       json[0..slashIndex]
   # Then, try to read the JSON file.
-  $.getJSON json, (urls) ->
+  $.getJSON json, (urls) ->>
     fixedURLs = for url in urls
       if url.match(/^https?:\/\//)?
         url
@@ -25,10 +25,10 @@ getJSONList = (json, success, failure) ->
 
 # Gives the callback an array of all subdirectories immediately inside the given
 # directory reader.
-getSubdirs = (dirReader, callback) ->
+getSubdirs = (dirReader, callback) ->>
   subdirs = []
-  getSome = ->
-    dirReader.readEntries (results) ->
+  getSome = ->>
+    dirReader.readEntries (results) ->>
       if results.length is 0
         callback subdirs
       else
@@ -40,11 +40,11 @@ getSubdirs = (dirReader, callback) ->
 
 # Gives the callback an array of all non-directory files found by recursively
 # enumerating the directory reader.
-getAllFiles = (dirReader, callback) ->
+getAllFiles = (dirReader, callback) ->>
   files = []
   readers = []
-  getSome = ->
-    dirReader.readEntries (results) ->
+  getSome = ->>
+    dirReader.readEntries (results) ->>
       if results.length is 0
         if readers.length is 0
           callback files

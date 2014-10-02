@@ -5,16 +5,14 @@
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   parseList = function(str) {
-    var val, _i, _len, _ref, _results;
-    _ref = str.toString().split(',');
+    var v, _i, _len, _ref, _results;
+    _ref = str.toString().split(',').map(canonicalValue);
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      val = _ref[_i];
-      val = canonicalValue(val);
-      if (val.length === 0) {
-        continue;
+      v = _ref[_i];
+      if (v.length !== 0) {
+        _results.push(v);
       }
-      _results.push(val);
     }
     return _results;
   };

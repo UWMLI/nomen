@@ -1,4 +1,3 @@
 platforms/
 .DS_Store
 /*.zip
-*.min.js

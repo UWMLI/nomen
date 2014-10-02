@@ -11,7 +11,7 @@
     var dir, slashIndex;
     slashIndex = json.lastIndexOf('/');
     dir = slashIndex === -1 ? '' : json.slice(0, +slashIndex + 1 || 9e9);
-    return $.getJSON(json, function(urls) {
+    $.getJSON(json, function(urls) {
       var fixedURLs, url;
       fixedURLs = (function() {
         var _i, _len, _results;
@@ -26,7 +26,7 @@
         }
         return _results;
       })();
-      return success(fixedURLs);
+      success(fixedURLs);
     }).fail(failure);
   };
 
@@ -34,10 +34,10 @@
     var getSome, subdirs;
     subdirs = [];
     getSome = function() {
-      return dirReader.readEntries(function(results) {
+      dirReader.readEntries(function(results) {
         var newSubdirs, res;
         if (results.length === 0) {
-          return callback(subdirs);
+          callback(subdirs);
         } else {
           newSubdirs = (function() {
             var _i, _len, _ref, _results;
@@ -52,11 +52,11 @@
             return _results;
           })();
           subdirs = subdirs.concat(newSubdirs);
-          return getSome();
+          getSome();
         }
       });
     };
-    return getSome();
+    getSome();
   };
 
   getAllFiles = function(dirReader, callback) {
@@ -64,14 +64,14 @@
     files = [];
     readers = [];
     getSome = function() {
-      return dirReader.readEntries(function(results) {
+      dirReader.readEntries(function(results) {
         var file, _i, _len, _ref;
         if (results.length === 0) {
           if (readers.length === 0) {
-            return callback(files);
+            callback(files);
           } else {
             dirReader = readers.pop();
-            return getSome();
+            getSome();
           }
         } else {
           _ref = toArray(results);
@@ -83,11 +83,11 @@
               readers.push(file.createReader());
             }
           }
-          return getSome();
+          getSome();
         }
       });
     };
-    return getSome();
+    getSome();
   };
 
   window.getJSONList = getJSONList;

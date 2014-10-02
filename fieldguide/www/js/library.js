@@ -10,41 +10,41 @@
     }
 
     Library.prototype.makeDir = function(callback) {
-      return resolveLocalFileSystemURL(this.datadir, (function(_this) {
+      resolveLocalFileSystemURL(this.datadir, (function(_this) {
         return function(dir) {
-          return dir.getDirectory('library', {
+          dir.getDirectory('library', {
             create: true
           }, function() {
-            return callback();
+            callback();
           });
         };
       })(this));
     };
 
     Library.prototype.deleteDir = function(callback) {
-      return resolveLocalFileSystemURL(this.dir, (function(_this) {
+      resolveLocalFileSystemURL(this.dir, (function(_this) {
         return function(dir) {
-          return dir.removeRecursively(callback);
+          dir.removeRecursively(callback);
         };
       })(this), callback);
     };
 
     Library.prototype.deleteSet = function(id, callback) {
-      return resolveLocalFileSystemURL("" + this.dir + "/" + id, (function(_this) {
+      resolveLocalFileSystemURL("" + this.dir + "/" + id, (function(_this) {
         return function(dir) {
-          return dir.removeRecursively(callback);
+          dir.removeRecursively(callback);
         };
       })(this), callback);
     };
 
     Library.prototype.makeSet = function(id, callback) {
-      return this.deleteSet(id, (function(_this) {
+      this.deleteSet(id, (function(_this) {
         return function() {
-          return resolveLocalFileSystemURL(_this.dir, function(dir) {
-            return dir.getDirectory(id, {
+          resolveLocalFileSystemURL(_this.dir, function(dir) {
+            dir.getDirectory(id, {
               create: true
             }, function(dirEntry) {
-              return callback(dirEntry);
+              callback(dirEntry);
             });
           });
         };
@@ -57,22 +57,22 @@
       processDirs = (function(_this) {
         return function(urls) {
           if (urls.length === 0) {
-            return callback();
+            callback();
           } else {
-            return _this.addLibrary(urls.pop(), function() {
+            _this.addLibrary(urls.pop(), function() {
               return processDirs(urls);
             });
           }
         };
       })(this);
-      return getJSONList("" + this.datadir + "/library.json", processDirs, (function(_this) {
+      getJSONList("" + this.datadir + "/library.json", processDirs, (function(_this) {
         return function() {
-          return resolveLocalFileSystemURL(_this.dir, function(dirEntry) {
+          resolveLocalFileSystemURL(_this.dir, function(dirEntry) {
             var dirReader;
             dirReader = dirEntry.createReader();
-            return getSubdirs(dirEntry.createReader(), function(dirs) {
+            getSubdirs(dirEntry.createReader(), function(dirs) {
               var dir;
-              return processDirs((function() {
+              processDirs((function() {
                 var _i, _len, _results;
                 _results = [];
                 for (_i = 0, _len = dirs.length; _i < _len; _i++) {
@@ -90,10 +90,10 @@
     Library.prototype.addLibrary = function(url, callback) {
       var ds;
       ds = new Dataset(url);
-      return ds.loadInfo((function(_this) {
+      ds.loadInfo((function(_this) {
         return function() {
           _this.datasets[ds.id] = ds;
-          return callback();
+          callback();
         };
       })(this));
     };

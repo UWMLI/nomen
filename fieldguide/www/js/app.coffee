@@ -14,7 +14,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 # 2. appending it to a JQuery element
 # 3. directing JQuery Mobile to perform any appearance triggers
 #    (for example restyling links into buttons, etc.)
-appendTo = (element, muggexpr) ->
+appendTo = (element, muggexpr) ->>
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
 class App
@@ -36,100 +36,100 @@ class App
       $('#download-button').addClass 'ui-state-disabled'
 
   # Called after all the Cordova APIs are ready.
-  onDeviceReady: ->
+  onDeviceReady: ->>
     FastClick.attach document.body
     @resizeImage()
     $(window).resize => @resizeImage()
     @refreshLibrary()
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
-  syncRemote: (button, callback = (->)) ->
+  syncRemote: (button, callback = (->)) ->>
     button.addClass 'ui-state-disabled'
     button.html 'Syncing...'
-    @remote.downloadList =>
+    @remote.downloadList =>>
       @clearRemoteButtons()
       for dataset in @remote.datasets
         @addRemoteButton dataset.id, datasetDisplay dataset
-      setTimeout =>
+      setTimeout =>>
         button.html 'Synced'
         button.removeClass 'ui-state-disabled'
       , 250 # For user-friendliness, we show "Syncing..." for at least 250ms
       callback()
-    , =>
-      setTimeout =>
+    , =>>
+      setTimeout =>>
         button.html 'Sync failed'
         button.removeClass 'ui-state-disabled'
       , 250
 
   # Clear all buttons for remotely available datasets.
-  clearRemoteButtons: ->
+  clearRemoteButtons: ->>
     $('#remote-content').html ''
 
   # Add a button for a new downloadable dataset to the Download page.
-  addRemoteButton: (id, text) ->
+  addRemoteButton: (id, text) ->>
     setFn = "app.downloadZip($(this), '#{id}');"
-    appendTo $('#remote-content'), ->
+    appendTo $('#remote-content'), ->>
       @a '.ui-btn .remote-button', onclick: setFn, text
 
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
-  downloadZip: (button, id, callback = (->)) ->
+  downloadZip: (button, id, callback = (->)) ->>
     dataset = @remote.getDataset id
     setname = datasetDisplay dataset
     button.addClass 'ui-state-disabled'
     button.html "Downloading: #{setname}"
-    @library.makeDir =>
-      @remote.downloadDataset id, @library, =>
+    @library.makeDir =>>
+      @remote.downloadDataset id, @library, =>>
         button.html setname
         button.removeClass 'ui-state-disabled'
         @refreshLibrary callback
-      , =>
-        setTimeout =>
+      , =>>
+        setTimeout =>>
           button.html "Failed: #{setname}"
           button.removeClass 'ui-state-disabled'
         , 250
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
-  readyClear: ->
+  readyClear: ->>
     $('#confirm-delete-message').html 'Are you sure you want to clear the library?'
-    @deleteAction = (callback) =>
+    @deleteAction = (callback) =>>
       @clearLibrary callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
 
   # Sets up and loads the delete confirmation dialog for deleting a single set.
-  readyDelete: (id) ->
+  readyDelete: (id) ->>
     title = @library.datasets[id].title
     $('#confirm-delete-message').html "Are you sure you want to delete the dataset \"#{title}\"?"
-    @deleteAction = (callback) =>
+    @deleteAction = (callback) =>>
       @deleteDataset id, callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
 
   # Performs a delete action after the user confirms it from the dialog.
-  proceedDelete: (callback = (->)) ->
-    @deleteAction =>
+  proceedDelete: (callback = (->)) ->>
+    @deleteAction =>>
       $.mobile.changePage '#home', { transition: 'pop', reverse: true }
       callback()
 
   # Delete all datasets from the file system, by removing the whole library
   # folder recursively.
-  clearLibrary: (callback = (->)) ->
-    @library.deleteDir =>
+  clearLibrary: (callback = (->)) ->>
+    @library.deleteDir =>>
       @refreshLibrary callback
 
   # Ensure the buttons on the home screen accurately reflect the datasets
   # we have in the file system.
-  refreshLibrary: (callback = (->)) ->
+  refreshLibrary: (callback = (->)) ->>
     @clearDataButtons()
-    scanStatic = =>
+    scanStatic = =>>
       if @libraryStatic?
-        @libraryStatic.scanLibrary =>
+        @libraryStatic.scanLibrary =>>
           for id, dataset of @libraryStatic.datasets
             @addDataButton id, datasetDisplay(dataset), false
           callback()
       else
         callback()
     if @library?
-      @library.scanLibrary =>
+      @library.scanLibrary =>>
         for id, dataset of @library.datasets
           @addDataButton id, datasetDisplay(dataset), true
         scanStatic()
@@ -138,34 +138,34 @@ class App
 
   # Delete the dataset with the given ID from the device's file system.
   # Also deletes the button by calling refreshLibrary.
-  deleteDataset: (id, callback = (->)) ->
-    @library.deleteSet id, =>
+  deleteDataset: (id, callback = (->)) ->>
+    @library.deleteSet id, =>>
       @refreshLibrary callback
 
   # Clear any existing dataset buttons on the home screen.
-  clearDataButtons: ->
+  clearDataButtons: ->>
     $('#home-content').html ''
 
   # Add a button for a new dataset to the home screen.
-  addDataButton: (id, text, canDelete) ->
+  addDataButton: (id, text, canDelete) ->>
     setFn = "app.goToDataset('#{id}');"
     deleteFn = "app.readyDelete('#{id}');"
-    appendTo $('#home-content'), ->
+    appendTo $('#home-content'), ->>
       if canDelete
         @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
       @a '.ui-btn .ui-btn-inline', onclick: setFn, text
       @br ''
 
   # Loads a dataset, and then goes to the feature selection page.
-  goToDataset: (id, callback = (->)) ->
-    @setDataset id, =>
+  goToDataset: (id, callback = (->)) ->>
+    @setDataset id, =>>
       $.mobile.changePage $('#dataset')
       callback()
 
   # Executed when the user opens a dataset from the home screen.
-  setDataset: (id, callback = (->)) ->
+  setDataset: (id, callback = (->)) ->>
     @dataset = @library?.datasets[id] ? @libraryStatic?.datasets[id]
-    @dataset.load =>
+    @dataset.load =>>
       # Compares two strings by
       # 1. comparing numbers if they both start with a number
       # 2. otherwise, or if they start with equal numbers, lexicographically
@@ -190,24 +190,24 @@ class App
       callback()
 
   # Fill the features page with rows of possible filtering criteria.
-  makeFeatureRows: ->
+  makeFeatureRows: ->>
     $('#dataset-content').html ''
     for row in @featureRows
       feature = row[0].feature
-      appendTo $('#dataset-content'), ->
-        @div '.feature-row', ->
+      appendTo $('#dataset-content'), ->>
+        @div '.feature-row', ->>
           @div '.feature-name', displayValue feature
-          @div '.feature-boxes', ->
+          @div '.feature-boxes', ->>
             for {display, image, value} in row
               toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
-              @div '.feature-box', onclick: toggleFn, ->
+              @div '.feature-box', onclick: toggleFn, ->>
                 @img '.feature-img', src: image
                 @div '.feature-value', display
     @selected = {}
     $('.feature-value').removeClass 'selected'
 
   # Toggle a feature-value's selection (both in the app, and in appearance).
-  toggleElement: (element, feature, value) ->
+  toggleElement: (element, feature, value) ->>
     @selected[feature] ?= {}
 
     if @selected[feature][value]
@@ -228,7 +228,7 @@ class App
     @fillLikelyPage()
 
   # Update the "X Likely" button in the upper-right of the features page.
-  showHowMany: ->
+  showHowMany: ->>
     $('#likely-button').html "#{@getLikely().length} Likely"
 
   # Compute how many species match the criteria the user selected.
@@ -238,7 +238,7 @@ class App
     spec for __, spec of @dataset.species when spec.computeScore(@selected) >= cutoff
 
   # Fill the "likely" page with rows of species images.
-  fillLikelyPage: ->
+  fillLikelyPage: ->>
     $('#likely-species').html ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
@@ -252,7 +252,7 @@ class App
     @showSpecies()
 
   # Add some more species to the list of likely candidates.
-  showSpecies: ->
+  showSpecies: ->>
     toShow = @speciesPending[0..9]
     @speciesPending = @speciesPending[10..]
     if @speciesPending.length is 0
@@ -261,28 +261,28 @@ class App
       $('#likely-show-button').removeClass 'ui-state-disabled'
     dataset = @dataset
     for [spec, score] in toShow
-      appendTo $('#likely-species'), ->
+      appendTo $('#likely-species'), ->>
         setFn = "app.setSpecies('#{spec.name}'); return true;"
-        @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->
-          @div '.feature-row', ->
-            @div '.feature-name', ->
+        @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
+          @div '.feature-row', ->>
+            @div '.feature-name', ->>
               @text "#{spec.display_name} (#{score})"
-            @div '.feature-boxes', ->
+            @div '.feature-boxes', ->>
               pics = dataset.imagesForSpecies spec
               if pics.length is 0
-                @div '.feature-box', ->
+                @div '.feature-box', ->>
                   @img '.feature-img', src: 'img/noimage.png'
                   @div '.feature-value', 'No Image'
               else
                 for [part, image], ix in pics
-                  @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->
-                    @div '.feature-box', ->
+                  @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->>
+                    @div '.feature-box', ->>
                       @img '.feature-img', src: image
                       @div '.feature-value', displayValue part
 
   # Executed when the user clicks on a species button from the "likely" page.
   # Clear existing species pages, and make new ones for the selected species.
-  setSpecies: (name) ->
+  setSpecies: (name) ->>
     @clearPages()
     spec = @dataset.species[name]
     pics = @dataset.imagesForSpecies spec
@@ -295,7 +295,7 @@ class App
     @addSwipes pics.length
 
   # Remove all the current JQuery Mobile pages for species images.
-  clearPages: ->
+  clearPages: ->>
     i = 0
     loop
       page = $("#specimen#{i}")
@@ -304,32 +304,32 @@ class App
       i++
 
   # Add a JQuery Mobile page containing one of a species' images.
-  addPage: (name, img, desc, ix) ->
-    appendTo $('body'), ->
-      @div "#specimen#{ix} .specimen", 'data-role': 'page', ->
-        @div 'data-role': 'header', 'data-position': 'fixed', 'data-tap-toggle': 'false', ->
+  addPage: (name, img, desc, ix) ->>
+    appendTo $('body'), ->>
+      @div "#specimen#{ix} .specimen", 'data-role': 'page', ->>
+        @div 'data-role': 'header', 'data-position': 'fixed', 'data-tap-toggle': 'false', ->>
           @h1 name
           @a '.ui-btn-left', 'href': '#likely', 'data-icon': 'arrow-l', 'data-transition': 'slide', 'data-direction': 'reverse', 'Back'
-        @div '.ui-content .specimen-content', 'data-role': 'main', ->
-          @div '.specimen-img-box', ->
+        @div '.ui-content .specimen-content', 'data-role': 'main', ->>
+          @div '.specimen-img-box', ->>
             @div '.specimen-img', style: "background-image: url(#{img});", ''
             @div '.specimen-img .blur', style: "background-image: url(#{img});", ''
             @div '.specimen-img-gradient', ''
-          @div '.specimen-text-box', ->
+          @div '.specimen-text-box', ->>
             @div '.specimen-text', desc
 
   # Add swipe handlers to the image pages, so you can swipe left and right
   # to move through a species' images.
-  addSwipes: (imgs) ->
+  addSwipes: (imgs) ->>
     if imgs >= 2
       for ix in [0 .. imgs - 2]
-        do (ix) ->
-          $("#specimen#{ix} .specimen-img-box").on 'swipeleft', ->
+        do (ix) ->>
+          $("#specimen#{ix} .specimen-img-box").on 'swipeleft', ->>
             # swipeleft means move one image over to the right
             $.mobile.changePage "#specimen#{ix + 1}", { transition: "slide" }
       for ix in [1 .. imgs - 1]
-        do (ix) ->
-          $("#specimen#{ix} .specimen-img-box").on 'swiperight', ->
+        do (ix) ->>
+          $("#specimen#{ix} .specimen-img-box").on 'swiperight', ->>
             # swiperight means move one image over to the left
             $.mobile.changePage "#specimen#{ix - 1}", { transition: "slide", reverse: true }
 
@@ -337,7 +337,7 @@ class App
   # This gets called whenever a new species is selected (after its image pages
   # are added), or whenever the window is resized (e.g. device is rotated),
   # see `onDeviceReady`.
-  resizeImage: ->
+  resizeImage: ->>
     h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
     $('.specimen-img-box').css('height', "#{h - 100}px")
 

@@ -25,11 +25,11 @@
     Remote.prototype.downloadList = function(callback, errback) {
       var transfer;
       transfer = new FileTransfer();
-      return transfer.download(this.url, this.list, (function(_this) {
+      transfer.download(this.url, this.list, (function(_this) {
         return function(entry) {
-          return $.getJSON(_this.list, function(json) {
+          $.getJSON(_this.list, function(json) {
             _this.datasets = json;
-            return callback();
+            callback();
           });
         };
       })(this), errback);
@@ -44,15 +44,15 @@
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
-      return transfer.download(dataset.url, zipFile, (function(_this) {
+      transfer.download(dataset.url, zipFile, (function(_this) {
         return function(zipEntry) {
-          return lib.makeSet(id, function(setEntry) {
-            return zip.unzip(zipFile, setEntry.toURL(), function(code) {
-              return zipEntry.remove(function() {
+          lib.makeSet(id, function(setEntry) {
+            zip.unzip(zipFile, setEntry.toURL(), function(code) {
+              zipEntry.remove(function() {
                 if (code === 0) {
-                  return callback();
+                  callback();
                 } else {
-                  return errback("Unzip operation on " + zipFile + " returned " + code);
+                  errback("Unzip operation on " + zipFile + " returned " + code);
                 }
               });
             });
