@@ -25,6 +25,6 @@ main = interact $ unlines . go [] . lines where
   go [] ls = go' [] ls
 
   -- Then check if this line starts an action
-  go' ns ls@(l : lt) = if reverse (take 3 $ reverse l) `elem` ["->>", "=>>"]
+  go' ns ls@(l : lt) = if drop (length l - 3) l `elem` ["->>", "=>>"]
     then dropLast l : go (indent l : ns) lt
     else l : go ns lt
