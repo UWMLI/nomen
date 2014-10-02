@@ -1,5 +1,6 @@
 coffee_files := $(wildcard www/js/*.coffee) $(wildcard www/lib/*/js/*.coffee)
 js_files     := $(coffee_files:%.coffee=%.js)
+min_js_files := $(coffee_files:%.coffee=%.min.js)
 
 mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -8,7 +9,7 @@ zips     := $(datasets:%=%.zip)
 
 all: js zips
 
-js: $(js_files)
+js: $(js_files) $(min_js_files)
 
 zips: $(zips)
 
@@ -18,6 +19,9 @@ clean:
 
 %.js: %.coffee
 	coffee -c $<
+
+%.min.js: %.js
+	closure-compiler --language_in ECMASCRIPT5_STRICT $< > $@
 
 %.zip: %/species.csv
 	rm -f $@
