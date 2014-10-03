@@ -26,10 +26,19 @@ function validateDataset($dir) {
 
   $species = new parseCSV("$dir/species.csv");
 
+  $species_canonical = [];
+  foreach ($species->data as $spec) {
+    $spec_canonical = [];
+    foreach ($spec as $k => $v) {
+      $spec_canonical[ canonical($k) ] = $v;
+    }
+    $species_canonical[] = $spec_canonical;
+  }
+
   // Find all species images
   $img_species = [];
   foreach (scandir_real("$dir/species") as $img) {
-    if ( preg_match('/^(\w+)-[\w-]+\.(png|jpg)$/', $img, $matches) ) {
+    if ( preg_match('/^(\w+)(-[\w-]+)?\.[A-Za-z]+$/', $img, $matches) ) {
       $img_species[ $matches[1] ] = true;
     }
     else {
@@ -39,18 +48,18 @@ function validateDataset($dir) {
 
   // Find all species in the CSV
   $csv_species = [];
-  foreach ($species->data as $spec) {
+  foreach ($species_canonical as $spec) {
     $csv_species[ canonical( $spec['name'] ) ] = true;
   }
 
   // Find all feature images
   $img_features = [];
   foreach (scandir_real("$dir/features") as $feature) {
-    $img_features[$feature] = [];
+    $img_features[canonical($feature)] = [];
     foreach (scandir_real("$dir/features/$feature") as $image) {
-      $ext = substr($image, -4);
-      if ($ext == '.png' || $ext == '.jpg') {
-        $img_features[$feature][substr($image, 0, -4)] = true;
+      $extension_dot = strrpos($image, '.');
+      if ($extension_dot !== false) {
+        $img_features[canonical($feature)][canonical(substr($image, 0, $extension_dot))] = true;
       }
       else {
         $errors[] = "Feature image couldn't be parsed: $feature/$image";
@@ -60,9 +69,8 @@ function validateDataset($dir) {
 
   // Find all features which are present in the species
   $csv_features = [];
-  foreach ($species->data as $spec) {
+  foreach ($species_canonical as $spec) {
     foreach ($spec as $k => $vstr) {
-      $k = canonical($k);
       if ($k == 'name' || $k == 'display_name' || $k == 'description') continue;
 
       if ( empty($csv_features[$k]) )
