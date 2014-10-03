@@ -39,7 +39,7 @@ function validateDataset($dir) {
   $img_species = [];
   foreach (scandir_real("$dir/species") as $img) {
     if ( preg_match('/^(\w+)(-[\w-]+)?\.[A-Za-z]+$/', $img, $matches) ) {
-      $img_species[ $matches[1] ] = true;
+      $img_species[ canonical($matches[1]) ] = true;
     }
     else {
       $errors[] = "Couldn't parse species image: $img";
