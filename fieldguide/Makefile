@@ -17,7 +17,7 @@ clean:
 	rm -rf pokemon/
 
 %.pp.coffee: %.coffee
-	./action-arrow.hs < $< > $@
+	./action-arrow.rb < $< > $@
 
 %.pp.js: %.pp.coffee
 	coffee -c $<
