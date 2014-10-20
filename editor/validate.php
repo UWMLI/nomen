@@ -38,7 +38,7 @@ function validateDataset($dir) {
   // Find all species images
   $img_species = [];
   foreach (scandir_real("$dir/species") as $img) {
-    if ( preg_match('/^(\w+)(-[\w-]+)?\.[A-Za-z]+$/', $img, $matches) ) {
+    if ( preg_match('/^([\w ]+)(-[\w -]+)?\.[A-Za-z]+$/', $img, $matches) ) {
       $img_species[ canonical($matches[1]) ] = true;
     }
     else {
