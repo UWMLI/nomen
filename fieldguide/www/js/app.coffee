@@ -305,6 +305,7 @@ class App
 
   # Add a JQuery Mobile page containing one of a species' images.
   addPage: (name, img, desc, ix) ->>
+    img = encodeURI img
     appendTo $('body'), ->>
       @div "#specimen#{ix} .specimen", 'data-role': 'page', ->>
         @div 'data-role': 'header', 'data-position': 'fixed', 'data-tap-toggle': 'false', ->>

@@ -504,6 +504,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.addPage = function(name, img, desc, ix) {
+      img = encodeURI(img);
       appendTo($('body'), function() {
         this.div("#specimen" + ix + " .specimen", {
           'data-role': 'page'
