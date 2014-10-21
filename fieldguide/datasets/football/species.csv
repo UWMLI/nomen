@@ -1,65 +1,65 @@
 Name,Description,Conference,State,Primary Colors,Mascot Genre,Display Name
-Boston College,,ACC,Massachusetts,"Maroon, Gold","Animal, Bird"
-Clemson,,ACC,South Carolina,"Orange, Purple","Animal, Cat"
-Duke,,ACC,North Carolina,"Blue, White","Other, Human"
-Florida State,,ACC,Florida,"Maroon, Gold","Animal, Human"
-Georgia Tech,,ACC,Georgia,"Gold, White","Other, Insect"
-Louisville,,ACC,Kentucky,"Red, Black","Animal, Bird"
-Miami,,ACC,Florida,"Orange, Green",Other
-North Carolina,,ACC,North Carolina,"Blue, White","Animal, Other"
-North Carolina State,,ACC,North Carolina,"Red, White","Animal, Dog"
-Pittsburgh,,ACC,Pennsylvania,"Blue, Gold","Animal, Cat"
-Syracuse,,ACC,New York,"Orange, Blue","Other, Color"
-Virginia,,ACC,Virginia,"Blue, Orange","Animal, Human"
-Virginia Tech,,ACC,Virginia,"Orange, Maroon","Other, Bird"
-Wake Forest,,ACC,North Carolina,"Black, Yellow","Other, Human"
-Baylor,,Big 12,Texas,"Green, Gold","Animal, Bear"
-Iowa State,,Big 12,Iowa,"Yellow, Red",Other
-Kansas,,Big 12,Kansas,"Blue, White","Other, Bird"
-Kansas State,,Big 12,Kansas,"Gray, Purple","Animal, Cat"
-Oklahoma,,Big 12,Oklahoma,"Red, White","Other, Human"
-Oklahoma State,,Big 12,Oklahoma,"Orange, Black","Animal, Human"
-TCU,,Big 12,Texas,"Purple, White","Animal, Other"
-Texas,,Big 12,Texas,"Orange, White","Animal, Other"
-Texas Tech,,Big 12,Texas,"Red, Black","Other, Human"
-West Virginia,,Big 12,West Virginia,"Yellow, Blue","Animal, Human"
-Illinois,,Big 10,Illinois,"Orange, Blue","Other, Human"
-Indiana,,Big 10,Indiana,"Red, White","Other, Human"
-Iowa,,Big 10,Iowa,"Yellow, Black","Animal, Bird"
-Maryland,,Big 10,Maryland,"Black, Gold","Animal, Other"
-Michigan,,Big 10,Michigan,"Yellow, Blue","Animal, Other"
-Michigan State,,Big 10,Michigan,"Green, White","Animal, Human"
-Minnesota,,Big 10,Minnesota,"Gold, Maroon","Animal, Other"
-Nebraska,,Big 10,Nebraska,"Red, White","Other, Human"
-Northwestern,,Big 10,Illinois,"Purple, White","Animal, Cat"
-Ohio State,,Big 10,Ohio,"Red, Gray","Other, Plant"
-Penn State,,Big 10,Pennsylvania,"Blue, White","Animal, Cat"
-Purdue,,Big 10,Indiana,"Gold, Black","Animal, Human"
-Rutgers,,Big 10,New Jersey,"Red, White","Animal, Human"
-Wisconsin,,Big 10,Wisconsin,"Red, White","Animal, Other"
-Arizona,,Pac 12,Arizona,"Red, Blue","Animal, Cat"
-Arizona State,,Pac 12,Arizona,"Yellow, Red","Other, Human"
-California,,Pac 12,California,"Yellow, Blue","Animal, Bear"
-Colorado,,Pac 12,Colorado,"Yellow, Black","Animal, Other"
-Oregon,,Pac 12,Oregon,"Green, Yellow","Animal, Bird"
-Oregon State,,Pac 12,Oregon,"Orange, Black","Animal, Other"
-Southern California,,Pac 12,California,"Red, Gold","Animal, Human"
-Stanford,,Pac 12,California,"Red, White","Other, Color"
-UCLA,,Pac 12,California,"Blue, Gold","Animal, Bear"
-Utah,,Pac 12,Utah,"Red, White","Animal, Other"
-Washington,,Pac 12,Washington,"Purple, Gold","Animal, Dog"
-Washington State,,Pac 12,Washington,"Red, Gray","Animal, Cat"
-Alabama,,SEC,Alabama,"Red, White","Other, Color"
-Arkansas,,SEC,Arkansas,"Red, White","Animal, Other"
-Auburn,,SEC,Alabama,"Blue, Orange","Animal, Cat"
-Florida,,SEC,Florida,"Blue, Orange","Animal, Other"
-Georgia,,SEC,Georgia,"Red, Black","Animal, Dog"
-Kentucky,,SEC,Kentucky,"Blue, White","Animal, Cat"
-LSU,,SEC,Louisiana,"Purple, Yellow","Animal, Cat"
-Mississippi State,,SEC,Mississippi,"Maroon, White","Animal, Dog"
-Missouri,,SEC,Missouri,"Yellow, Black","Animal, Cat"
-Ole Miss,,SEC,Mississippi,"Blue, Red","Other, Human"
-South Carolina,,SEC,South Carolina,"Red, Black","Animal, Bird"
-Tennessee,,SEC,Tennessee,"Orange, White","Other, Human"
+Boston College,,ACC,Massachusetts,"Maroon, Gold","Animal, Bird",
+Clemson,,ACC,South Carolina,"Orange, Purple","Animal, Cat",
+Duke,,ACC,North Carolina,"Blue, White","Other, Human",
+Florida State,,ACC,Florida,"Maroon, Gold","Animal, Human",
+Georgia Tech,,ACC,Georgia,"Gold, White","Other, Insect",
+Louisville,,ACC,Kentucky,"Red, Black","Animal, Bird",
+Miami,,ACC,Florida,"Orange, Green",Other,
+North Carolina,,ACC,North Carolina,"Blue, White","Animal, Other",
+North Carolina State,,ACC,North Carolina,"Red, White","Animal, Dog",
+Pittsburgh,,ACC,Pennsylvania,"Blue, Gold","Animal, Cat",
+Syracuse,,ACC,New York,"Orange, Blue","Other, Color",
+Virginia,,ACC,Virginia,"Blue, Orange","Animal, Human",
+Virginia Tech,,ACC,Virginia,"Orange, Maroon","Other, Bird",
+Wake Forest,,ACC,North Carolina,"Black, Yellow","Other, Human",
+Baylor,,Big 12,Texas,"Green, Gold","Animal, Bear",
+Iowa State,,Big 12,Iowa,"Yellow, Red",Other,
+Kansas,,Big 12,Kansas,"Blue, White","Other, Bird",
+Kansas State,,Big 12,Kansas,"Gray, Purple","Animal, Cat",
+Oklahoma,,Big 12,Oklahoma,"Red, White","Other, Human",
+Oklahoma State,,Big 12,Oklahoma,"Orange, Black","Animal, Human",
+TCU,,Big 12,Texas,"Purple, White","Animal, Other",
+Texas,,Big 12,Texas,"Orange, White","Animal, Other",
+Texas Tech,,Big 12,Texas,"Red, Black","Other, Human",
+West Virginia,,Big 12,West Virginia,"Yellow, Blue","Animal, Human",
+Illinois,,Big 10,Illinois,"Orange, Blue","Other, Human",
+Indiana,,Big 10,Indiana,"Red, White","Other, Human",
+Iowa,,Big 10,Iowa,"Yellow, Black","Animal, Bird",
+Maryland,,Big 10,Maryland,"Black, Gold","Animal, Other",
+Michigan,,Big 10,Michigan,"Yellow, Blue","Animal, Other",
+Michigan State,,Big 10,Michigan,"Green, White","Animal, Human",
+Minnesota,,Big 10,Minnesota,"Gold, Maroon","Animal, Other",
+Nebraska,,Big 10,Nebraska,"Red, White","Other, Human",
+Northwestern,,Big 10,Illinois,"Purple, White","Animal, Cat",
+Ohio State,,Big 10,Ohio,"Red, Gray","Other, Plant",
+Penn State,,Big 10,Pennsylvania,"Blue, White","Animal, Cat",
+Purdue,,Big 10,Indiana,"Gold, Black","Animal, Human",
+Rutgers,,Big 10,New Jersey,"Red, White","Animal, Human",
+Wisconsin,,Big 10,Wisconsin,"Red, White","Animal, Other",
+Arizona,,Pac 12,Arizona,"Red, Blue","Animal, Cat",
+Arizona State,,Pac 12,Arizona,"Yellow, Red","Other, Human",
+California,,Pac 12,California,"Yellow, Blue","Animal, Bear",
+Colorado,,Pac 12,Colorado,"Yellow, Black","Animal, Other",
+Oregon,,Pac 12,Oregon,"Green, Yellow","Animal, Bird",
+Oregon State,,Pac 12,Oregon,"Orange, Black","Animal, Other",
+Southern California,,Pac 12,California,"Red, Gold","Animal, Human",
+Stanford,,Pac 12,California,"Red, White","Other, Color",
+UCLA,,Pac 12,California,"Blue, Gold","Animal, Bear",
+Utah,,Pac 12,Utah,"Red, White","Animal, Other",
+Washington,,Pac 12,Washington,"Purple, Gold","Animal, Dog",
+Washington State,,Pac 12,Washington,"Red, Gray","Animal, Cat",
+Alabama,,SEC,Alabama,"Red, White","Other, Color",
+Arkansas,,SEC,Arkansas,"Red, White","Animal, Other",
+Auburn,,SEC,Alabama,"Blue, Orange","Animal, Cat",
+Florida,,SEC,Florida,"Blue, Orange","Animal, Other",
+Georgia,,SEC,Georgia,"Red, Black","Animal, Dog",
+Kentucky,,SEC,Kentucky,"Blue, White","Animal, Cat",
+LSU,,SEC,Louisiana,"Purple, Yellow","Animal, Cat",
+Mississippi State,,SEC,Mississippi,"Maroon, White","Animal, Dog",
+Missouri,,SEC,Missouri,"Yellow, Black","Animal, Cat",
+Ole Miss,,SEC,Mississippi,"Blue, Red","Other, Human",
+South Carolina,,SEC,South Carolina,"Red, Black","Animal, Bird",
+Tennessee,,SEC,Tennessee,"Orange, White","Other, Human",
 Texas A M,,SEC,Texas,"Maroon, White","Other, Human","Texas A&M"
-Vanderbilt,,SEC,Tennessee,"Black, Gold","Other, Human"
+Vanderbilt,,SEC,Tennessee,"Black, Gold","Other, Human",
