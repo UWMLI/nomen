@@ -3,6 +3,10 @@
 require_once 'parsecsv.lib.php';
 
 function scandir_real($dir) {
+  if (!is_dir($dir))
+  {
+    return [];
+  }
   $entries = [];
   foreach (scandir($dir) as $f) {
     if ( substr($f, 0, 1) != '.' ) {
@@ -118,17 +122,4 @@ function validateDataset($dir) {
   }
 
   return $errors;
-}
-
-$datasets = count($argv) > 1 ? array_slice($argv, 1) : array('plants');
-foreach ($datasets as $dataset)
-{
-  $dir = realpath(dirname(__FILE__)) . "/../fieldguide/$dataset";
-  printInfo($dir);
-  $errs = validateDataset($dir);
-  echo '<ul>';
-  foreach ($errs as $err) {
-    echo "<li>$err</li>";
-  }
-  echo '</ul>';
 }
