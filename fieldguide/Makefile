@@ -3,7 +3,7 @@ js_files     := $(coffee_files:%.coffee=%.js)
 
 mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-datasets := plants pokemon colors
+datasets := plants pokemon colors football
 zips     := $(datasets:%=%.zip)
 
 all: js zips

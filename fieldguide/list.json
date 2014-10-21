@@ -13,4 +13,9 @@
   , "version": 1
   , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/pokemon.zip"
   }
+, { "title"  : "NCAA Football"
+  , "id"     : "football"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/football.zip"
+  }
 ]

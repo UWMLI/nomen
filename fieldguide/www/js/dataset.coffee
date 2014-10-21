@@ -47,6 +47,7 @@ class Dataset
   # Parse the feature image filename to see which feature and value it is for.
   addFeatureImage: (url) ->>
     url = decodeURI url
+    return if url.match /\.DS_Store$/
     # Form: {feature}/{value}.{ext}
     result = url.match ///
       (?: ^ | \/)
