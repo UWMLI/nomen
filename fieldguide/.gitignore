@@ -1,4 +1,4 @@
 platforms/
 plugins/
 .DS_Store
-/*.zip
+remote/*.zip

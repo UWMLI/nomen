@@ -1,0 +1,21 @@
+[ { "title"  : "Plants"
+  , "id"     : "plants"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/remote/plants.zip"
+  }
+, { "title"  : "Colors"
+  , "id"     : "colors"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/remote/colors.zip"
+  }
+, { "title"  : "Kanto Pokémon"
+  , "id"     : "pokemon"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/remote/pokemon.zip"
+  }
+, { "title"  : "NCAA Football"
+  , "id"     : "football"
+  , "version": 1
+  , "url"    : "http://localhost:8888/EIFieldResearch/fieldguide/remote/football.zip"
+  }
+]
