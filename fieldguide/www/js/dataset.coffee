@@ -29,6 +29,9 @@ class Dataset
           urls =
             entry.toURL() for entry in entries
           callback urls
+      , =>>
+        console.log "Tried to load from nonexistent folder: #{dir}"
+        callback []
 
   # Locate all images in the features images folder.
   loadFeatureImages: (callback) ->>

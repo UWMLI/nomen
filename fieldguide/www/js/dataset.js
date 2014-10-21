@@ -48,6 +48,9 @@
               })();
               callback(urls);
             });
+          }, function() {
+            console.log("Tried to load from nonexistent folder: " + dir);
+            callback([]);
           });
         };
       })(this));
