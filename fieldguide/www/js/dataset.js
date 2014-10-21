@@ -9,11 +9,16 @@
     }
 
     Dataset.prototype.load = function(callback) {
+      console.log('Loading dataset info...');
       this.loadInfo((function(_this) {
         return function() {
+          console.log('Loading feature images...');
           _this.loadFeatureImages(function() {
+            console.log('Loading species images...');
             _this.loadSpeciesImages(function() {
+              console.log('Loading species data...');
               _this.loadSpeciesData(function() {
+                console.log('Done loading!');
                 callback();
               });
             });

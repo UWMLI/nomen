@@ -5,10 +5,15 @@ class Dataset
 
   # Load all the dataset information at once.
   load: (callback) ->>
+    console.log 'Loading dataset info...'
     @loadInfo =>>
+      console.log 'Loading feature images...'
       @loadFeatureImages =>>
+        console.log 'Loading species images...'
         @loadSpeciesImages =>>
+          console.log 'Loading species data...'
           @loadSpeciesData =>>
+            console.log 'Done loading!'
             callback()
 
   # Load just the metadata JSON file.
