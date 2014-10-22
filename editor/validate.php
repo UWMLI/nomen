@@ -91,34 +91,34 @@ function validateDataset($dir) {
 
   // Validation: find feature images which aren't used by any species
   foreach (array_diff_key($img_features, $csv_features) as $feature => $_) {
-    $errors[] = "Feature with image folder doesn't have a column in CSV: $feature";
+    $errors[] = "Feature with image folder doesn't have a column in CSV: <b>$feature</b>";
   }
   foreach (array_intersect_key($img_features, $csv_features) as $feature => $_)
   {
     foreach (array_diff_key($img_features[$feature], $csv_features[$feature]) as $value => $_) {
-      $errors[] = "Feature image isn't used by any species: $feature -> $value";
+      $errors[] = "Feature image isn't used by any species: <b>$feature &rightarrow; $value</b>";
     }
   }
 
   // Validation: find species features which don't have images
   foreach (array_diff_key($csv_features, $img_features) as $feature => $_) {
-    $errors[] = "Feature in CSV doesn't have image folder: $feature";
+    $errors[] = "Feature in CSV doesn't have image folder: <b>$feature</b>";
   }
   foreach (array_intersect_key($csv_features, $img_features) as $feature => $_)
   {
     foreach (array_diff_key($csv_features[$feature], $img_features[$feature]) as $value => $_) {
-      $errors[] = "Feature value in CSV doesn't have an image: $feature -> $value";
+      $errors[] = "Feature value in CSV doesn't have an image: <b>$feature &rightarrow; $value</b>";
     }
   }
 
   // Validation: find species images which don't have CSV rows
   foreach (array_diff_key($img_species, $csv_species) as $spec => $_) {
-    $errors[] = "Species has image but no CSV row: $spec";
+    $errors[] = "Species has image but no CSV row: <b>$spec</b>";
   }
 
   // Validation: find species rows which don't have images
   foreach (array_diff_key($csv_species, $img_species) as $spec => $_) {
-    $errors[] = "Species has CSV row but no image: $spec";
+    $errors[] = "Species has CSV row but no image: <b>$spec</b>";
   }
 
   return $errors;

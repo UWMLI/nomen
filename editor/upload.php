@@ -1,8 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Field Guide Upload</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
 <?php
 
 /*
 Note, for this to work you must set BOTH upload_max_filesize AND post_max_size
-to a high enough value.
+in php.ini to a high enough value.
 */
 
 ini_set('display_errors', true);
@@ -22,9 +31,9 @@ mkdir($target_dir);
 $target_dir = $target_dir . basename( $_FILES["uploadFile"]["name"]);
 
 if (move_uploaded_file($_FILES["uploadFile"]["tmp_name"], $target_dir)) {
-  echo "Received file ". basename( $_FILES["uploadFile"]["name"]). ".";
+  echo "<p>Received file ". basename( $_FILES["uploadFile"]["name"]). ".</p>";
 } else {
-  echo "There was an error uploading the file.";
+  echo "<p>There was an error uploading the file.</p>";
   exit();
 }
 
@@ -34,15 +43,26 @@ if ($zip->open($target_dir) === TRUE) {
   mkdir('extract/');
   $zip->extractTo('extract/');
   $zip->close();
+  printInfo('extract/');
   $errs = validateDataset('extract/');
   rmdir_rf('extract/');
-  echo '<ul>';
-  foreach ($errs as $err) {
-    echo "<li>$err</li>";
+  if (empty($errs)) {
+    echo '<p>No errors found!</p>';
   }
-  echo '</ul>';
+  else {
+    echo '<ul>';
+    foreach ($errs as $err) {
+      echo "<li>$err</li>";
+    }
+    echo '</ul>';
+  }
 } else {
   echo 'Failed to unzip.';
 }
 
 rmdir_rf('uploads/');
+
+?>
+
+</body>
+</html>
