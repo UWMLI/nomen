@@ -13,14 +13,18 @@ zips: $(zips)
 clean:
 	rm -f remote/*.zip
 
-%.pp.coffee: %.coffee
-	./action-arrow.rb < $< > $@
-%.pp.js: %.pp.coffee
-	coffee -c $<
-%.js: %.pp.js
-	cp $< $@
-	closure-compiler --language_in ECMASCRIPT5_STRICT $@ > /dev/null
+# Runs the ->>/=>> preprocessor, then the normal CoffeeScript compiler
+%.js: %.coffee
+	./action-arrow.rb < $< | coffee -sc > $@
 
+# Runs closure on the .js files just to check for dead code, etc.
+closure:
+	for js in $(js_files); do \
+		echo $$js; \
+		closure-compiler --language_in ECMASCRIPT5_STRICT $$js > /dev/null; \
+	done
+
+# Zips up each dataset into the zip file to be hosted at our fake remote
 remote/%.zip: datasets/%/species.csv
 	rm -f $@
 	cd datasets/$* && zip -r "$(mkfile_dir)/$@" . \
