@@ -17,7 +17,7 @@ in php.ini to a high enough value.
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
-require_once 'validate.php';
+require_once '../include/validate.php';
 
 function rmdir_rf($directory)
 {
