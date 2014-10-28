@@ -11,6 +11,9 @@
 if ($login_failed) {
   echo '<p>Login failed.</p>';
 }
+else if ($joined) {
+  echo '<p>Account created. You may now log in.</p>';
+}
 
 ?>
 

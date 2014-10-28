@@ -69,6 +69,7 @@ function login($email, $password, $mysqli) {
             return false;
         }
     }
+    // Error preparing statement?
     return false;
 }
 
@@ -138,4 +139,9 @@ function logout() {
     // Destroy session
     session_destroy();
     header('Location: ../index.php');
+}
+
+function create_account($email, $password) {
+    // TODO
+    return true;
 }
