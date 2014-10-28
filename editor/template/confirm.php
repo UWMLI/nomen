@@ -49,11 +49,11 @@ if ($zip->open($saved_zip) === TRUE) {
   echo '<p>Failed to unzip.</p>';
 }
 
-echo '<p>';
-echo 'When there are no errors, <a href="?publish='.$upload_id.'">publish your new dataset</a>.';
-echo '</p>';
-
 ?>
+
+<p>
+  When there are no errors, <a href="?publish=<?php echo $dataset_id; ?>&zip=<?php echo $upload_id; ?>">publish your new dataset</a>.
+</p>
 
 <p>
   <a href="?list">Back to list of datasets</a>

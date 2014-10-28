@@ -17,7 +17,7 @@ else {
 
 ?>
 
-<form action="?confirm" method="post" enctype="multipart/form-data">
+<form action="?confirm=<?php echo $dataset_id; ?>" method="post" enctype="multipart/form-data">
   <p>
     Please select your zip file: <input type="file" name="upload_zip">
   </p>

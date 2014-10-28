@@ -53,6 +53,13 @@ foreach ( $_GET as $k => $v ) {
       $logged_in = false;
       $action = 'login';
     }
+    else if ( $k === 'publish' ) {
+      // TODO: set up to publish dataset
+      $action = 'list';
+    }
+    else if ( $k === 'zip' ) {
+      $upload_id = $v;
+    }
   }
   else {
     if ( $k === 'login' ) {
