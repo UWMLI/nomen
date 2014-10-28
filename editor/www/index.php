@@ -23,6 +23,9 @@ if ( isset($_POST['join_email'], $_POST['join_password'], $_POST['join_password2
   else if (strlen($password) < 10) {
     $join_message = '<p>Your password must be at least 10 characters.</p>';
   }
+  else if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+    $join_message = '<p>Email address is invalid.</p>';
+  }
   else {
     $joined = create_account($email, $password, $mysqli);
     if (!$joined) {

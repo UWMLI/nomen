@@ -7,6 +7,10 @@
 <body>
 
 <p>
+  Logged in as <?php echo $_SESSION['email'] ?>.
+</p>
+
+<p>
   <a href="?upload">Create new dataset</a>
 </p>
 
