@@ -15,6 +15,7 @@
     <th>ID</th>
     <th>Title</th>
     <th>Version</th>
+    <th>Upload new version</th>
   </tr>
   <?php
 
@@ -26,6 +27,7 @@
     echo '<td>' . $set['id'] . '</td>';
     echo '<td>' . $set['title'] . '</td>';
     echo '<td>' . $set['version'] . '</td>';
+    echo '<td><a href="?upload='.$set['id'].'">New version</a></td>';
     echo '</tr>';
   }
 
