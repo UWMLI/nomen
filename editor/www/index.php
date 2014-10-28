@@ -78,5 +78,6 @@ switch ( $action ) {
     include '../template/upload.php';
     break;
   case 'confirm':
+    include '../template/confirm.php';
     break;
 }

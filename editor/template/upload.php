@@ -19,7 +19,7 @@ else {
 
 <form action="?confirm" method="post" enctype="multipart/form-data">
   <p>
-    Please select your zip file: <input type="file" name="uploadFile">
+    Please select your zip file: <input type="file" name="upload_zip">
   </p>
   <p>
     <input type="submit" value="Upload file">
