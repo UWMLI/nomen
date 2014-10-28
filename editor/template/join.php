@@ -17,10 +17,21 @@ if ($join_message !== '') {
 ?>
 
 <form action="?join" method="post">
-  <p>Email:                        <input type="text"     name="join_email"    /></p>
-  <p>Password (at least 10 chars): <input type="password" name="join_password" /></p>
-  <p>Password (type again):        <input type="password" name="join_password2" /></p>
-  <p><input type="submit" value="Create account" /></p>
+  <table>
+    <tr>
+      <td>Email:</td>
+      <td><input type="text" name="join_email" /></td>
+    </tr>
+    <tr>
+      <td>Password (at least 10 chars):</td>
+      <td><input type="text" name="join_password" /></td>
+    </tr>
+    <tr>
+      <td>Password (type again):</td>
+      <td><input type="text" name="join_password2" /></td>
+    </tr>
+  </table>
+  <input type="submit" value="Create account" />
 </form>
 
 <p>

@@ -18,9 +18,17 @@ else if ($joined) {
 ?>
 
 <form action="?list" method="post">
-  <p>Email:    <input type="text"     name="login_email"    /></p>
-  <p>Password: <input type="password" name="login_password" /></p>
-  <p><input type="submit" value="Login" /></p>
+  <table>
+    <tr>
+      <td>Email:</td>
+      <td><input type="text" name="login_email" /></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="password" name="login_password" /></td>
+    </tr>
+  </table>
+  <input type="submit" value="Login" />
 </form>
 
 <p>
