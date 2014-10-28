@@ -24,7 +24,7 @@ if ( isset($_POST['join_email'], $_POST['join_password'], $_POST['join_password2
     $join_message = '<p>Your password must be at least 10 characters.</p>';
   }
   else {
-    $joined = create_account($email, $password);
+    $joined = create_account($email, $password, $mysqli);
     if (!$joined) {
       $join_message = '<p>Could not create an account.</p>';
     }

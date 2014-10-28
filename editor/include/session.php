@@ -141,7 +141,19 @@ function logout() {
     header('Location: ../index.php');
 }
 
-function create_account($email, $password) {
-    // TODO
-    return true;
+function create_account($email, $password, $mysqli) {
+    $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
+    $password = hash('sha512', $password . $random_salt);
+    if ($insert_stmt = $mysqli->prepare("INSERT INTO users (email, password, salt) VALUES (?, ?, ?)")) {
+        $insert_stmt->bind_param('sss', $email, $password, $random_salt);
+        if ($insert_stmt->execute()) {
+            return true;
+        }
+        else {
+            // Couldn't INSERT, probably email already exists
+            return false;
+        }
+    }
+    // Failed to prepare statement
+    return false;
 }
