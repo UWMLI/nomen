@@ -1,0 +1,16 @@
+* login page
+  after login, go to view datasets
+* view datasets
+  logout button
+  each dataset has "new version" button, goes to upload page
+  new dataset button, goes to upload page
+  LATER: each set has view contents page?
+* upload page (either new set or new version of existing set)
+  upload a zip file, goes to upload page (if errors) or confirm page (if none)
+  logout button
+  button back to view datasets
+* confirm page
+  if new dataset, enter title
+  logout button
+  button back to upload page
+  button back to view datasets
