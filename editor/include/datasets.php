@@ -3,7 +3,7 @@
 require_once 'db.php';
 
 function get_datasets($mysqli) {
-  if ($stmt = $mysqli->prepare("SELECT id, title, version
+  if ($stmt = $mysqli->prepare("SELECT id, title, description, version
     FROM datasets
     WHERE user_id = ?")) {
     $stmt->bind_param('i', $_SESSION['user_id']);
@@ -12,11 +12,12 @@ function get_datasets($mysqli) {
 
     $datasets = [];
 
-    $stmt->bind_result($id, $title, $version);
+    $stmt->bind_result($id, $title, $description, $version);
     while ($row = $stmt->fetch()) {
       $datasets[] = [
         'id' => $id,
         'title' => $title,
+        'description' => $description,
         'version' => $version,
       ];
     }
@@ -27,7 +28,7 @@ function get_datasets($mysqli) {
 }
 
 function get_dataset($dataset_id, $mysqli) {
-  if ($stmt = $mysqli->prepare("SELECT id, title, version
+  if ($stmt = $mysqli->prepare("SELECT id, title, description, version
     FROM datasets
     WHERE id = ?
     AND user_id = ?")) {
@@ -35,12 +36,13 @@ function get_dataset($dataset_id, $mysqli) {
     $stmt->execute();
     $stmt->store_result();
 
-    $stmt->bind_result($id, $title, $version);
+    $stmt->bind_result($id, $title, $description, $version);
     $stmt->fetch();
     if ($stmt->num_rows == 1) {
       return [
         'id' => $id,
         'title' => $title,
+        'description' => $description,
         'version' => $version,
       ];
     }
@@ -48,13 +50,13 @@ function get_dataset($dataset_id, $mysqli) {
   return null;
 }
 
-function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
+function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli) {
   $mysqli->begin_transaction();
   if ($dataset_id <= 0) {
     // New dataset
-    if ($stmt = $mysqli->prepare("INSERT INTO datasets (user_id, title, version) VALUES (?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO datasets (user_id, title, description, version) VALUES (?, ?, ?, ?)")) {
       $version = 1;
-      $stmt->bind_param('isi', $_SESSION['user_id'], $title, $version);
+      $stmt->bind_param('issi', $_SESSION['user_id'], $title, $description, $version);
       $stmt->execute();
       $dataset_id = $stmt->insert_id;
     }
@@ -67,10 +69,10 @@ function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
   else {
     // New version of existing dataset
     if ($stmt = $mysqli->prepare("UPDATE datasets
-      SET title = ?, version = version + 1
+      SET title = ?, description = ?, version = version + 1
       WHERE id = ?
       AND user_id = ?")) {
-      $stmt->bind_param('sii', $title, $dataset_id, $_SESSION['user_id']);
+      $stmt->bind_param('ssii', $title, $description, $dataset_id, $_SESSION['user_id']);
       $stmt->execute();
       if ($stmt->affected_rows != 1) {
         // Didn't update row, maybe the user doesn't own this dataset
@@ -93,6 +95,7 @@ function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
   if ($zip->open($zip_old) === TRUE) {
     $zip_info = json_encode([
       'title' => $title,
+      'description' => $description,
       'id' => DATASET_PREFIX . $dataset_id,
       'version' => $version,
     ]);

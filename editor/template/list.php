@@ -21,6 +21,7 @@ if ($publish_message !== '') {
     <th>ID</th>
     <th>Title</th>
     <th>Version</th>
+    <th>Description</th>
     <th>Upload new version</th>
     <th>Delete</th>
   </tr>
@@ -35,6 +36,7 @@ if ($publish_message !== '') {
       <td><?= $set['id'] ?></td>
       <td><?= $set['title'] ?></td>
       <td><?= $set['version'] ?></td>
+      <td><?= $set['description'] ?></td>
       <td>
         <form action="?upload" method="post">
           <input type="submit" value="New version">

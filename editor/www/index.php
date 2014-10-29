@@ -54,8 +54,8 @@ foreach ( $_GET as $k => $v ) {
       $action = 'login';
     }
     else if ( $k === 'publish' ) {
-      if ( isset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id']) ) {
-        if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id'], $mysqli) ) {
+      if ( isset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['dataset_description'], $_POST['upload_id']) ) {
+        if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['dataset_description'], $_POST['upload_id'], $mysqli) ) {
           $publish_message = '<p>Publish successful!</p>';
         }
         else {
