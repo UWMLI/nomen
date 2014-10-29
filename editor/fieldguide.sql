@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.38)
 # Database: fieldguide
-# Generation Time: 2014-10-29 18:48:48 +0000
+# Generation Time: 2014-10-29 21:41:48 +0000
 # ************************************************************
 
 
@@ -30,6 +30,7 @@ CREATE TABLE `datasets` (
   `user_id` int(11) unsigned DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `version` int(11) unsigned NOT NULL DEFAULT '0',
+  `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
