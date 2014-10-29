@@ -24,11 +24,11 @@ if ($join_message !== '') {
     </tr>
     <tr>
       <td>Password (at least 10 chars):</td>
-      <td><input type="text" name="join_password" /></td>
+      <td><input type="password" name="join_password" /></td>
     </tr>
     <tr>
       <td>Password (type again):</td>
-      <td><input type="text" name="join_password2" /></td>
+      <td><input type="password" name="join_password2" /></td>
     </tr>
   </table>
   <input type="submit" value="Create account" />
