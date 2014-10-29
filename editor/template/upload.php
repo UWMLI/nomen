@@ -8,11 +8,19 @@
 
 <?php
 
+require_once '../include/datasets.php';
+
 if ($dataset_id <= 0) {
   echo '<h1>Upload a new dataset</h1>';
 }
 else {
-  echo "<h1>Upload a new version of dataset $dataset_id</h1>";
+  $sets = get_datasets($_SESSION['user_id'], $mysqli);
+  $title = '???';
+  foreach ($sets as $set) {
+    if ($set['id'] === $dataset_id)
+      $title = $set['title'];
+  }
+  echo "<h1>Upload a new version of dataset &ldquo;$title&rdquo;</h1>";
 }
 
 ?>

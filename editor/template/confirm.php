@@ -9,6 +9,7 @@
 <?php
 
 require_once '../include/validate.php';
+require_once '../include/datasets.php';
 
 function rmdir_rf($directory)
 {
@@ -32,7 +33,6 @@ if ($zip->open($saved_zip) === TRUE) {
   mkdir($extract_dir);
   $zip->extractTo($extract_dir);
   $zip->close();
-  printInfo($extract_dir);
   $errs = validateDataset($extract_dir);
   rmdir_rf($extract_dir);
   if (empty($errs)) {
@@ -51,9 +51,16 @@ if ($zip->open($saved_zip) === TRUE) {
 
 ?>
 
-<p>
-  When there are no errors, <a href="?publish=<?php echo $dataset_id; ?>&zip=<?php echo $upload_id; ?>">publish your new dataset</a>.
-</p>
+<form action="?publish=<?php echo $dataset_id; ?>&zip=<?php echo $upload_id; ?>" method="post">
+  <p>When there are no errors, enter a title and publish your dataset.</p>
+  <table>
+    <tr>
+      <td>Title:</td>
+      <td><input type="text" name="dataset_title" value="<?php echo dataset_title($dataset_id, $mysqli); ?>" /></td>
+    </tr>
+  </table>
+  <input type="submit" value="Publish" />
+</form>
 
 <p>
   <a href="?list">Back to list of datasets</a>
