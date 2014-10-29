@@ -56,7 +56,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _ref = _this.remote.datasets;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             dataset = _ref[_i];
-            _this.addRemoteButton(dataset.id, datasetDisplay(dataset));
+            _this.addRemoteButton(dataset);
           }
           setTimeout(function() {
             button.html('Synced');
@@ -78,13 +78,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       $('#remote-content').html('');
     };
 
-    App.prototype.addRemoteButton = function(id, text) {
+    App.prototype.addRemoteButton = function(dataset) {
       var setFn;
-      setFn = "app.downloadZip($(this), '" + id + "');";
+      setFn = "app.downloadZip($(this), '" + dataset.id + "');";
       appendTo($('#remote-content'), function() {
         this.a('.ui-btn .remote-button', {
           onclick: setFn
-        }, text);
+        }, datasetDisplay(dataset));
+        this.p(dataset.description || 'No description.');
       });
     };
 
@@ -179,7 +180,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               _ref = _this.libraryStatic.datasets;
               for (id in _ref) {
                 dataset = _ref[id];
-                _this.addDataButton(id, datasetDisplay(dataset), false);
+                _this.addDataButton(dataset, false);
               }
               callback();
             });
@@ -195,7 +196,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             _ref = _this.library.datasets;
             for (id in _ref) {
               dataset = _ref[id];
-              _this.addDataButton(id, datasetDisplay(dataset), true);
+              _this.addDataButton(dataset, true);
             }
             scanStatic();
           };
@@ -220,10 +221,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       $('#home-content').html('');
     };
 
-    App.prototype.addDataButton = function(id, text, canDelete) {
+    App.prototype.addDataButton = function(dataset, canDelete) {
       var deleteFn, setFn;
-      setFn = "app.goToDataset('" + id + "');";
-      deleteFn = "app.readyDelete('" + id + "');";
+      setFn = "app.goToDataset('" + dataset.id + "');";
+      deleteFn = "app.readyDelete('" + dataset.id + "');";
       appendTo($('#home-content'), function() {
         if (canDelete) {
           this.a('.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', {
@@ -232,8 +233,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         }
         this.a('.ui-btn .ui-btn-inline', {
           onclick: setFn
-        }, text);
-        this.br('');
+        }, datasetDisplay(dataset));
+        this.p(dataset.description || 'No description.');
       });
     };
 

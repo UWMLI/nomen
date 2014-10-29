@@ -49,7 +49,7 @@ class App
     @remote.downloadList =>>
       @clearRemoteButtons()
       for dataset in @remote.datasets
-        @addRemoteButton dataset.id, datasetDisplay dataset
+        @addRemoteButton dataset
       setTimeout =>>
         button.html 'Synced'
         button.removeClass 'ui-state-disabled'
@@ -66,10 +66,11 @@ class App
     $('#remote-content').html ''
 
   # Add a button for a new downloadable dataset to the Download page.
-  addRemoteButton: (id, text) ->>
-    setFn = "app.downloadZip($(this), '#{id}');"
+  addRemoteButton: (dataset) ->>
+    setFn = "app.downloadZip($(this), '#{dataset.id}');"
     appendTo $('#remote-content'), ->>
-      @a '.ui-btn .remote-button', onclick: setFn, text
+      @a '.ui-btn .remote-button', onclick: setFn, datasetDisplay dataset
+      @p dataset.description or 'No description.'
 
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
@@ -124,14 +125,14 @@ class App
       if @libraryStatic?
         @libraryStatic.scanLibrary =>>
           for id, dataset of @libraryStatic.datasets
-            @addDataButton id, datasetDisplay(dataset), false
+            @addDataButton dataset, false
           callback()
       else
         callback()
     if @library?
       @library.scanLibrary =>>
         for id, dataset of @library.datasets
-          @addDataButton id, datasetDisplay(dataset), true
+          @addDataButton dataset, true
         scanStatic()
     else
       scanStatic()
@@ -147,14 +148,14 @@ class App
     $('#home-content').html ''
 
   # Add a button for a new dataset to the home screen.
-  addDataButton: (id, text, canDelete) ->>
-    setFn = "app.goToDataset('#{id}');"
-    deleteFn = "app.readyDelete('#{id}');"
+  addDataButton: (dataset, canDelete) ->>
+    setFn = "app.goToDataset('#{dataset.id}');"
+    deleteFn = "app.readyDelete('#{dataset.id}');"
     appendTo $('#home-content'), ->>
       if canDelete
         @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
-      @a '.ui-btn .ui-btn-inline', onclick: setFn, text
-      @br ''
+      @a '.ui-btn .ui-btn-inline', onclick: setFn, datasetDisplay dataset
+      @p dataset.description or 'No description.'
 
   # Loads a dataset, and then goes to the feature selection page.
   goToDataset: (id, callback = (->)) ->>
