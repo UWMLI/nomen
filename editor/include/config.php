@@ -10,3 +10,5 @@ define("DATABASE", "fieldguide");
 define("PORT", 8889);
 
 define("SECURE", FALSE);
+
+define("DATASET_PREFIX", "mli_");

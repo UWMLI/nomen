@@ -6,6 +6,12 @@
 </head>
 <body>
 
+<?php
+if ($publish_message !== '') {
+  echo '<p><b>' . $publish_message . '</b></p>';
+}
+?>
+
 <p>
   Logged in as <?php echo $_SESSION['email'] ?>.
 </p>

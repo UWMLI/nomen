@@ -39,6 +39,7 @@ $logged_in = login_check($mysqli);
 
 $action = $logged_in ? 'list' : 'login';
 
+$publish_message = '';
 foreach ( $_GET as $k => $v ) {
   if ( $logged_in ) {
     if ( $k === 'list' ) {
@@ -54,7 +55,12 @@ foreach ( $_GET as $k => $v ) {
     }
     else if ( $k === 'publish' ) {
       if ( isset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id']) ) {
-        publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id'], $mysqli);
+        if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id'], $mysqli) ) {
+          $publish_message = '<p>Publish successful!</p>';
+        }
+        else {
+          $publish_message = '<p>Publish was not successful.</p>';
+        }
       };
       $action = 'list';
     }

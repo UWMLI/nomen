@@ -50,6 +50,8 @@ if ($zip->open($saved_zip) === TRUE) {
   echo '<p>Failed to unzip.</p>';
 }
 
+$existing_title = $dataset_id <= 0 ? '' : get_dataset($dataset_id, $mysqli)['title'];
+
 ?>
 
 <form action="?publish" method="post">
@@ -57,7 +59,7 @@ if ($zip->open($saved_zip) === TRUE) {
   <table>
     <tr>
       <td>Title:</td>
-      <td><input type="text" name="dataset_title" value="<?= dataset_title($dataset_id, $mysqli) ?>" /></td>
+      <td><input type="text" name="dataset_title" value="<?= $existing_title ?>" /></td>
     </tr>
   </table>
   <input type="submit" value="Publish" />

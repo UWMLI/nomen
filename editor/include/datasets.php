@@ -26,32 +26,42 @@ function get_datasets($mysqli) {
   return [];
 }
 
-function dataset_title($dataset_id, $mysqli) {
-  if ($stmt = $mysqli->prepare("SELECT title
+function get_dataset($dataset_id, $mysqli) {
+  if ($stmt = $mysqli->prepare("SELECT id, title, version
     FROM datasets
     WHERE id = ?
     AND user_id = ?")) {
     $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($title);
+
+    $stmt->bind_result($id, $title, $version);
     $stmt->fetch();
     if ($stmt->num_rows == 1) {
-      return $title;
+      return [
+        'id' => $id,
+        'title' => $title,
+        'version' => $version,
+      ];
     }
   }
-  return '';
+  return null;
 }
 
 function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
+  $mysqli->begin_transaction();
   if ($dataset_id <= 0) {
     // New dataset
     if ($stmt = $mysqli->prepare("INSERT INTO datasets (user_id, title, version) VALUES (?, ?, ?)")) {
       $version = 1;
       $stmt->bind_param('isi', $_SESSION['user_id'], $title, $version);
       $stmt->execute();
-      $new_id = $stmt->insert_id;
-      // TODO
+      $dataset_id = $stmt->insert_id;
+    }
+    else {
+      // Couldn't prepare statement
+      $mysqli->rollback();
+      return false;
     }
   }
   else {
@@ -62,8 +72,37 @@ function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
       AND user_id = ?")) {
       $stmt->bind_param('sii', $title, $dataset_id, $_SESSION['user_id']);
       $stmt->execute();
-      $stmt->store_result();
-      // TODO
+      if ($stmt->affected_rows != 1) {
+        // Didn't update row, maybe the user doesn't own this dataset
+        $mysqli->rollback();
+        return false;
+      }
+      $version = get_dataset($dataset_id, $mysqli)['version'];
+    }
+    else {
+      // Couldn't prepare statement
+      $mysqli->rollback();
+      return false;
     }
   }
+
+  // Insert info.json into zip, save to $dataset_id
+  $zip_old = '../uploads/' . $upload_id . '.zip';
+  $zip_new = '../datasets/' . $dataset_id . '.zip';
+  $zip = new ZipArchive;
+  if ($zip->open($zip_old) === TRUE) {
+    $zip_info = json_encode([
+      'title' => $title,
+      'id' => DATASET_PREFIX . $dataset_id,
+      'version' => $version,
+    ]);
+    $zip->addFromString('info.json', $zip_info);
+    $zip->close();
+  } else {
+    $mysqli->rollback();
+    return false;
+  }
+  rename($zip_old, $zip_new);
+  $mysqli->commit();
+  return true;
 }
