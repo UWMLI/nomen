@@ -23,7 +23,12 @@ class Remote
       return
     zipFile = "#{@datadir}/#{id}.zip"
     transfer = new FileTransfer()
-    transfer.download dataset.url, zipFile, (zipEntry) =>>
+    absoluteUrl =
+      if dataset.url.match(/^https?:\/\//)?
+        dataset.url
+      else
+        "#{@url}/../#{dataset.url}"
+    transfer.download absoluteUrl, zipFile, (zipEntry) =>>
       lib.makeSet id, (setEntry) =>>
         zip.unzip zipFile, setEntry.toURL(), (code) =>>
           zipEntry.remove =>>

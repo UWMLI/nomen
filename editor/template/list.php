@@ -22,6 +22,7 @@ if ($publish_message !== '') {
     <th>Title</th>
     <th>Version</th>
     <th>Upload new version</th>
+    <th>Delete</th>
   </tr>
   <?php
 
@@ -37,6 +38,12 @@ if ($publish_message !== '') {
       <td>
         <form action="?upload" method="post">
           <input type="submit" value="New version">
+          <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
+        </form>
+      </td>
+      <td>
+        <form action="?delete" method="post">
+          <input type="submit" value="Delete">
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
       </td>

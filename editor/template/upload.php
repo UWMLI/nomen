@@ -16,12 +16,7 @@ if ($dataset_id <= 0) {
   echo '<h1>Upload a new dataset</h1>';
 }
 else {
-  $sets = get_datasets($mysqli);
-  $title = '???';
-  foreach ($sets as $set) {
-    if ($set['id'] === $dataset_id)
-      $title = $set['title'];
-  }
+  $title = get_dataset($dataset_id, $mysqli)['title'];
   echo "<h1>Upload a new version of dataset &ldquo;$title&rdquo;</h1>";
 }
 

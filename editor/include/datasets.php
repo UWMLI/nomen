@@ -88,7 +88,7 @@ function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
 
   // Insert info.json into zip, save to $dataset_id
   $zip_old = '../uploads/' . $upload_id . '.zip';
-  $zip_new = '../datasets/' . $dataset_id . '.zip';
+  $zip_new = '../www/datasets/' . $dataset_id . '.zip';
   $zip = new ZipArchive;
   if ($zip->open($zip_old) === TRUE) {
     $zip_info = json_encode([
@@ -105,4 +105,16 @@ function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
   rename($zip_old, $zip_new);
   $mysqli->commit();
   return true;
+}
+
+function delete_dataset($dataset_id, $mysqli) {
+  if ($stmt = $mysqli->prepare("DELETE FROM datasets
+    WHERE id = ?
+    AND user_id = ?")) {
+    $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
+    $stmt->execute();
+    unlink('../www/datasets/' . $dataset_id . '.zip');
+    return true;
+  }
+  return false;
 }

@@ -64,6 +64,12 @@ foreach ( $_GET as $k => $v ) {
       };
       $action = 'list';
     }
+    else if ( $k === 'delete' ) {
+      if ( isset($_POST['dataset_id']) ) {
+        delete_dataset($_POST['dataset_id'], $mysqli);
+      }
+      $action = 'list';
+    }
   }
   else {
     if ( $k === 'login' ) {

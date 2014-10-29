@@ -36,7 +36,7 @@
     };
 
     Remote.prototype.downloadDataset = function(id, lib, callback, errback) {
-      var dataset, transfer, zipFile;
+      var absoluteUrl, dataset, transfer, zipFile;
       dataset = this.getDataset(id);
       if (dataset == null) {
         errback("Couldn't find dataset: " + id);
@@ -44,7 +44,8 @@
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
-      transfer.download(dataset.url, zipFile, (function(_this) {
+      absoluteUrl = dataset.url.match(/^https?:\/\//) != null ? dataset.url : "" + this.url + "/../" + dataset.url;
+      transfer.download(absoluteUrl, zipFile, (function(_this) {
         return function(zipEntry) {
           lib.makeSet(id, function(setEntry) {
             zip.unzip(zipFile, setEntry.toURL(), function(code) {
