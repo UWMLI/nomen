@@ -27,7 +27,12 @@ class Remote
       if dataset.url.match(/^https?:\/\//)?
         dataset.url
       else
-        "#{@url}/../#{dataset.url}"
+        if dataset.url.substr(-1) is '/'
+          # json url is a directory, files are relative to that directory
+          "#{@url}/#{dataset.url}"
+        else
+          # json url is a file, files are relative to that file's directory
+          "#{@url}/../#{dataset.url}"
     transfer.download absoluteUrl, zipFile, (zipEntry) =>>
       lib.makeSet id, (setEntry) =>>
         zip.unzip zipFile, setEntry.toURL(), (code) =>>

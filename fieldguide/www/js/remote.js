@@ -44,7 +44,7 @@
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
-      absoluteUrl = dataset.url.match(/^https?:\/\//) != null ? dataset.url : "" + this.url + "/../" + dataset.url;
+      absoluteUrl = dataset.url.match(/^https?:\/\//) != null ? dataset.url : dataset.url.substr(-1) === '/' ? "" + this.url + "/" + dataset.url : "" + this.url + "/../" + dataset.url;
       transfer.download(absoluteUrl, zipFile, (function(_this) {
         return function(zipEntry) {
           lib.makeSet(id, function(setEntry) {
