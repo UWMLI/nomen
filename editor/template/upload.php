@@ -10,6 +10,8 @@
 
 require_once '../include/datasets.php';
 
+$dataset_id = isset($_POST['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
+
 if ($dataset_id <= 0) {
   echo '<h1>Upload a new dataset</h1>';
 }
@@ -25,13 +27,14 @@ else {
 
 ?>
 
-<form action="?confirm=<?php echo $dataset_id; ?>" method="post" enctype="multipart/form-data">
+<form action="?confirm" method="post" enctype="multipart/form-data">
   <p>
     Please select your zip file: <input type="file" name="upload_zip">
   </p>
   <p>
     <input type="submit" value="Upload file">
   </p>
+  <input type="hidden" name="dataset_id" value="<?php echo $dataset_id; ?>" />
 </form>
 
 <p>

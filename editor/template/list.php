@@ -23,12 +23,19 @@
 
   $sets = get_datasets($_SESSION['user_id'], $mysqli);
   foreach ($sets as $set) {
-    echo '<tr>';
-    echo '<td>' . $set['id'] . '</td>';
-    echo '<td>' . $set['title'] . '</td>';
-    echo '<td>' . $set['version'] . '</td>';
-    echo '<td><a href="?upload='.$set['id'].'">New version</a></td>';
-    echo '</tr>';
+    ?>
+    <tr>
+      <td><?= $set['id'] ?></td>
+      <td><?= $set['title'] ?></td>
+      <td><?= $set['version'] ?></td>
+      <td>
+        <form action="?upload" method="post">
+          <input type="submit" value="New version">
+          <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
+        </form>
+      </td>
+    </tr>
+    <?php
   }
 
   ?>

@@ -17,6 +17,7 @@ function rmdir_rf($directory)
   system('rm -rf ' . escapeshellarg($directory));
 }
 
+$dataset_id = isset($_POST['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
 $upload_id = $_SESSION['user_id'] . '_' . date('Ymd_His');
 
 $saved_zip = '../uploads/' . $upload_id . '.zip';
@@ -51,15 +52,17 @@ if ($zip->open($saved_zip) === TRUE) {
 
 ?>
 
-<form action="?publish=<?php echo $dataset_id; ?>&zip=<?php echo $upload_id; ?>" method="post">
+<form action="?publish" method="post">
   <p>When there are no errors, enter a title and publish your dataset.</p>
   <table>
     <tr>
       <td>Title:</td>
-      <td><input type="text" name="dataset_title" value="<?php echo dataset_title($dataset_id, $mysqli); ?>" /></td>
+      <td><input type="text" name="dataset_title" value="<?= dataset_title($dataset_id, $mysqli) ?>" /></td>
     </tr>
   </table>
   <input type="submit" value="Publish" />
+  <input type="hidden" name="dataset_id" value="<?= $dataset_id ?>" />
+  <input type="hidden" name="upload_id" value="<?= $upload_id ?>" />
 </form>
 
 <p>

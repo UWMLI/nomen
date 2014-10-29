@@ -37,7 +37,6 @@ if ( isset($_POST['join_email'], $_POST['join_password'], $_POST['join_password2
 $logged_in = login_check($mysqli);
 
 $action = $logged_in ? 'list' : 'login';
-$dataset_id = 0;
 
 foreach ( $_GET as $k => $v ) {
   if ( $logged_in ) {
@@ -46,7 +45,6 @@ foreach ( $_GET as $k => $v ) {
     }
     else if ( $k === 'upload' || $k === 'confirm' ) {
       $action = $k;
-      $dataset_id = (int) $v;
     }
     else if ( $k === 'logout' ) {
       logout();
@@ -56,9 +54,6 @@ foreach ( $_GET as $k => $v ) {
     else if ( $k === 'publish' ) {
       // TODO: set up to publish dataset
       $action = 'list';
-    }
-    else if ( $k === 'zip' ) {
-      $upload_id = $v;
     }
   }
   else {
