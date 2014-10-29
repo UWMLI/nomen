@@ -3,6 +3,7 @@
 require_once '../include/config.php';
 require_once '../include/db.php';
 require_once '../include/session.php';
+require_once '../include/datasets.php';
 sec_session_start();
 
 $login_failed = false;
@@ -52,7 +53,9 @@ foreach ( $_GET as $k => $v ) {
       $action = 'login';
     }
     else if ( $k === 'publish' ) {
-      // TODO: set up to publish dataset
+      if ( isset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id']) ) {
+        publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['upload_id'], $mysqli);
+      };
       $action = 'list';
     }
   }

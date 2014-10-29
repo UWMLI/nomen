@@ -21,7 +21,7 @@
 
   require_once '../include/datasets.php';
 
-  $sets = get_datasets($_SESSION['user_id'], $mysqli);
+  $sets = get_datasets($mysqli);
   foreach ($sets as $set) {
     ?>
     <tr>

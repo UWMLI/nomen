@@ -2,11 +2,11 @@
 
 require_once 'db.php';
 
-function get_datasets($user_id, $mysqli) {
+function get_datasets($mysqli) {
   if ($stmt = $mysqli->prepare("SELECT id, title, version
     FROM datasets
     WHERE user_id = ?")) {
-    $stmt->bind_param('i', $user_id);
+    $stmt->bind_param('i', $_SESSION['user_id']);
     $stmt->execute();
     $stmt->store_result();
 
@@ -47,7 +47,8 @@ function publish_dataset($dataset_id, $title, $upload_id, $mysqli) {
   if ($dataset_id <= 0) {
     // New dataset
     if ($stmt = $mysqli->prepare("INSERT INTO datasets (user_id, title, version) VALUES (?, ?, ?)")) {
-      $stmt->bind_param('isi', $_SESSION['user_id'], $title, 1);
+      $version = 1;
+      $stmt->bind_param('isi', $_SESSION['user_id'], $title, $version);
       $stmt->execute();
       $new_id = $stmt->insert_id;
       // TODO
