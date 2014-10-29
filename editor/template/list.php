@@ -23,6 +23,7 @@ if ($publish_message !== '') {
     <th>Version</th>
     <th>Description</th>
     <th>Upload new version</th>
+    <th>Download .zip</th>
     <th>Delete</th>
   </tr>
   <?php
@@ -42,6 +43,9 @@ if ($publish_message !== '') {
           <input type="submit" value="New version">
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
+      </td>
+      <td>
+        <a href="datasets/<?= $set['id'] ?>.zip">Download</a>
       </td>
       <td>
         <form action="?delete" method="post">
