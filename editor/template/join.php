@@ -14,7 +14,7 @@ if ($message) {
   echo "<p><b>$message</b></p>";
 }
 
-$existing_email = isset($_POST['join_email']) ? $_POST['join_email'] : '';
+$existing_email = isset($_POST['email']) ? $_POST['email'] : '';
 
 ?>
 
@@ -22,15 +22,15 @@ $existing_email = isset($_POST['join_email']) ? $_POST['join_email'] : '';
   <table>
     <tr>
       <td>Email:</td>
-      <td><input type="text" name="join_email" value="<?= $existing_email ?>" /></td>
+      <td><input type="text" name="email" value="<?= $existing_email ?>" /></td>
     </tr>
     <tr>
       <td>Password (at least 10 chars):</td>
-      <td><input type="password" name="join_password" /></td>
+      <td><input type="password" name="password" /></td>
     </tr>
     <tr>
       <td>Password (type again):</td>
-      <td><input type="password" name="join_password2" /></td>
+      <td><input type="password" name="password2" /></td>
     </tr>
   </table>
   <input type="submit" value="Create account" />

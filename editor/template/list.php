@@ -37,9 +37,9 @@ if ($message) {
     ?>
     <tr>
       <td><?= $set['id'] ?></td>
-      <td><?= $set['title'] ?></td>
+      <td><?= htmlspecialchars($set['title']) ?></td>
       <td><?= $set['version'] ?></td>
-      <td><?= $set['description'] ?></td>
+      <td><?= htmlspecialchars($set['description']) ?></td>
       <td>
         <form action="?upload" method="post">
           <input type="submit" value="New version">

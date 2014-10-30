@@ -7,48 +7,6 @@ require_once '../include/datasets.php';
 require_once '../include/validate.php';
 sec_session_start();
 
-/* List of commands
-DEFAULT ACTIONS
-  logged in: show list of datasets
-  not logged in: show login page
-index/list/""
-  (default actions)
-login
-  not logged in: try to log in
-    successful: show list with "logged in" message
-    unsuccessful: show login page with "login failed" message
-logout
-  logged in: log out, show login page with "logged out" message
-join
-  not logged in: show new account page
-signup(email, pw1, pw2)
-  not logged in: try to make new account with info
-    successful: show login page, with email filled in
-    unsuccessful: show new account page with error message, and email filled in
-upload(dataset_id or null)
-  logged in: show upload page for dataset_id or new dataset
-confirm(zip_file)
-  logged in: extract zip and error check, show confirm page with errors
-publish(zip_filename)
-  logged in: try to publish zip
-    successful: show list page, with "publish successful" message
-    unsuccessful: not sure. show list, with "try again from the start" message?
-    (this could happen if you refresh /?publish for an already published zip)
-delete(dataset_id)
-  logged in: delete dataset
-    successful: show list with "deleted xyz" message
-    unsuccessful: not sure. show list, with "couldn't delete xyz" message?
-    (shouldn't happen unless you refresh /?delete)
-*/
-
-/* List of pages
-login
-list
-join
-upload
-confirm
-*/
-
 $action = '';
 foreach ($_GET as $k => $v) {
   $action = $k;
@@ -75,8 +33,8 @@ function rmdir_rf($directory)
 switch ($action) {
   case 'login':
     if (!$logged_in) {
-      if ( in_post(['login_email', 'login_password']) ) {
-        $logged_in = login($_POST['login_email'], $_POST['login_password'], $mysqli);
+      if ( in_post(['email', 'password']) ) {
+        $logged_in = login($_POST['email'], $_POST['password'], $mysqli);
       }
       $message = $logged_in ? 'Logged in successfully.' : 'Login failed.';
     }
@@ -99,10 +57,10 @@ switch ($action) {
 
   case 'signup':
     if (!$logged_in) {
-      if ( in_post(['join_email', 'join_password', 'join_password2']) ) {
-        $email = $_POST['join_email'];
-        $password = $_POST['join_password'];
-        $password2 = $_POST['join_password2'];
+      if ( in_post(['email', 'password', 'password2']) ) {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
 
         if ($password !== $password2) {
           $message = 'Your passwords did not match.';
