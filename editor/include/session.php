@@ -156,3 +156,30 @@ function create_account($email, $password, $mysqli) {
     // Failed to prepare statement
     return false;
 }
+
+function change_password($old_password, $new_password, $mysqli) {
+    // First check that the old_password is correct.
+    $select = $mysqli->prepare('SELECT password, salt FROM users WHERE id = ?');
+    if (!$select) return false;
+    $select->bind_param('i', $_SESSION['user_id']);
+    $select->execute();
+    $select->store_result();
+    if ($select->num_rows != 1) return false;
+    $select->bind_result($old_hash, $old_salt);
+    $select->fetch();
+    if ($old_hash !== hash('sha512', $old_password . $old_salt)) return false;
+
+    // Then update the row to have the new password, with a new salt.
+    $new_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
+    $new_hash = hash('sha512', $new_password . $new_salt);
+    $update = $mysqli->prepare('UPDATE users SET password = ?, salt = ? WHERE id = ?');
+    if (!$update) return false;
+    $update->bind_param('ssi', $new_hash, $new_salt, $_SESSION['user_id']);
+    $update->execute();
+    if ($update->affected_rows != 1) return false;
+
+    // Finally, update the $_SESSION so we're still logged in.
+    $user_browser = $_SERVER['HTTP_USER_AGENT'];
+    $_SESSION['login_string'] = hash('sha512', $new_hash . $user_browser);
+    return true;
+}

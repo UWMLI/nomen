@@ -149,6 +149,37 @@ switch ($action) {
     }
     goto defaultPage;
 
+  case 'password':
+    if ($logged_in) {
+      include '../template/password.php';
+      break;
+    }
+    goto defaultPage;
+
+  case 'change':
+    if ($logged_in) {
+      if ( in_post(['old_password', 'password', 'password2']) ) {
+        if ($_POST['password'] !== $_POST['password2']) {
+          $message = 'Passwords did not match.';
+        }
+        else if (strlen($_POST['password']) < 10) {
+          $message = 'Your password must be at least 10 characters.';
+        }
+        else {
+          if (change_password($_POST['old_password'], $_POST['password'], $mysqli)) {
+            $message = 'Password changed successfully.';
+            goto defaultPage;
+          }
+          else {
+            $message = 'Old password was not correct.';
+          }
+        }
+        include '../template/password.php';
+        break;
+      }
+    }
+    goto defaultPage;
+
   default:
   defaultPage:
     if ($logged_in) {

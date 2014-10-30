@@ -67,6 +67,10 @@ if ($message) {
 </p>
 
 <p>
+  <a href="?password">Change your password</a>
+</p>
+
+<p>
   <a href="?logout">Logout</a>
 </p>
 
