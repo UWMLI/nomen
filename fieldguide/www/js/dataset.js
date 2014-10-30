@@ -30,7 +30,7 @@
     Dataset.prototype.loadInfo = function(callback) {
       $.getJSON("" + this.dir + "/info.json", (function(_this) {
         return function(json) {
-          _this.title = json.title, _this.id = json.id, _this.version = json.version, _this.description = json.description;
+          _this.title = json.title, _this.id = json.id, _this.version = json.version, _this.description = json.description, _this.author = json.author;
           callback();
         };
       })(this));

@@ -98,6 +98,7 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
       'description' => $description,
       'id' => DATASET_PREFIX . $dataset_id,
       'version' => $version,
+      'author' => $_SESSION['email'],
     ]);
     $zip->addFromString('info.json', $zip_info);
     $zip->close();
