@@ -10,17 +10,19 @@
 
 <?php
 
-if ($join_message !== '') {
-  echo "<p>$join_message</p>";
+if ($message) {
+  echo "<p><b>$message</b></p>";
 }
+
+$existing_email = isset($_POST['join_email']) ? $_POST['join_email'] : '';
 
 ?>
 
-<form action="?join" method="post">
+<form action="?signup" method="post">
   <table>
     <tr>
       <td>Email:</td>
-      <td><input type="text" name="join_email" /></td>
+      <td><input type="text" name="join_email" value="<?= $existing_email ?>" /></td>
     </tr>
     <tr>
       <td>Password (at least 10 chars):</td>
@@ -35,7 +37,7 @@ if ($join_message !== '') {
 </form>
 
 <p>
-  <a href="?login">Back to login</a>
+  <a href="?">Back to login</a>
 </p>
 
 </body>

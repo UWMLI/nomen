@@ -8,46 +8,20 @@
 
 <?php
 
-require_once '../include/validate.php';
-require_once '../include/datasets.php';
-
-function rmdir_rf($directory)
-{
-  // TODO: do this more system-independently
-  system('rm -rf ' . escapeshellarg($directory));
+if ($message) {
+  echo "<p><b>$message</b></p>";
 }
 
-$dataset_id = isset($_POST['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
-$upload_id = $_SESSION['user_id'] . '_' . date('Ymd_His');
-
-$saved_zip = '../uploads/' . $upload_id . '.zip';
-if (move_uploaded_file($_FILES["upload_zip"]["tmp_name"], $saved_zip)) {
-  echo "<p>Uploaded zip file.</p>";
-} else {
-  echo "<p>There was an error uploading the file. <a href=\"?list\">Back to the list</a></p>";
-  exit();
+if ( empty($dataset_errors) ) {
+  echo '<p>No errors found in your dataset!</p>';
 }
-
-$zip = new ZipArchive;
-if ($zip->open($saved_zip) === TRUE) {
-  $extract_dir = '../uploads/' . $upload_id;
-  mkdir($extract_dir);
-  $zip->extractTo($extract_dir);
-  $zip->close();
-  $errs = validateDataset($extract_dir);
-  rmdir_rf($extract_dir);
-  if (empty($errs)) {
-    echo '<p>No errors found!</p>';
+else {
+  echo '<p>Found the following errors:</p>';
+  echo '<ul>';
+  foreach ($dataset_errors as $err) {
+    echo "<li>$err</li>";
   }
-  else {
-    echo '<ul>';
-    foreach ($errs as $err) {
-      echo "<li>$err</li>";
-    }
-    echo '</ul>';
-  }
-} else {
-  echo '<p>Failed to unzip.</p>';
+  echo '</ul>';
 }
 
 $existing_title       = '';

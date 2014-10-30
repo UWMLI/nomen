@@ -138,7 +138,6 @@ function logout() {
 
     // Destroy session
     session_destroy();
-    header('Location: ../index.php');
 }
 
 function create_account($email, $password, $mysqli) {

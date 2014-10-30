@@ -8,20 +8,19 @@
 
 <?php
 
-if ($login_failed) {
-  echo '<p>Login failed.</p>';
+if ($message) {
+  echo "<p><b>$message</b></p>";
 }
-else if ($joined) {
-  echo '<p>Account created. You may now log in.</p>';
-}
+
+$existing_email = isset($_POST['join_email']) ? $_POST['join_email'] : '';
 
 ?>
 
-<form action="?list" method="post">
+<form action="?login" method="post">
   <table>
     <tr>
       <td>Email:</td>
-      <td><input type="text" name="login_email" /></td>
+      <td><input type="text" name="login_email" value="<?= $existing_email ?>" /></td>
     </tr>
     <tr>
       <td>Password:</td>

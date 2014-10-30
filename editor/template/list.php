@@ -7,9 +7,11 @@
 <body>
 
 <?php
-if ($publish_message !== '') {
-  echo '<p><b>' . $publish_message . '</b></p>';
+
+if ($message) {
+  echo "<p><b>$message</b></p>";
 }
+
 ?>
 
 <p>

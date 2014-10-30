@@ -117,6 +117,9 @@ function delete_dataset($dataset_id, $mysqli) {
     AND user_id = ?")) {
     $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
     $stmt->execute();
+    if ($stmt->affected_rows != 1) {
+      return false;
+    }
     unlink('../www/datasets/' . $dataset_id . '.zip');
     return true;
   }

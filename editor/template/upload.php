@@ -8,9 +8,15 @@
 
 <?php
 
-require_once '../include/datasets.php';
+if ($message) {
+  echo "<p><b>$message</b></p>";
+}
 
-$dataset_id = isset($_POST['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
+?>
+
+<?php
+
+require_once '../include/datasets.php';
 
 if ($dataset_id <= 0) {
   echo '<h1>Upload a new dataset</h1>';
