@@ -24,5 +24,5 @@ if ($stmt = $mysqli->prepare("SELECT d.id, d.title, d.version, d.description, u.
     ];
   }
 
-  echo json_encode($datasets);
+  echo json_encode($datasets, JSON_PRETTY_PRINT);
 }

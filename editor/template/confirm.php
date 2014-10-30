@@ -24,7 +24,7 @@ $saved_zip = '../uploads/' . $upload_id . '.zip';
 if (move_uploaded_file($_FILES["upload_zip"]["tmp_name"], $saved_zip)) {
   echo "<p>Uploaded zip file.</p>";
 } else {
-  echo "<p>There was an error uploading the file.</p>";
+  echo "<p>There was an error uploading the file. <a href=\"?list\">Back to the list</a></p>";
   exit();
 }
 
