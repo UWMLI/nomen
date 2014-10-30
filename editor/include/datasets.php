@@ -31,7 +31,8 @@ function get_dataset($dataset_id, $mysqli) {
   if ($stmt = $mysqli->prepare("SELECT id, title, description, version
     FROM datasets
     WHERE id = ?
-    AND user_id = ?")) {
+    AND user_id = ?
+    LIMIT 1")) {
     $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
     $stmt->execute();
     $stmt->store_result();
@@ -71,7 +72,8 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
     if ($stmt = $mysqli->prepare("UPDATE datasets
       SET title = ?, description = ?, version = version + 1
       WHERE id = ?
-      AND user_id = ?")) {
+      AND user_id = ?
+      LIMIT 1")) {
       $stmt->bind_param('ssii', $title, $description, $dataset_id, $_SESSION['user_id']);
       $stmt->execute();
       if ($stmt->affected_rows != 1) {
@@ -114,7 +116,8 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
 function delete_dataset($dataset_id, $mysqli) {
   if ($stmt = $mysqli->prepare("DELETE FROM datasets
     WHERE id = ?
-    AND user_id = ?")) {
+    AND user_id = ?
+    LIMIT 1")) {
     $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
     $stmt->execute();
     if ($stmt->affected_rows != 1) {

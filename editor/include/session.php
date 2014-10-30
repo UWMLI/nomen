@@ -159,7 +159,7 @@ function create_account($email, $password, $mysqli) {
 
 function change_password($old_password, $new_password, $mysqli) {
     // First check that the old_password is correct.
-    $select = $mysqli->prepare('SELECT password, salt FROM users WHERE id = ?');
+    $select = $mysqli->prepare('SELECT password, salt FROM users WHERE id = ? LIMIT 1');
     if (!$select) return false;
     $select->bind_param('i', $_SESSION['user_id']);
     $select->execute();
@@ -172,7 +172,7 @@ function change_password($old_password, $new_password, $mysqli) {
     // Then update the row to have the new password, with a new salt.
     $new_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
     $new_hash = hash('sha512', $new_password . $new_salt);
-    $update = $mysqli->prepare('UPDATE users SET password = ?, salt = ? WHERE id = ?');
+    $update = $mysqli->prepare('UPDATE users SET password = ?, salt = ? WHERE id = ? LIMIT 1');
     if (!$update) return false;
     $update->bind_param('ssi', $new_hash, $new_salt, $_SESSION['user_id']);
     $update->execute();
