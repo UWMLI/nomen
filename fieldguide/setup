@@ -5,4 +5,10 @@ set -u
 rm -rf platforms/ plugins/
 mkdir platforms plugins
 cordova platform add ios
-cordova plugin add org.apache.cordova.file org.apache.cordova.file-transfer org.apache.cordova.inappbrowser org.apache.cordova.statusbar org.chromium.zip
+cordova plugin add org.apache.cordova.file
+cordova plugin add org.apache.cordova.file-transfer
+cordova plugin add org.apache.cordova.inappbrowser
+cordova plugin add org.apache.cordova.statusbar
+cordova plugin add org.chromium.zip
+# Remove Xcode precompiled headers
+rm -rf /var/folders/*/*/C/com.apple.DeveloperTools/
