@@ -22,7 +22,7 @@ if ($dataset_id <= 0) {
   echo '<h1>Upload a new dataset</h1>';
 }
 else {
-  $title = htmlspecialchars(get_dataset($dataset_id, $mysqli)['title']);
+  $title = htmlspecialchars(get_dataset($dataset_id)['title']);
   echo "<h1>Upload a new version of dataset &ldquo;$title&rdquo;</h1>";
 }
 

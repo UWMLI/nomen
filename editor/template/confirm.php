@@ -27,7 +27,7 @@ else {
 $existing_title       = '';
 $existing_description = '';
 if ($dataset_id > 0) {
-  $set = get_dataset($dataset_id, $mysqli);
+  $set = get_dataset($dataset_id);
   $existing_title       = $set['title'];
   $existing_description = $set['description'];
 }

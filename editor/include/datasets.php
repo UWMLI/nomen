@@ -2,56 +2,42 @@
 
 require_once 'db.php';
 
-function get_datasets($mysqli) {
-  if ($stmt = $mysqli->prepare("SELECT id, title, description, version
-    FROM datasets
-    WHERE user_id = ?")) {
-    $stmt->bind_param('i', $_SESSION['user_id']);
-    $stmt->execute();
-    $stmt->store_result();
-
-    $datasets = [];
-
-    $stmt->bind_result($id, $title, $description, $version);
-    while ($row = $stmt->fetch()) {
-      $datasets[] = [
-        'id' => $id,
-        'title' => $title,
-        'description' => $description,
-        'version' => $version,
-      ];
-    }
-
-    return $datasets;
-  }
-  return [];
+function get_datasets() {
+  return DB::query('SELECT * FROM datasets WHERE user_id = %i', $_SESSION['user_id']);
 }
 
-function get_dataset($dataset_id, $mysqli) {
-  if ($stmt = $mysqli->prepare("SELECT id, title, description, version
-    FROM datasets
-    WHERE id = ?
-    AND user_id = ?
-    LIMIT 1")) {
-    $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
-    $stmt->execute();
-    $stmt->store_result();
-
-    $stmt->bind_result($id, $title, $description, $version);
-    $stmt->fetch();
-    if ($stmt->num_rows == 1) {
-      return [
-        'id' => $id,
-        'title' => $title,
-        'description' => $description,
-        'version' => $version,
-      ];
-    }
-  }
-  return null;
+function get_dataset($dataset_id) {
+  return DB::queryFirstRow
+    ( 'SELECT * FROM datasets WHERE user_id = %i AND id = %i LIMIT 1'
+    , $_SESSION['user_id']
+    , $dataset_id
+    );
 }
 
 function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli) {
+  /*
+  DB::startTransaction();
+  if ($dataset_id <= 0) {
+    // New dataset
+    DB::insert('datasets', [
+      'user_id' => $_SESSION['user_id'],
+      'title' => $title,
+      'description' => $description,
+      'version' => $version,
+    ]);
+    $dataset_id = DB::insertId();
+  }
+  else {
+    // New version of existing dataset
+    DB::update('datasets', [
+      'title' => $title,
+      'description' => $description,
+      'version' => DB::sqleval('version + 1'),
+    ], 'id = %i AND user_id = %i', $dataset_id, $_SESSION['user_id']);
+    // TODO error check
+  }
+  */
+
   $mysqli->begin_transaction();
   if ($dataset_id <= 0) {
     // New dataset
@@ -81,7 +67,7 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
         $mysqli->rollback();
         return false;
       }
-      $version = get_dataset($dataset_id, $mysqli)['version'];
+      $version = get_dataset($dataset_id)['version'];
     }
     else {
       // Couldn't prepare statement
@@ -113,18 +99,9 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
   return true;
 }
 
-function delete_dataset($dataset_id, $mysqli) {
-  if ($stmt = $mysqli->prepare("DELETE FROM datasets
-    WHERE id = ?
-    AND user_id = ?
-    LIMIT 1")) {
-    $stmt->bind_param('ii', $dataset_id, $_SESSION['user_id']);
-    $stmt->execute();
-    if ($stmt->affected_rows != 1) {
-      return false;
-    }
-    unlink('../www/datasets/' . $dataset_id . '.zip');
-    return true;
-  }
-  return false;
+function delete_dataset($dataset_id) {
+  DB::delete('datasets', "id = %i AND user_id = %i", $dataset_id, $_SESSION['user_id']);
+  if (DB::affectedRows() != 1) return false;
+  unlink('../www/datasets/' . $dataset_id . '.zip');
+  return true;
 }

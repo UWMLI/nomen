@@ -139,7 +139,7 @@ switch ($action) {
   case 'delete':
     if ($logged_in) {
       if ( in_post(['dataset_id']) ) {
-        if ( delete_dataset($_POST['dataset_id'], $mysqli) ) {
+        if ( delete_dataset($_POST['dataset_id']) ) {
           $message = 'Dataset deleted.';
         }
         else {

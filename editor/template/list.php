@@ -32,7 +32,7 @@ if ($message) {
 
   require_once '../include/datasets.php';
 
-  $sets = get_datasets($mysqli);
+  $sets = get_datasets();
   foreach ($sets as $set) {
     ?>
     <tr>
