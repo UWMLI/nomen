@@ -45,25 +45,25 @@ class App
   # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (button, callback = (->)) ->>
     button.addClass 'ui-state-disabled'
-    button.html 'Syncing...'
+    button.text 'Syncing...'
     @remote.downloadList =>>
       @clearRemoteButtons()
       for dataset in @remote.datasets
         @addRemoteButton dataset
       setTimeout =>>
-        button.html 'Synced'
+        button.text 'Synced'
         button.removeClass 'ui-state-disabled'
       , 250 # For user-friendliness, we show "Syncing..." for at least 250ms
       callback()
     , =>>
       setTimeout =>>
-        button.html 'Sync failed'
+        button.text 'Sync failed'
         button.removeClass 'ui-state-disabled'
       , 250
 
   # Clear all buttons for remotely available datasets.
   clearRemoteButtons: ->>
-    $('#remote-content').html ''
+    $('#remote-content').text ''
 
   # Add a button for a new downloadable dataset to the Download page.
   addRemoteButton: (dataset) ->>
@@ -78,21 +78,21 @@ class App
     dataset = @remote.getDataset id
     setname = datasetDisplay dataset
     button.addClass 'ui-state-disabled'
-    button.html "Downloading: #{setname}"
+    button.text "Downloading: #{setname}"
     @library.makeDir =>>
       @remote.downloadDataset id, @library, =>>
-        button.html setname
+        button.text setname
         button.removeClass 'ui-state-disabled'
         @refreshLibrary callback
       , =>>
         setTimeout =>>
-          button.html "Failed: #{setname}"
+          button.text "Failed: #{setname}"
           button.removeClass 'ui-state-disabled'
         , 250
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->>
-    $('#confirm-delete-message').html 'Are you sure you want to clear the library?'
+    $('#confirm-delete-message').text 'Are you sure you want to clear the library?'
     @deleteAction = (callback) =>>
       @clearLibrary callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
@@ -100,7 +100,7 @@ class App
   # Sets up and loads the delete confirmation dialog for deleting a single set.
   readyDelete: (id) ->>
     title = @library.datasets[id].title
-    $('#confirm-delete-message').html "Are you sure you want to delete the dataset \"#{title}\"?"
+    $('#confirm-delete-message').text "Are you sure you want to delete the dataset \"#{title}\"?"
     @deleteAction = (callback) =>>
       @deleteDataset id, callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
@@ -145,7 +145,7 @@ class App
 
   # Clear any existing dataset buttons on the home screen.
   clearDataButtons: ->>
-    $('#home-content').html ''
+    $('#home-content').text ''
 
   # Add a button for a new dataset to the home screen.
   addDataButton: (dataset, canDelete) ->>
@@ -184,7 +184,7 @@ class App
           image: @dataset.imageForFeature(feature, value) ? 'img/noimage.png'
           feature: feature
           value: value
-      $('#dataset-header').html @dataset.title
+      $('#dataset-header').text @dataset.title
       @makeFeatureRows()
       @showHowMany()
       @fillLikelyPage()
@@ -192,7 +192,7 @@ class App
 
   # Fill the features page with rows of possible filtering criteria.
   makeFeatureRows: ->>
-    $('#dataset-content').html ''
+    $('#dataset-content').text ''
     for row in @featureRows
       feature = row[0].feature
       appendTo $('#dataset-content'), ->>
@@ -230,7 +230,7 @@ class App
 
   # Update the "X Likely" button in the upper-right of the features page.
   showHowMany: ->>
-    $('#likely-button').html "#{@getLikely().length} Likely"
+    $('#likely-button').text "#{@getLikely().length} Likely"
 
   # Compute how many species match the criteria the user selected.
   getLikely: ->
@@ -240,7 +240,7 @@ class App
 
   # Fill the "likely" page with rows of species images.
   fillLikelyPage: ->>
-    $('#likely-species').html ''
+    $('#likely-species').text ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
     maxScore = Object.keys(@selected).length

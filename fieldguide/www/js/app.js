@@ -48,7 +48,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         callback = (function() {});
       }
       button.addClass('ui-state-disabled');
-      button.html('Syncing...');
+      button.text('Syncing...');
       this.remote.downloadList((function(_this) {
         return function() {
           var dataset, _i, _len, _ref;
@@ -59,7 +59,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             _this.addRemoteButton(dataset);
           }
           setTimeout(function() {
-            button.html('Synced');
+            button.text('Synced');
             button.removeClass('ui-state-disabled');
           }, 250);
           callback();
@@ -67,7 +67,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       })(this), (function(_this) {
         return function() {
           setTimeout(function() {
-            button.html('Sync failed');
+            button.text('Sync failed');
             button.removeClass('ui-state-disabled');
           }, 250);
         };
@@ -75,7 +75,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.clearRemoteButtons = function() {
-      $('#remote-content').html('');
+      $('#remote-content').text('');
     };
 
     App.prototype.addRemoteButton = function(dataset) {
@@ -97,16 +97,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       dataset = this.remote.getDataset(id);
       setname = datasetDisplay(dataset);
       button.addClass('ui-state-disabled');
-      button.html("Downloading: " + setname);
+      button.text("Downloading: " + setname);
       this.library.makeDir((function(_this) {
         return function() {
           _this.remote.downloadDataset(id, _this.library, function() {
-            button.html(setname);
+            button.text(setname);
             button.removeClass('ui-state-disabled');
             _this.refreshLibrary(callback);
           }, function() {
             setTimeout(function() {
-              button.html("Failed: " + setname);
+              button.text("Failed: " + setname);
               button.removeClass('ui-state-disabled');
             }, 250);
           });
@@ -115,7 +115,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.readyClear = function() {
-      $('#confirm-delete-message').html('Are you sure you want to clear the library?');
+      $('#confirm-delete-message').text('Are you sure you want to clear the library?');
       this.deleteAction = (function(_this) {
         return function(callback) {
           _this.clearLibrary(callback);
@@ -129,7 +129,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.readyDelete = function(id) {
       var title;
       title = this.library.datasets[id].title;
-      $('#confirm-delete-message').html("Are you sure you want to delete the dataset \"" + title + "\"?");
+      $('#confirm-delete-message').text("Are you sure you want to delete the dataset \"" + title + "\"?");
       this.deleteAction = (function(_this) {
         return function(callback) {
           _this.deleteDataset(id, callback);
@@ -218,7 +218,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.clearDataButtons = function() {
-      $('#home-content').html('');
+      $('#home-content').text('');
     };
 
     App.prototype.addDataButton = function(dataset, canDelete) {
@@ -296,7 +296,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             }
             return _results;
           }).call(_this);
-          $('#dataset-header').html(_this.dataset.title);
+          $('#dataset-header').text(_this.dataset.title);
           _this.makeFeatureRows();
           _this.showHowMany();
           _this.fillLikelyPage();
@@ -307,7 +307,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.makeFeatureRows = function() {
       var feature, row, _i, _len, _ref;
-      $('#dataset-content').html('');
+      $('#dataset-content').text('');
       _ref = this.featureRows;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
@@ -361,7 +361,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.showHowMany = function() {
-      $('#likely-button').html("" + (this.getLikely().length) + " Likely");
+      $('#likely-button').text("" + (this.getLikely().length) + " Likely");
     };
 
     App.prototype.getLikely = function() {
@@ -381,7 +381,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.fillLikelyPage = function() {
       var maxScore, score, spec, species, __;
-      $('#likely-species').html('');
+      $('#likely-species').text('');
       species = (function() {
         var _ref, _results;
         _ref = this.dataset.species;
