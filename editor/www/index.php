@@ -34,7 +34,7 @@ switch ($action) {
   case 'login':
     if (!$logged_in) {
       if ( in_post(['email', 'password']) ) {
-        $logged_in = login($_POST['email'], $_POST['password'], $mysqli);
+        $logged_in = login($_POST['email'], $_POST['password']);
       }
       $message = $logged_in ? 'Logged in successfully.' : 'Login failed.';
     }
@@ -72,7 +72,7 @@ switch ($action) {
           $message = 'Email address is invalid.';
         }
         else {
-          if ( create_account($email, $password, $mysqli) ) {
+          if ( create_account($email, $password) ) {
             $message = 'Account created successfully. You may now login.';
           }
           else {

@@ -27,50 +27,35 @@ function sec_session_start() {
     session_regenerate_id();    // regenerated the session, delete the old one.
 }
 
-function login($email, $password, $mysqli) {
-    // Using prepared statements means that SQL injection is not possible.
-    if ($stmt = $mysqli->prepare("SELECT id, password, salt
+function login($email, $password) {
+    $row = DB::queryFirstRow('SELECT id, password, salt
         FROM users
-        WHERE email = ?
-        LIMIT 1")) {
-        $stmt->bind_param('s', $email);  // Bind "$email" to parameter.
-        $stmt->execute();    // Execute the prepared query.
-        $stmt->store_result();
+        WHERE email = %s
+        LIMIT 1', $email);
+    if (is_null($row)) return false; // No user exists.
+    $user_id = $row['id'];
+    $db_password = $row['password'];
+    $salt = $row['salt'];
 
-        // get variables from result.
-        $stmt->bind_result($user_id, $db_password, $salt);
-        $stmt->fetch();
+    // hash the password with the unique salt.
+    $password = hash('sha512', $password . $salt);
+    // Check if the password in the database matches
+    // the password the user submitted.
+    if ($db_password != $password) return false; // Password is not correct.
 
-        // hash the password with the unique salt.
-        $password = hash('sha512', $password . $salt);
-        if ($stmt->num_rows == 1) {
-            // Check if the password in the database matches
-            // the password the user submitted.
-            if ($db_password == $password) {
-                // Password is correct!
-                // Get the user-agent string of the user.
-                $user_browser = $_SERVER['HTTP_USER_AGENT'];
-                // XSS protection as we might print this value
-                $user_id = preg_replace("/[^0-9]+/", "", $user_id);
-                $_SESSION['user_id'] = $user_id;
-                // XSS protection as we might print this value
-                $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-                $_SESSION['email'] = $email;
-                $_SESSION['login_string'] = hash('sha512',
-                          $password . $user_browser);
-                // Login successful.
-                return true;
-            } else {
-                // Password is not correct
-                return false;
-            }
-        } else {
-            // No user exists.
-            return false;
-        }
-    }
-    // Error preparing statement?
-    return false;
+    // Password is correct!
+    // Get the user-agent string of the user.
+    $user_browser = $_SERVER['HTTP_USER_AGENT'];
+    // XSS protection as we might print this value
+    $user_id = preg_replace("/[^0-9]+/", "", $user_id);
+    $_SESSION['user_id'] = $user_id;
+    // XSS protection as we might print this value
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $_SESSION['email'] = $email;
+    $_SESSION['login_string'] = hash('sha512',
+              $password . $user_browser);
+    // Login successful.
+    return true;
 }
 
 function login_check($mysqli) {
@@ -140,21 +125,16 @@ function logout() {
     session_destroy();
 }
 
-function create_account($email, $password, $mysqli) {
+function create_account($email, $password) {
     $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
     $password = hash('sha512', $password . $random_salt);
-    if ($insert_stmt = $mysqli->prepare("INSERT INTO users (email, password, salt) VALUES (?, ?, ?)")) {
-        $insert_stmt->bind_param('sss', $email, $password, $random_salt);
-        if ($insert_stmt->execute()) {
-            return true;
-        }
-        else {
-            // Couldn't INSERT, probably email already exists
-            return false;
-        }
-    }
-    // Failed to prepare statement
-    return false;
+    DB::insert('users', [
+        'email' => $email,
+        'password' => $password,
+        'salt' => $random_salt,
+    ]);
+    return DB::affectedRows() === 1;
+    // If not 1, couldn't INSERT, probably email already exists
 }
 
 function change_password($old_password, $new_password, $mysqli) {

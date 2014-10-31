@@ -12,3 +12,6 @@ DB::$password = PASSWORD;
 DB::$dbName = DATABASE;
 DB::$port = PORT;
 DB::$encoding = 'utf8';
+
+DB::$error_handler = false;
+DB::$throw_exception_on_error = false;
