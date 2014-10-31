@@ -12,7 +12,7 @@ foreach ($_GET as $k => $v) {
   $action = $k;
 }
 
-$logged_in = login_check($mysqli);
+$logged_in = login_check();
 $message = '';
 
 function in_post($strs) {

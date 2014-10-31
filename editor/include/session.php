@@ -58,52 +58,28 @@ function login($email, $password) {
     return true;
 }
 
-function login_check($mysqli) {
+function login_check() {
     // Check if all session variables are set
-    if (isset($_SESSION['user_id'],
-                        $_SESSION['email'],
-                        $_SESSION['login_string'])) {
-
-        $user_id = $_SESSION['user_id'];
-        $login_string = $_SESSION['login_string'];
-        $email = $_SESSION['email'];
-
-        // Get the user-agent string of the user.
-        $user_browser = $_SERVER['HTTP_USER_AGENT'];
-
-        if ($stmt = $mysqli->prepare("SELECT password
-                                      FROM users
-                                      WHERE id = ? LIMIT 1")) {
-            // Bind "$user_id" to parameter.
-            $stmt->bind_param('i', $user_id);
-            $stmt->execute();   // Execute the prepared query.
-            $stmt->store_result();
-
-            if ($stmt->num_rows == 1) {
-                // If the user exists get variables from result.
-                $stmt->bind_result($password);
-                $stmt->fetch();
-                $login_check = hash('sha512', $password . $user_browser);
-
-                if ($login_check == $login_string) {
-                    // Logged In!!!!
-                    return true;
-                } else {
-                    // Not logged in
-                    return false;
-                }
-            } else {
-                // Not logged in
-                return false;
-            }
-        } else {
-            // Not logged in
-            return false;
-        }
-    } else {
-        // Not logged in
+    if (!isset($_SESSION['user_id'],
+            $_SESSION['email'],
+            $_SESSION['login_string'])) {
         return false;
     }
+    $user_id = $_SESSION['user_id'];
+    $login_string = $_SESSION['login_string'];
+    $email = $_SESSION['email'];
+
+    // Get the user-agent string of the user.
+    $user_browser = $_SERVER['HTTP_USER_AGENT'];
+
+    $password = DB::queryOneField('password', 'SELECT *
+        FROM users
+        WHERE id = %i
+        LIMIT 1', $user_id);
+    if (is_null($password)) return false;
+
+    $login_check = hash('sha512', $password . $user_browser);
+    return $login_check === $login_string;
 }
 
 function logout() {
