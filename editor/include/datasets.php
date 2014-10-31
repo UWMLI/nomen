@@ -33,7 +33,10 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
       'description' => $description,
       'version' => DB::sqleval('version + 1'),
     ], 'id = %i AND user_id = %i', $dataset_id, $_SESSION['user_id']);
-    // TODO error check
+    if (DB::affectedRows() !== 1) {
+      DB::rollback();
+      return false;
+    }
   }
   $version = get_dataset($dataset_id)['version'];
 
