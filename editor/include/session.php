@@ -113,26 +113,22 @@ function create_account($email, $password) {
     // If not 1, couldn't INSERT, probably email already exists
 }
 
-function change_password($old_password, $new_password, $mysqli) {
+function change_password($old_password, $new_password) {
     // First check that the old_password is correct.
-    $select = $mysqli->prepare('SELECT password, salt FROM users WHERE id = ? LIMIT 1');
-    if (!$select) return false;
-    $select->bind_param('i', $_SESSION['user_id']);
-    $select->execute();
-    $select->store_result();
-    if ($select->num_rows != 1) return false;
-    $select->bind_result($old_hash, $old_salt);
-    $select->fetch();
+    $row = DB::queryFirstRow('SELECT password, salt FROM users WHERE id = %i LIMIT 1', $_SESSION['user_id']);
+    if (is_null($row)) return false;
+    $old_hash = $row['password'];
+    $old_salt = $row['salt'];
     if ($old_hash !== hash('sha512', $old_password . $old_salt)) return false;
 
     // Then update the row to have the new password, with a new salt.
     $new_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
     $new_hash = hash('sha512', $new_password . $new_salt);
-    $update = $mysqli->prepare('UPDATE users SET password = ?, salt = ? WHERE id = ? LIMIT 1');
-    if (!$update) return false;
-    $update->bind_param('ssi', $new_hash, $new_salt, $_SESSION['user_id']);
-    $update->execute();
-    if ($update->affected_rows != 1) return false;
+    DB::query('UPDATE users
+        SET password = %s, salt = %s
+        WHERE id = %i
+        LIMIT 1', $new_hash, $new_salt, $_SESSION['user_id']);
+    if (DB::affectedRows() !== 1) return false;
 
     // Finally, update the $_SESSION so we're still logged in.
     $user_browser = $_SERVER['HTTP_USER_AGENT'];

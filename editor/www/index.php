@@ -166,7 +166,7 @@ switch ($action) {
           $message = 'Your password must be at least 10 characters.';
         }
         else {
-          if (change_password($_POST['old_password'], $_POST['password'], $mysqli)) {
+          if (change_password($_POST['old_password'], $_POST['password'])) {
             $message = 'Password changed successfully.';
             goto defaultPage;
           }
