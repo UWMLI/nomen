@@ -1,32 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Field Guide Upload</title>
-</head>
-<body>
-
-<?php
-
-if ($message) {
-  echo "<p><b>$message</b></p>";
-}
-
-?>
-
 <?php
 
 require_once '../include/datasets.php';
 
-if ($dataset_id <= 0) {
-  echo '<h1>Upload a new dataset</h1>';
-}
-else {
-  $title = htmlspecialchars(get_dataset($dataset_id)['title']);
-  echo "<h1>Upload a new version of dataset &ldquo;$title&rdquo;</h1>";
-}
+$page_title = 'Upload';
+function page_content() {
+  global $dataset_id;
+  ?>
 
-?>
+<h1>
+  <?php
+    if ($dataset_id <= 0) {
+      echo 'Upload a new dataset';
+    }
+    else {
+      $title = htmlspecialchars(get_dataset($dataset_id)['title']);
+      echo "Upload a new version of dataset &ldquo;$title&rdquo;";
+    }
+  ?>
+</h1>
 
 <form action="?confirm" method="post" enctype="multipart/form-data">
   <p>
@@ -46,5 +37,7 @@ else {
   <a href="?logout">Logout</a>
 </p>
 
-</body>
-</html>
+  <?php
+}
+
+include 'template.php';

@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-</head>
-<body>
+<?php 
 
-<?php
-
-if ($message) {
-  echo "<p><b>$message</b></p>";
-}
-
-$existing_email = isset($_POST['email']) ? $_POST['email'] : '';
-
-?>
+$page_title = 'Login';
+function page_content() {
+  $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
+  ?>
 
 <form action="?login" method="post">
   <table>
@@ -34,5 +23,7 @@ $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
   <a href="?join">Create new account</a>
 </p>
 
-</body>
-</html>
+  <?php
+}
+
+include 'template.php';

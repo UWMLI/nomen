@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Field Guide Datasets</title>
-</head>
-<body>
+<?php 
 
-<?php
-
-if ($message) {
-  echo "<p><b>$message</b></p>";
-}
-
-?>
+$page_title = 'Your Datasets';
+function page_content() {
+  ?>
 
 <p>
   Logged in as <?php echo $_SESSION['email'] ?>.
@@ -74,5 +64,7 @@ if ($message) {
   <a href="?logout">Logout</a>
 </p>
 
-</body>
-</html>
+  <?php
+}
+
+include 'template.php';

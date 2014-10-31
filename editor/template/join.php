@@ -1,22 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Create an account</title>
-</head>
-<body>
+<?php 
 
-<h1>Create an account</h1>
-
-<?php
-
-if ($message) {
-  echo "<p><b>$message</b></p>";
-}
-
-$existing_email = isset($_POST['email']) ? $_POST['email'] : '';
-
-?>
+$page_title = 'Create an Account';
+function page_content() {
+  $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
+  ?>
 
 <form action="?signup" method="post">
   <table>
@@ -40,5 +27,7 @@ $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
   <a href="?">Back to login</a>
 </p>
 
-</body>
-</html>
+  <?php
+}
+
+include 'template.php';

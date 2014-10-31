@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Change your password</title>
-</head>
-<body>
+<?php 
 
-<h1>Change your password</h1>
-
-<?php
-
-if ($message) {
-  echo "<p><b>$message</b></p>";
-}
-
-?>
+$page_title = 'Change Password';
+function page_content() {
+  $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
+  ?>
 
 <form action="?change" method="post">
   <table>
@@ -38,5 +27,7 @@ if ($message) {
   <a href="?">Back</a>
 </p>
 
-</body>
-</html>
+  <?php
+}
+
+include 'template.php';

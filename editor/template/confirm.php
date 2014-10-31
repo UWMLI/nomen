@@ -1,38 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Confirm dataset upload</title>
-</head>
-<body>
+<?php 
 
-<?php
+$page_title = 'Confirmation';
+function page_content() {
+  global $dataset_id, $dataset_errors;
 
-if ($message) {
-  echo "<p><b>$message</b></p>";
-}
-
-if ( empty($dataset_errors) ) {
-  echo '<p>No errors found in your dataset!</p>';
-}
-else {
-  echo '<p>Found the following errors:</p>';
-  echo '<ul>';
-  foreach ($dataset_errors as $err) {
-    echo "<li>$err</li>";
+  if ( empty($dataset_errors) ) {
+    echo '<p>No errors found in your dataset!</p>';
   }
-  echo '</ul>';
-}
+  else {
+    echo '<p>Found the following errors:</p>';
+    echo '<ul>';
+    foreach ($dataset_errors as $err) {
+      echo "<li>$err</li>";
+    }
+    echo '</ul>';
+  }
 
-$existing_title       = '';
-$existing_description = '';
-if ($dataset_id > 0) {
-  $set = get_dataset($dataset_id);
-  $existing_title       = $set['title'];
-  $existing_description = $set['description'];
-}
-
-?>
+  $existing_title       = '';
+  $existing_description = '';
+  if ($dataset_id > 0) {
+    $set = get_dataset($dataset_id);
+    $existing_title       = $set['title'];
+    $existing_description = $set['description'];
+  }
+  ?>
 
 <form action="?publish" method="post">
   <p>When there are no errors, enter a title and publish your dataset.</p>
@@ -59,5 +50,7 @@ if ($dataset_id > 0) {
   <a href="?logout">Logout</a>
 </p>
 
-</body>
-</html>
+  <?php
+}
+
+include 'template.php';
