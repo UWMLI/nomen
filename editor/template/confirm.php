@@ -2,7 +2,7 @@
 
 $page_title = 'Confirmation';
 function page_content() {
-  global $dataset_id, $dataset_errors;
+  global $dataset_id, $dataset_errors, $upload_id;
 
   if ( empty($dataset_errors) ) {
     echo '<p>No errors found in your dataset!</p>';

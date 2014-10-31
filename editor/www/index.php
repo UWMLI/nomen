@@ -126,7 +126,7 @@ switch ($action) {
   case 'publish':
     if ($logged_in) {
       if ( in_post(['dataset_id', 'dataset_title', 'dataset_description', 'upload_id']) ) {
-        if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['dataset_description'], $_POST['upload_id'], $mysqli) ) {
+        if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['dataset_description'], $_POST['upload_id']) ) {
           $message = 'Publish successful!';
         }
         else {

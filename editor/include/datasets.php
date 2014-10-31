@@ -14,8 +14,7 @@ function get_dataset($dataset_id) {
     );
 }
 
-function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli) {
-  /*
+function publish_dataset($dataset_id, $title, $description, $upload_id) {
   DB::startTransaction();
   if ($dataset_id <= 0) {
     // New dataset
@@ -23,7 +22,7 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
       'user_id' => $_SESSION['user_id'],
       'title' => $title,
       'description' => $description,
-      'version' => $version,
+      'version' => 1,
     ]);
     $dataset_id = DB::insertId();
   }
@@ -36,45 +35,7 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
     ], 'id = %i AND user_id = %i', $dataset_id, $_SESSION['user_id']);
     // TODO error check
   }
-  */
-
-  $mysqli->begin_transaction();
-  if ($dataset_id <= 0) {
-    // New dataset
-    if ($stmt = $mysqli->prepare("INSERT INTO datasets (user_id, title, description, version) VALUES (?, ?, ?, ?)")) {
-      $version = 1;
-      $stmt->bind_param('issi', $_SESSION['user_id'], $title, $description, $version);
-      $stmt->execute();
-      $dataset_id = $stmt->insert_id;
-    }
-    else {
-      // Couldn't prepare statement
-      $mysqli->rollback();
-      return false;
-    }
-  }
-  else {
-    // New version of existing dataset
-    if ($stmt = $mysqli->prepare("UPDATE datasets
-      SET title = ?, description = ?, version = version + 1
-      WHERE id = ?
-      AND user_id = ?
-      LIMIT 1")) {
-      $stmt->bind_param('ssii', $title, $description, $dataset_id, $_SESSION['user_id']);
-      $stmt->execute();
-      if ($stmt->affected_rows != 1) {
-        // Didn't update row, maybe the user doesn't own this dataset
-        $mysqli->rollback();
-        return false;
-      }
-      $version = get_dataset($dataset_id)['version'];
-    }
-    else {
-      // Couldn't prepare statement
-      $mysqli->rollback();
-      return false;
-    }
-  }
+  $version = get_dataset($dataset_id)['version'];
 
   // Insert info.json into zip, save to $dataset_id
   $zip_old = '../uploads/' . $upload_id . '.zip';
@@ -91,11 +52,11 @@ function publish_dataset($dataset_id, $title, $description, $upload_id, $mysqli)
     $zip->addFromString('info.json', $zip_info);
     $zip->close();
   } else {
-    $mysqli->rollback();
+    DB::rollback();
     return false;
   }
   rename($zip_old, $zip_new);
-  $mysqli->commit();
+  DB::commit();
   return true;
 }
 
