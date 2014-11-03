@@ -6,10 +6,18 @@ function page_content() {
   ?>
 
 <form action="?signup" method="post">
-  <input placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
-  <input placeholder="Password" type="password" name="password" />
-  <input placeholder="Password (again)" type="password" name="password2" />
-  <input type="submit" value="Create account" />
+  <div class="form-group">
+    <input placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
+  </div>
+  <div class="form-group">
+    <input placeholder="Password" type="password" name="password" />
+  </div>
+  <div class="form-group">
+    <input placeholder="Password (again)" type="password" name="password2" />
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Create account" class="btn btn-primary" />
+  </div>
 </form>
 
 <p>

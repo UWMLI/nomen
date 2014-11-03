@@ -8,13 +8,18 @@ function page_content() {
 <h1>Field Guide</h1>
 
 <form action="?login" method="post">
-  <input placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
-  <input placeholder="Password" type="password" name="password" />
-  <input type="submit" value="Login" />
-</form>
-
-<form action="?join" method="post">
-  <input type="submit" value="Register" />
+  <div class="form-group">
+    <input autofocus placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
+  </div>
+  <div class="form-group">
+    <input placeholder="Password" type="password" name="password" />
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Login" class="btn btn-primary" />
+    <a href="?join">
+      <input type="button" value="Register" class="btn" />
+    </a>
+  </div>
 </form>
 
   <?php
