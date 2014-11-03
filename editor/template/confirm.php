@@ -27,16 +27,8 @@ function page_content() {
 
 <form action="?publish" method="post">
   <p>When there are no errors, enter a title and publish your dataset.</p>
-  <table>
-    <tr>
-      <td>Title:</td>
-      <td><input type="text" name="dataset_title" value="<?= $existing_title ?>" /></td>
-    </tr>
-    <tr>
-      <td>Description:</td>
-      <td><input type="text" name="dataset_description" value="<?= $existing_description ?>" /></td>
-    </tr>
-  </table>
+  <input placeholder="Title" type="text" name="dataset_title" value="<?= $existing_title ?>" />
+  <input placeholder="Description" type="text" name="dataset_description" value="<?= $existing_description ?>" />
   <input type="submit" value="Publish" />
   <input type="hidden" name="dataset_id" value="<?= $dataset_id ?>" />
   <input type="hidden" name="upload_id" value="<?= $upload_id ?>" />

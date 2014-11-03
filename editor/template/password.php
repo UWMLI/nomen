@@ -6,20 +6,9 @@ function page_content() {
   ?>
 
 <form action="?change" method="post">
-  <table>
-    <tr>
-      <td>Old password:</td>
-      <td><input type="password" name="old_password" /></td>
-    </tr>
-    <tr>
-      <td>New password (at least 10 chars):</td>
-      <td><input type="password" name="password" /></td>
-    </tr>
-    <tr>
-      <td>New password (type again):</td>
-      <td><input type="password" name="password2" /></td>
-    </tr>
-  </table>
+  <input placeholder="Old password" type="password" name="old_password" />
+  <input placeholder="New password" type="password" name="password" />
+  <input placeholder="New password (again)" type="password" name="password2" />
   <input type="submit" value="Change password" />
 </form>
 

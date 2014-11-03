@@ -6,20 +6,9 @@ function page_content() {
   ?>
 
 <form action="?signup" method="post">
-  <table>
-    <tr>
-      <td>Email:</td>
-      <td><input type="text" name="email" value="<?= $existing_email ?>" /></td>
-    </tr>
-    <tr>
-      <td>Password (at least 10 chars):</td>
-      <td><input type="password" name="password" /></td>
-    </tr>
-    <tr>
-      <td>Password (type again):</td>
-      <td><input type="password" name="password2" /></td>
-    </tr>
-  </table>
+  <input placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
+  <input placeholder="Password" type="password" name="password" />
+  <input placeholder="Password (again)" type="password" name="password2" />
   <input type="submit" value="Create account" />
 </form>
 

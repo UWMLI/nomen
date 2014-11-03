@@ -8,7 +8,7 @@ function page_content() {
   Logged in as <?php echo $_SESSION['email'] ?>.
 </p>
 
-<table>
+<table class="table">
   <tr>
     <th>ID</th>
     <th>Title</th>
