@@ -35,8 +35,8 @@ switch ($action) {
     if (!$logged_in) {
       if ( in_post(['email', 'password']) ) {
         $logged_in = login($_POST['email'], $_POST['password']);
+        $message = $logged_in ? 'Logged in successfully.' : 'Login failed.';
       }
-      $message = $logged_in ? 'Logged in successfully.' : 'Login failed.';
     }
     goto defaultPage;
 
@@ -100,6 +100,10 @@ switch ($action) {
       $dataset_id = in_post(['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
       $upload_id = $_SESSION['user_id'] . '_' . date('Ymd_His');
       $saved_zip = '../uploads/' . $upload_id . '.zip';
+      if ( !isset($_FILES['upload_zip']) ) {
+        include '../template/upload.php';
+        break;
+      }
       if ( move_uploaded_file($_FILES["upload_zip"]["tmp_name"], $saved_zip) ) {
         $zip = new ZipArchive;
         if ($zip->open($saved_zip) === TRUE) {
@@ -174,9 +178,9 @@ switch ($action) {
             $message = 'Old password was not correct.';
           }
         }
-        include '../template/password.php';
-        break;
       }
+      include '../template/password.php';
+      break;
     }
     goto defaultPage;
 
