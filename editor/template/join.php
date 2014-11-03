@@ -7,7 +7,7 @@ function page_content() {
 
 <form action="?signup" method="post">
   <div class="form-group">
-    <input placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
+    <input autofocus placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
   </div>
   <div class="form-group">
     <input placeholder="Password" type="password" name="password" />
@@ -19,10 +19,6 @@ function page_content() {
     <input type="submit" value="Create account" class="btn btn-primary" />
   </div>
 </form>
-
-<p>
-  <a href="?">Back to login</a>
-</p>
 
   <?php
 }

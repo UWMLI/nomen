@@ -5,8 +5,6 @@ function page_content() {
   $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
   ?>
 
-<h1>Field Guide</h1>
-
 <form action="?login" method="post">
   <div class="form-group">
     <input autofocus placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />

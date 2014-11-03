@@ -17,6 +17,25 @@
 </head>
 <body>
 
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="?">Field Guide</a>
+    </div>
+    <div class="navbar-collapse">
+      <?php if ($logged_in) { ?>
+        <p class="navbar-text">
+          Logged in as
+          <?= $_SESSION['email'] ?>
+        </p>
+        <p class="navbar-text">
+          <a class="navbar-link" href="?logout">Logout</a>
+        </p>
+      <?php } ?>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
 
 <?php

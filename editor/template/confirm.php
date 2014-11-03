@@ -34,14 +34,6 @@ function page_content() {
   <input type="hidden" name="upload_id" value="<?= $upload_id ?>" />
 </form>
 
-<p>
-  <a href="?list">Back to list of datasets</a>
-</p>
-
-<p>
-  <a href="?logout">Logout</a>
-</p>
-
   <?php
 }
 

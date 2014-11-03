@@ -4,10 +4,6 @@ $page_title = 'Your Datasets';
 function page_content() {
   ?>
 
-<p>
-  Logged in as <?php echo $_SESSION['email'] ?>.
-</p>
-
 <table class="table">
   <tr>
     <th>ID</th>
@@ -58,10 +54,6 @@ function page_content() {
 
 <p>
   <a href="?password">Change your password</a>
-</p>
-
-<p>
-  <a href="?logout">Logout</a>
 </p>
 
   <?php

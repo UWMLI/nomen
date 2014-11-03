@@ -29,14 +29,6 @@ function page_content() {
   <input type="hidden" name="dataset_id" value="<?php echo $dataset_id; ?>" />
 </form>
 
-<p>
-  <a href="?list">Back to list of datasets</a>
-</p>
-
-<p>
-  <a href="?logout">Logout</a>
-</p>
-
   <?php
 }
 

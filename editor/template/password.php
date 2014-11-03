@@ -6,15 +6,19 @@ function page_content() {
   ?>
 
 <form action="?change" method="post">
-  <input placeholder="Old password" type="password" name="old_password" />
-  <input placeholder="New password" type="password" name="password" />
-  <input placeholder="New password (again)" type="password" name="password2" />
-  <input type="submit" value="Change password" />
+  <div class="form-group">
+    <input autofocus placeholder="Old password" type="password" name="old_password" />
+  </div>
+  <div class="form-group">
+    <input placeholder="New password" type="password" name="password" />
+  </div>
+  <div class="form-group">
+    <input placeholder="New password (again)" type="password" name="password2" />
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Change password" class="btn btn-primary" />
+  </div>
 </form>
-
-<p>
-  <a href="?">Back</a>
-</p>
 
   <?php
 }
