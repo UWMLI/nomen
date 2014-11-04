@@ -2,6 +2,17 @@
 
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
+# Uses js-uri
+resolveURI = (base, url) ->
+  base =
+    if base in ['.', '..']
+      "#{base}/"
+    else if '/' not in base
+      './'
+    else
+      base
+  new URI(url).resolve(new URI(base)).toString()
+
 # Reads a JSON file containing an array of paths. The paths can be:
 # * relative to the folder containing the JSON file
 # * absolute, starting with "http://" or "https://"
@@ -60,6 +71,7 @@ getAllFiles = (dirReader, callback) ->>
         getSome()
   getSome()
 
+window.resolveURI = resolveURI
 window.getJSONList = getJSONList
 window.getSubdirs = getSubdirs
 window.getAllFiles = getAllFiles
