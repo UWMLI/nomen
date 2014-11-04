@@ -40,7 +40,8 @@
 
 <?php
 if ($message) {
-  echo "<div class=\"alert alert-info\">$message</div>";
+  $message_class = $success ? 'alert-success' : 'alert-danger';
+  echo "<div class=\"alert $message_class\">$message</div>";
 }
 ?>
 

@@ -25,11 +25,18 @@ function page_content() {
   }
   ?>
 
+<p>When there are no errors, enter a title and publish your dataset.</p>
+
 <form action="?publish" method="post">
-  <p>When there are no errors, enter a title and publish your dataset.</p>
-  <input placeholder="Title" type="text" name="dataset_title" value="<?= $existing_title ?>" />
-  <input placeholder="Description" type="text" name="dataset_description" value="<?= $existing_description ?>" />
-  <input type="submit" value="Publish" />
+  <div class="form-group">
+    <input placeholder="Title" type="text" name="dataset_title" value="<?= $existing_title ?>" />
+  </div>
+  <div class="form-group">
+    <input placeholder="Description" type="text" name="dataset_description" value="<?= $existing_description ?>" />
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Publish" class="btn btn-primary" />
+  </div>
   <input type="hidden" name="dataset_id" value="<?= $dataset_id ?>" />
   <input type="hidden" name="upload_id" value="<?= $upload_id ?>" />
 </form>

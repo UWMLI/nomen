@@ -14,6 +14,7 @@ foreach ($_GET as $k => $v) {
 
 $logged_in = login_check();
 $message = '';
+$success = null;
 
 function in_post($strs) {
   foreach ($strs as $str) {
@@ -36,6 +37,7 @@ switch ($action) {
       if ( in_post(['email', 'password']) ) {
         $logged_in = login($_POST['email'], $_POST['password']);
         $message = $logged_in ? 'Logged in successfully.' : 'Login failed.';
+        $success = $logged_in;
       }
     }
     goto defaultPage;
@@ -45,6 +47,7 @@ switch ($action) {
       logout();
       $logged_in = false;
       $message = 'Logged out.';
+      $success = true;
     }
     goto defaultPage;
 
@@ -62,6 +65,7 @@ switch ($action) {
         $password = $_POST['password'];
         $password2 = $_POST['password2'];
 
+        $success = false;
         if ($password !== $password2) {
           $message = 'Your passwords did not match.';
         }
@@ -74,6 +78,7 @@ switch ($action) {
         else {
           if ( create_account($email, $password) ) {
             $message = 'Account created successfully. You may now login.';
+            $success = true;
           }
           else {
             $message = 'Could not create an account. Does this email already have an account?';
@@ -116,11 +121,13 @@ switch ($action) {
           include '../template/confirm.php';
         } else {
           $message = 'Failed to extract your zip file.';
+          $success = false;
           include '../template/upload.php';
         }
       }
       else {
         $message = 'There was an error uploading your file.';
+        $success = false;
         include '../template/upload.php';
       }
       break;
@@ -132,9 +139,11 @@ switch ($action) {
       if ( in_post(['dataset_id', 'dataset_title', 'dataset_description', 'upload_id']) ) {
         if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['dataset_description'], $_POST['upload_id']) ) {
           $message = 'Publish successful!';
+          $success = true;
         }
         else {
           $message = 'Publish was not successful. Try again from the beginning.';
+          $success = false;
         }
       }
     }
@@ -145,9 +154,11 @@ switch ($action) {
       if ( in_post(['dataset_id']) ) {
         if ( delete_dataset($_POST['dataset_id']) ) {
           $message = 'Dataset deleted.';
+          $success = true;
         }
         else {
           $message = 'There was an error deleting that dataset.';
+          $success = false;
         }
       }
     }
@@ -165,17 +176,21 @@ switch ($action) {
       if ( in_post(['old_password', 'password', 'password2']) ) {
         if ($_POST['password'] !== $_POST['password2']) {
           $message = 'Passwords did not match.';
+          $success = false;
         }
         else if (strlen($_POST['password']) < 10) {
           $message = 'Your password must be at least 10 characters.';
+          $success = false;
         }
         else {
           if (change_password($_POST['old_password'], $_POST['password'])) {
             $message = 'Password changed successfully.';
+            $success = true;
             goto defaultPage;
           }
           else {
             $message = 'Old password was not correct.';
+            $success = false;
           }
         }
       }
