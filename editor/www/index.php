@@ -5,6 +5,7 @@ require_once '../include/db.php';
 require_once '../include/session.php';
 require_once '../include/datasets.php';
 require_once '../include/validate.php';
+require_once '../include/util.php';
 sec_session_start();
 
 $action = '';
@@ -21,12 +22,6 @@ function in_post($strs) {
     if (!isset($_POST[$str])) return false;
   }
   return true;
-}
-
-function rmdir_rf($directory)
-{
-  // TODO: do this more system-independently
-  system('rm -rf ' . escapeshellarg($directory));
 }
 
 // ACTIONS
