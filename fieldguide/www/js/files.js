@@ -9,8 +9,15 @@
   };
 
   resolveURI = function(base, url) {
-    base = base === '.' || base === '..' ? "" + base + "/" : __indexOf.call(base, '/') < 0 ? './' : base;
-    return new URI(url).resolve(new URI(base)).toString();
+    if (url.match(/^[A-Za-z]+:\/\//)) {
+      return url;
+    } else if (base.match(/\/$/)) {
+      return "" + base + url;
+    } else if (__indexOf.call(base, '/') >= 0) {
+      return "" + base.slice(0, +base.lastIndexOf('/') + 1 || 9e9) + url;
+    } else {
+      return url;
+    }
   };
 
   getJSONList = function(json, success, failure) {

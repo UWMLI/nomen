@@ -22,7 +22,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   App = (function() {
     function App(readWriteDir, readOnlyDir, remoteURL) {
       this.library = readWriteDir != null ? new Library(readWriteDir) : null;
-      this.libraryStatic = readOnlyDir != null ? new Library(readOnlyDir) : null;
+      this.libraryStatic = readOnlyDir != null ? new Archive(readOnlyDir) : null;
       this.remote = (readWriteDir != null) && (remoteURL != null) ? new Remote(readWriteDir, remoteURL) : null;
       if (readWriteDir == null) {
         $('#clear-button').addClass('ui-state-disabled');

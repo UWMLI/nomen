@@ -3,6 +3,7 @@
 class Library
   constructor: (@datadir) ->
     @dir = "#{@datadir}/library"
+    @json = "#{@datadir}/library.json"
 
   # Ensures that the library directory exists.
   makeDir: (callback) ->>
@@ -36,9 +37,9 @@ class Library
       if urls.length is 0
         callback()
       else
-        @addLibrary urls.pop(), => processDirs urls
+        @addLibrary resolveURI(@json, urls.pop()), => processDirs urls
     # First, try loading library.json to get the subdirectory listing.
-    getJSONList "#{@datadir}/library.json", processDirs
+    getJSONList @json, processDirs
     # If that fails, then actually traverse the directories.
     , =>>
       resolveLocalFileSystemURL @dir, (dirEntry) =>>

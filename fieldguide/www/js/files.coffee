@@ -2,16 +2,15 @@
 
 toArray = (list) -> Array.prototype.slice.call(list || [], 0)
 
-# Uses js-uri
 resolveURI = (base, url) ->
-  base =
-    if base in ['.', '..']
-      "#{base}/"
-    else if '/' not in base
-      './'
-    else
-      base
-  new URI(url).resolve(new URI(base)).toString()
+  if url.match /^[A-Za-z]+:\/\//
+    url
+  else if base.match /\/$/
+    "#{base}#{url}"
+  else if '/' in base
+    "#{base[0 .. base.lastIndexOf('/')]}#{url}"
+  else
+    url
 
 # Reads a JSON file containing an array of paths. The paths can be:
 # * relative to the folder containing the JSON file

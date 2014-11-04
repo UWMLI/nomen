@@ -24,7 +24,7 @@ class App
       if readWriteDir? then new Library readWriteDir else null
     # Library stored inside the app, read-only
     @libraryStatic =
-      if readOnlyDir? then new Library readOnlyDir else null
+      if readOnlyDir? then new Archive readOnlyDir else null
     @remote =
       if readWriteDir? and remoteURL?
         new Remote readWriteDir, remoteURL

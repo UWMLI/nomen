@@ -7,6 +7,7 @@
     function Library(datadir) {
       this.datadir = datadir;
       this.dir = "" + this.datadir + "/library";
+      this.json = "" + this.datadir + "/library.json";
     }
 
     Library.prototype.makeDir = function(callback) {
@@ -59,13 +60,13 @@
           if (urls.length === 0) {
             callback();
           } else {
-            _this.addLibrary(urls.pop(), function() {
+            _this.addLibrary(resolveURI(_this.json, urls.pop()), function() {
               return processDirs(urls);
             });
           }
         };
       })(this);
-      getJSONList("" + this.datadir + "/library.json", processDirs, (function(_this) {
+      getJSONList(this.json, processDirs, (function(_this) {
         return function() {
           resolveLocalFileSystemURL(_this.dir, function(dirEntry) {
             var dirReader;

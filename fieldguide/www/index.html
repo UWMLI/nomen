@@ -29,6 +29,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   <script type="text/javascript" src="js/species.js"></script>
   <script type="text/javascript" src="js/dataset.js"></script>
   <script type="text/javascript" src="js/library.js"></script>
+  <script type="text/javascript" src="js/archive.js"></script>
   <script type="text/javascript" src="js/remote.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="cordova.js"></script>
@@ -163,7 +164,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <script language="javascript">
   if (typeof cordova === 'undefined') {
     console.log('Not running in Cordova.');
-    var readOnly = '.';
+    var readOnly = 'library.json';
     window.app = new App(null, readOnly, null);
     app.onDeviceReady();
   }
@@ -171,8 +172,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     console.log('Running in Cordova.');
     document.addEventListener('deviceready', function() {
       var readWrite = cordova.file.dataDirectory;
-      var readOnly = cordova.file.applicationDirectory + '/www';
-      var remoteURL = 'http://localhost:8888/api.php';
+      var readOnly = cordova.file.applicationDirectory + '/www/library.json';
+      var remoteURL = 'http://localhost:8888/editor/www/api.php';
       window.app = new App(readWrite, readOnly, remoteURL);
       app.onDeviceReady();
     });
