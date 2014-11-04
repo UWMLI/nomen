@@ -72,6 +72,12 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
   mkdir($extract_dir);
   $zip->extractTo($extract_dir);
   $zip->close();
+  // Save explicit JSON directory listings
+  $pwd = getcwd();
+  chdir($extract_dir);
+  file_put_contents('features.json', json_encode( glob('features/*/*') ));
+  file_put_contents('species.json', json_encode( glob('species/*') ));
+  chdir($pwd);
 
   DB::commit();
   return true;
