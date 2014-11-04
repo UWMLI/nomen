@@ -28,7 +28,7 @@ function page_content() {
       <td><?= htmlspecialchars($set['description']) ?></td>
       <td>
         <form action="?upload" method="post">
-          <input type="submit" value="New version">
+          <input type="submit" value="New version" />
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
       </td>
@@ -37,7 +37,7 @@ function page_content() {
       </td>
       <td>
         <form action="?delete" method="post">
-          <input type="submit" value="Delete">
+          <input type="submit" value="Delete" />
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
       </td>

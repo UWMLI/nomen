@@ -20,8 +20,8 @@ function page_content() {
   $existing_description = '';
   if ($dataset_id > 0) {
     $set = get_dataset($dataset_id);
-    $existing_title       = $set['title'];
-    $existing_description = $set['description'];
+    $existing_title       = htmlspecialchars($set['title']);
+    $existing_description = htmlspecialchars($set['description']);
   }
   ?>
 
@@ -29,10 +29,10 @@ function page_content() {
 
 <form action="?publish" method="post">
   <div class="form-group">
-    <input placeholder="Title" type="text" name="dataset_title" value="<?= $existing_title ?>" />
+    <input class="form-control" placeholder="Title" type="text" name="dataset_title" value="<?= $existing_title ?>" />
   </div>
   <div class="form-group">
-    <input placeholder="Description" type="text" name="dataset_description" value="<?= $existing_description ?>" />
+    <textarea class="form-control" placeholder="Description" type="text" name="dataset_description"><?= $existing_description ?></textarea>
   </div>
   <div class="form-group">
     <input type="submit" value="Publish" class="btn btn-primary" />
