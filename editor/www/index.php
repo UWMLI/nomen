@@ -64,8 +64,8 @@ switch ($action) {
         if ($password !== $password2) {
           $message = 'Your passwords did not match.';
         }
-        else if (strlen($password) < 10) {
-          $message = 'Your password must be at least 10 characters.';
+        else if (strlen($password) < 6) {
+          $message = 'Your password must be at least 6 characters.';
         }
         else if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
           $message = 'Email address is invalid.';
@@ -173,8 +173,8 @@ switch ($action) {
           $message = 'Passwords did not match.';
           $success = false;
         }
-        else if (strlen($_POST['password']) < 10) {
-          $message = 'Your password must be at least 10 characters.';
+        else if (strlen($_POST['password']) < 6) {
+          $message = 'Your password must be at least 6 characters.';
           $success = false;
         }
         else {
