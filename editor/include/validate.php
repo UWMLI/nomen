@@ -5,9 +5,9 @@ require_once 'parsecsv.lib.php';
 function scandir_real($dir) {
   if (!is_dir($dir))
   {
-    return [];
+    return array();
   }
-  $entries = [];
+  $entries = array();
   foreach (scandir($dir) as $f) {
     if ( substr($f, 0, 1) != '.' ) {
       $entries[] = $f;
@@ -26,13 +26,13 @@ function printInfo($dir) {
 }
 
 function validateDataset($dir) {
-  $errors = [];
+  $errors = array();
 
   $species = new parseCSV("$dir/species.csv");
 
-  $species_canonical = [];
+  $species_canonical = array();
   foreach ($species->data as $spec) {
-    $spec_canonical = [];
+    $spec_canonical = array();
     foreach ($spec as $k => $v) {
       $spec_canonical[ canonical($k) ] = $v;
     }
@@ -40,7 +40,7 @@ function validateDataset($dir) {
   }
 
   // Find all species images
-  $img_species = [];
+  $img_species = array();
   foreach (scandir_real("$dir/species") as $img) {
     if ( preg_match('/^([\w ]+)(-[\w -]+)?\.[A-Za-z]+$/', $img, $matches) ) {
       $img_species[ canonical($matches[1]) ] = true;
@@ -51,15 +51,15 @@ function validateDataset($dir) {
   }
 
   // Find all species in the CSV
-  $csv_species = [];
+  $csv_species = array();
   foreach ($species_canonical as $spec) {
     $csv_species[ canonical( $spec['name'] ) ] = true;
   }
 
   // Find all feature images
-  $img_features = [];
+  $img_features = array();
   foreach (scandir_real("$dir/features") as $feature) {
-    $img_features[canonical($feature)] = [];
+    $img_features[canonical($feature)] = array();
     foreach (scandir_real("$dir/features/$feature") as $image) {
       $extension_dot = strrpos($image, '.');
       if ($extension_dot !== false) {
@@ -72,14 +72,14 @@ function validateDataset($dir) {
   }
 
   // Find all features which are present in the species
-  $csv_features = [];
+  $csv_features = array();
   foreach ($species_canonical as $spec) {
     foreach ($spec as $k => $vstr) {
       if ($k == 'name' || $k == 'display_name' || $k == 'description') continue;
 
       if ( empty($csv_features[$k]) )
       {
-        $csv_features[$k] = [];
+        $csv_features[$k] = array();
       }
       $values = array_map( 'trim', explode(',', $vstr) );
       foreach ($values as $v) {

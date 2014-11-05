@@ -104,11 +104,11 @@ function logout() {
 function create_account($email, $password) {
     $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
     $password = hash('sha512', $password . $random_salt);
-    DB::insert('users', [
+    DB::insert('users', array(
         'email' => $email,
         'password' => $password,
         'salt' => $random_salt,
-    ]);
+    ));
     return DB::affectedRows() === 1;
     // If not 1, couldn't INSERT, probably email already exists
 }

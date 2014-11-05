@@ -19,27 +19,28 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
   DB::startTransaction();
   if ($dataset_id <= 0) {
     // New dataset
-    DB::insert('datasets', [
+    DB::insert('datasets', array(
       'user_id' => $_SESSION['user_id'],
       'title' => $title,
       'description' => $description,
       'version' => 1,
-    ]);
+    ));
     $dataset_id = DB::insertId();
   }
   else {
     // New version of existing dataset
-    DB::update('datasets', [
+    DB::update('datasets', array(
       'title' => $title,
       'description' => $description,
       'version' => DB::sqleval('version + 1'),
-    ], 'id = %i AND user_id = %i', $dataset_id, $_SESSION['user_id']);
+    ), 'id = %i AND user_id = %i', $dataset_id, $_SESSION['user_id']);
     if (DB::affectedRows() !== 1) {
       DB::rollback();
       return false;
     }
   }
-  $version = get_dataset($dataset_id)['version'];
+  $dataset = get_dataset($dataset_id);
+  $version = $dataset['version'];
 
   // Insert info.json into zip, save zip and extract to $dataset_id
   $zip_old = '../uploads/' . $upload_id . '.zip';
@@ -51,13 +52,13 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
     DB::rollback();
     return false;
   }
-  $zip_info = json_encode([
+  $zip_info = json_encode(array(
     'title' => $title,
     'description' => $description,
     'id' => DATASET_PREFIX . $dataset_id,
     'version' => $version,
     'author' => $_SESSION['email'],
-  ]);
+  ));
   $zip->addFromString('info.json', $zip_info);
   $zip->close();
   // Next, rename to new location

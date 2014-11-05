@@ -2,6 +2,7 @@
 
 ini_set('display_errors', true);
 error_reporting(E_ALL);
+date_default_timezone_set('UTC');
 
 define("HOST", "127.0.0.1");
 define("USER", "root");

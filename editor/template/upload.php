@@ -13,7 +13,8 @@ function page_content() {
       echo 'Upload a new dataset';
     }
     else {
-      $title = htmlspecialchars(get_dataset($dataset_id)['title']);
+      $dataset = get_dataset($dataset_id);
+      $title = htmlspecialchars($dataset['title']);
       echo "Upload a new version of dataset &ldquo;$title&rdquo;";
     }
   ?>

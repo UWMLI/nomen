@@ -29,7 +29,7 @@ function in_post($strs) {
 switch ($action) {
   case 'login':
     if (!$logged_in) {
-      if ( in_post(['email', 'password']) ) {
+      if ( in_post(array('email', 'password')) ) {
         $logged_in = login($_POST['email'], $_POST['password']);
         $message = $logged_in ? 'Logged in successfully.' : 'Login failed.';
         $success = $logged_in;
@@ -55,7 +55,7 @@ switch ($action) {
 
   case 'signup':
     if (!$logged_in) {
-      if ( in_post(['email', 'password', 'password2']) ) {
+      if ( in_post(array('email', 'password', 'password2')) ) {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $password2 = $_POST['password2'];
@@ -89,7 +89,7 @@ switch ($action) {
 
   case 'upload':
     if ($logged_in) {
-      $dataset_id = in_post(['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
+      $dataset_id = in_post(array('dataset_id')) ? (int) $_POST['dataset_id'] : 0;
       include '../template/upload.php';
       break;
     }
@@ -97,7 +97,7 @@ switch ($action) {
 
   case 'confirm':
     if ($logged_in) {
-      $dataset_id = in_post(['dataset_id']) ? (int) $_POST['dataset_id'] : 0;
+      $dataset_id = in_post(array('dataset_id')) ? (int) $_POST['dataset_id'] : 0;
       $upload_id = $_SESSION['user_id'] . '_' . date('Ymd_His');
       $saved_zip = '../uploads/' . $upload_id . '.zip';
       if ( !isset($_FILES['upload_zip']) ) {
@@ -131,7 +131,7 @@ switch ($action) {
 
   case 'publish':
     if ($logged_in) {
-      if ( in_post(['dataset_id', 'dataset_title', 'dataset_description', 'upload_id']) ) {
+      if ( in_post(array('dataset_id', 'dataset_title', 'dataset_description', 'upload_id')) ) {
         if ( publish_dataset($_POST['dataset_id'], $_POST['dataset_title'], $_POST['dataset_description'], $_POST['upload_id']) ) {
           $message = 'Publish successful!';
           $success = true;
@@ -146,7 +146,7 @@ switch ($action) {
 
   case 'delete':
     if ($logged_in) {
-      if ( in_post(['dataset_id']) ) {
+      if ( in_post(array('dataset_id')) ) {
         if ( delete_dataset($_POST['dataset_id']) ) {
           $message = 'Dataset deleted.';
           $success = true;
@@ -168,7 +168,7 @@ switch ($action) {
 
   case 'change':
     if ($logged_in) {
-      if ( in_post(['old_password', 'password', 'password2']) ) {
+      if ( in_post(array('old_password', 'password', 'password2')) ) {
         if ($_POST['password'] !== $_POST['password2']) {
           $message = 'Passwords did not match.';
           $success = false;
