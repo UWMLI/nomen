@@ -10,8 +10,8 @@ function page_content() {
     <th>Title</th>
     <th>Version</th>
     <th>Description</th>
-    <th>Upload new version</th>
-    <th>Download .zip</th>
+    <th>New version</th>
+    <th>Download</th>
     <th>Delete</th>
   </tr>
   <?php
@@ -28,16 +28,18 @@ function page_content() {
       <td><?= htmlspecialchars($set['description']) ?></td>
       <td>
         <form action="?upload" method="post">
-          <input type="submit" value="New version" />
+          <input class="btn btn-default" type="submit" value="New version" />
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
       </td>
       <td>
-        <a href="datasets/<?= $set['id'] ?>.zip">Download</a>
+        <a href="datasets/<?= $set['id'] ?>.zip">
+          <button class="btn btn-default">Download</button>
+        </a>
       </td>
       <td>
         <form action="?delete" method="post">
-          <input type="submit" value="Delete" />
+          <input class="btn btn-default" type="submit" value="Delete" />
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
       </td>
