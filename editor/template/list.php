@@ -39,9 +39,9 @@ function page_content() {
         </form>
       </td>
       <td data-title="Download">
-        <a href="datasets/<?= $set['id'] ?>.zip">
-          <button class="btn btn-info">Download</button>
-        </a>
+        <a href="datasets/<?= $set['id'] ?>.zip"><button class="btn btn-info">
+          Download
+        </button></a>
       </td>
       <td data-title="Delete">
         <button class="btn btn-danger" type="submit"
@@ -87,6 +87,16 @@ function page_content() {
       </div>
     </div>
   </div>
+<?php } ?>
+
+<?php if (empty($sets)) { ?>
+  <p>
+    You have no guides yet! Click
+    <a href="?upload"><button class="btn btn-primary" style="margin: 2px; margin-top: -3px;">
+      New Guide
+    </button></a>
+    to get started.
+  </p>
 <?php } ?>
 
   <?php
