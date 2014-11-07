@@ -5,10 +5,10 @@ function page_content() {
   global $dataset_id, $dataset_errors, $upload_id;
 
   if ( empty($dataset_errors) ) {
-    echo '<p>No errors found in your dataset!</p>';
+    echo '<p>No errors found!</p>';
   }
   else {
-    echo '<p>Found the following errors:</p>';
+    echo '<p>The following errors were found:</p>';
     echo '<ul>';
     foreach ($dataset_errors as $err) {
       echo "<li>$err</li>";
@@ -25,7 +25,9 @@ function page_content() {
   }
   ?>
 
-<p>When there are no errors, enter a title and publish your dataset.</p>
+<p>
+  After you have fixed any errors, enter a title and description, and publish your dataset.
+</p>
 
 <form action="?publish" method="post">
   <div class="form-group">

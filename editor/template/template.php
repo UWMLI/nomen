@@ -20,17 +20,33 @@
 <nav class="navbar navbar-inverse" role="navigation">
   <div class="container">
     <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
       <a class="navbar-brand" href="?">Field Guide</a>
     </div>
-    <div class="navbar-collapse">
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
       <?php if ($logged_in) { ?>
-        <p class="navbar-text">
-          Logged in as
-          <?= $_SESSION['email'] ?>
-        </p>
-        <p class="navbar-text">
-          <a class="navbar-link" href="?logout">Logout</a>
-        </p>
+        <ul class="nav navbar-nav">
+          <li><a href="?list">Your Datasets</a></li>
+          <li><a href="?upload">New Dataset</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Logged in as <?= $_SESSION['email'] ?> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="?logout">Logout</a></li>
+              <li><a href="?password">Change Password</a></li>
+            </ul>
+          </li>
+        </ul>
       <?php } ?>
     </div>
   </div>

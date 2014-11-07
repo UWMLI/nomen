@@ -48,14 +48,6 @@ function page_content() {
   ?>
 </table>
 
-<p>
-  <a href="?upload">Create new dataset</a>
-</p>
-
-<p>
-  <a href="?password">Change your password</a>
-</p>
-
   <?php
 }
 
