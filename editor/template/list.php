@@ -4,7 +4,8 @@ $page_title = 'Your Guides';
 function page_content() {
   ?>
 
-<table class="table">
+<div class="table-responsive">
+<table class="table table-striped">
   <tr>
     <th>ID</th>
     <th>Title</th>
@@ -49,6 +50,7 @@ function page_content() {
 
   ?>
 </table>
+</div>
 
   <?php
 }
