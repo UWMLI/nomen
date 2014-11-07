@@ -41,10 +41,10 @@ function page_content() {
         </a>
       </td>
       <td>
-        <form action="?delete" method="post">
-          <input class="btn btn-danger" type="submit" value="Delete" />
-          <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
-        </form>
+        <button class="btn btn-danger" type="submit"
+          data-toggle="modal" data-target="#delete-modal-<?= $set['id'] ?>">
+          Delete
+        </button>
       </td>
     </tr>
     <?php
@@ -53,6 +53,37 @@ function page_content() {
   ?>
 </table>
 </div>
+
+<?php foreach ($sets as $set) { ?>
+  <div class="modal" id="delete-modal-<?= $set['id'] ?>" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Confirm delete</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete the
+            &ldquo;<?= htmlspecialchars($set['title']) ?>&rdquo;
+            guide?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <form action="?delete" method="post">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-danger" value="Delete" />
+            <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php } ?>
 
   <?php
 }
