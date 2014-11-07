@@ -5,6 +5,10 @@ function page_content() {
   $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
   ?>
 
+<div class="page-header">
+<h1>Create an account</h1>
+</div>
+
 <form action="?signup" method="post">
   <div class="form-group">
     <input autofocus placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
