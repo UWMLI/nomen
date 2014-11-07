@@ -8,16 +8,19 @@ function page_content() {
 <h1>Your guides</h1>
 </div>
 
-<div class="table-responsive">
+<div class="table-responsive" id="no-more-tables">
 <table class="table table-striped">
-  <tr>
-    <th>Title</th>
-    <th>Version</th>
-    <th>Description</th>
-    <th>New version</th>
-    <th>Download</th>
-    <th>Delete</th>
-  </tr>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Version</th>
+      <th>Description</th>
+      <th>New version</th>
+      <th>Download</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
   <?php
 
   require_once '../include/datasets.php';
@@ -26,21 +29,21 @@ function page_content() {
   foreach ($sets as $set) {
     ?>
     <tr>
-      <td><?= htmlspecialchars($set['title']) ?></td>
-      <td><?= $set['version'] ?></td>
-      <td><?= htmlspecialchars($set['description']) ?></td>
-      <td>
+      <td data-title="Title"><?= htmlspecialchars($set['title']) ?></td>
+      <td data-title="Version"><?= $set['version'] ?></td>
+      <td data-title="Description"><?= htmlspecialchars($set['description']) ?></td>
+      <td data-title="New version">
         <form action="?upload" method="post">
           <input class="btn btn-primary" type="submit" value="New version" />
           <input type="hidden" name="dataset_id" value="<?= $set['id'] ?>" />
         </form>
       </td>
-      <td>
+      <td data-title="Download">
         <a href="datasets/<?= $set['id'] ?>.zip">
           <button class="btn btn-info">Download</button>
         </a>
       </td>
-      <td>
+      <td data-title="Delete">
         <button class="btn btn-danger" type="submit"
           data-toggle="modal" data-target="#delete-modal-<?= $set['id'] ?>">
           Delete
@@ -51,6 +54,7 @@ function page_content() {
   }
 
   ?>
+  </tbody>
 </table>
 </div>
 

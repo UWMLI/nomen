@@ -14,11 +14,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style type="text/css">
-    td {
-      vertical-align: middle !important;
-    }
-  </style>
+  <link rel="stylesheet" href="table.css">
 </head>
 <body>
 
