@@ -19,7 +19,7 @@ function page_content() {
   <div class="form-group">
     <input type="submit" value="Login" class="btn btn-primary" />
     <a href="?join">
-      <input type="button" value="Register" class="btn" />
+      <input type="button" value="Register" class="btn btn-default" />
     </a>
   </div>
 </form>
