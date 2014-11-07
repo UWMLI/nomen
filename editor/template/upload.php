@@ -11,7 +11,7 @@ function page_content() {
 <h1>
   <?php
     if ($dataset_id <= 0) {
-      echo 'Upload a new dataset';
+      echo 'Upload a new guide';
     }
     else {
       $dataset = get_dataset($dataset_id);

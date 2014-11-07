@@ -1,6 +1,6 @@
 <?php 
 
-$page_title = 'Your Datasets';
+$page_title = 'Your Guides';
 function page_content() {
   ?>
 

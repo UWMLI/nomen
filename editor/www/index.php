@@ -148,11 +148,11 @@ switch ($action) {
     if ($logged_in) {
       if ( in_post(array('dataset_id')) ) {
         if ( delete_dataset($_POST['dataset_id']) ) {
-          $message = 'Dataset deleted.';
+          $message = 'Guide deleted.';
           $success = true;
         }
         else {
-          $message = 'There was an error deleting that dataset.';
+          $message = 'There was an error deleting that guide.';
           $success = false;
         }
       }

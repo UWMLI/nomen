@@ -32,8 +32,8 @@
     <div class="collapse navbar-collapse" id="navbar-collapse">
       <?php if ($logged_in) { ?>
         <ul class="nav navbar-nav">
-          <li><a href="?list">Your Datasets</a></li>
-          <li><a href="?upload">New Dataset</a></li>
+          <li><a href="?list">Your Guides</a></li>
+          <li><a href="?upload">New Guide</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">

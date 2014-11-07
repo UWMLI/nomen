@@ -26,7 +26,7 @@ function page_content() {
   ?>
 
 <p>
-  After you have fixed any errors, enter a title and description, and publish your dataset.
+  After you have fixed any errors, enter a title and description before publishing your guide.
 </p>
 
 <form action="?publish" method="post">
