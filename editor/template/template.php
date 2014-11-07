@@ -68,6 +68,10 @@ if ($message) {
 
 <?php page_content(); ?>
 
+<div style="height: 80px;">
+  <!-- some extra buffer space at bottom of page -->
+</div>
+
 </div>
 
 </body>

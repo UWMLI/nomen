@@ -28,7 +28,7 @@ function page_content() {
     <input type="file" name="upload_zip" id="file-upload" />
   </div>
   <div class="form-group">
-    <input class="btn btn-default" type="submit" value="Upload file" />
+    <input class="btn btn-primary" type="submit" value="Upload file" />
   </div>
   <input type="hidden" name="dataset_id" value="<?php echo $dataset_id; ?>" />
 </form>
@@ -94,16 +94,19 @@ function page_content() {
 <table class="table table-bordered">
   <tr>
     <th>Name</th>
+    <th>Description</th>
     <th>Color</th>
     <th>Size</th>
   </tr>
   <tr>
     <td>Dog</td>
+    <td>Canis lupus familiaris</td>
     <td>Red</td>
     <td>Big</td>
   </tr>
   <tr>
     <td>Cat</td>
+    <td>Felis catus</td>
     <td>Red, Blue</td>
     <td>Small</td>
   </tr>
@@ -112,9 +115,9 @@ function page_content() {
 <p>Which will look like this when exported to <code>species.csv</code>:</p>
 
 <pre>
-Name,Color,Size
-Dog,Red,Big
-Cat,"Red, Blue",Small
+Name,Description,Color,Size
+Dog,Canis lupus familiaris,Red,Big
+Cat,Felis catus,"Red, Blue",Small
 </pre>
 
   <?php

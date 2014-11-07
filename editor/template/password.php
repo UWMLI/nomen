@@ -5,6 +5,10 @@ function page_content() {
   $existing_email = isset($_POST['email']) ? $_POST['email'] : '';
   ?>
 
+<div class="page-header">
+<h1>Change your password</h1>
+</div>
+
 <form action="?change" method="post">
   <div class="form-group">
     <input autofocus placeholder="Old password" type="password" name="old_password" />

@@ -3,6 +3,13 @@
 $page_title = 'Confirmation';
 function page_content() {
   global $dataset_id, $dataset_errors, $upload_id;
+?>
+
+<div class="page-header">
+<h1>Check and publish</h1>
+</div>
+
+<?php
 
   if ( empty($dataset_errors) ) {
     echo '<p>No errors found!</p>';
