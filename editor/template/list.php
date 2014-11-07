@@ -1,12 +1,27 @@
-<?php 
+<?php
+
+require_once '../include/datasets.php';
 
 $page_title = 'Your Guides';
 function page_content() {
+
+  $sets = get_datasets();
+
   ?>
 
 <div class="page-header">
 <h1>Your guides</h1>
 </div>
+
+<?php if (empty($sets)) { ?>
+  <p>
+    You have no guides yet! Click
+    <a href="?upload"><button class="btn btn-primary" style="margin: 2px; margin-top: -3px;">
+      New Guide
+    </button></a>
+    to get started.
+  </p>
+<?php } else { ?>
 
 <div class="table-responsive" id="no-more-tables">
 <table class="table table-striped">
@@ -23,9 +38,6 @@ function page_content() {
   <tbody>
   <?php
 
-  require_once '../include/datasets.php';
-
-  $sets = get_datasets();
   foreach ($sets as $set) {
     ?>
     <tr>
@@ -89,14 +101,6 @@ function page_content() {
   </div>
 <?php } ?>
 
-<?php if (empty($sets)) { ?>
-  <p>
-    You have no guides yet! Click
-    <a href="?upload"><button class="btn btn-primary" style="margin: 2px; margin-top: -3px;">
-      New Guide
-    </button></a>
-    to get started.
-  </p>
 <?php } ?>
 
   <?php
