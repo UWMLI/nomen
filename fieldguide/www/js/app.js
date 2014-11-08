@@ -115,7 +115,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.readyClear = function() {
-      $('#confirm-delete-message').text('Are you sure you want to clear the library?');
+      $('#confirm-delete-message').text('Are you sure you want to delete all guides?');
       this.deleteAction = (function(_this) {
         return function(callback) {
           _this.clearLibrary(callback);
@@ -129,7 +129,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.readyDelete = function(id) {
       var title;
       title = this.library.datasets[id].title;
-      $('#confirm-delete-message').text("Are you sure you want to delete the dataset \"" + title + "\"?");
+      $('#confirm-delete-message').text("Are you sure you want to delete the \"" + title + "\" guide?");
       this.deleteAction = (function(_this) {
         return function(callback) {
           _this.deleteDataset(id, callback);

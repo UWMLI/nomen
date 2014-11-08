@@ -92,7 +92,7 @@ class App
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->>
-    $('#confirm-delete-message').text 'Are you sure you want to clear the library?'
+    $('#confirm-delete-message').text 'Are you sure you want to delete all guides?'
     @deleteAction = (callback) =>>
       @clearLibrary callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
@@ -100,7 +100,7 @@ class App
   # Sets up and loads the delete confirmation dialog for deleting a single set.
   readyDelete: (id) ->>
     title = @library.datasets[id].title
-    $('#confirm-delete-message').text "Are you sure you want to delete the dataset \"#{title}\"?"
+    $('#confirm-delete-message').text "Are you sure you want to delete the \"#{title}\" guide?"
     @deleteAction = (callback) =>>
       @deleteDataset id, callback
     $.mobile.changePage '#confirm-delete', { transition: 'pop' }
