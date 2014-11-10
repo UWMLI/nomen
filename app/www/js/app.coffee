@@ -202,7 +202,8 @@ class App
             for {display, image, value} in row
               toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
               @div '.feature-box', onclick: toggleFn, ->>
-                @img '.feature-img', src: image
+                @div '.feature-img-box', ->>
+                  @img '.feature-img', src: image
                 @div '.feature-value', display
     @selected = {}
     $('.feature-value').removeClass 'selected'
@@ -272,13 +273,15 @@ class App
               pics = dataset.imagesForSpecies spec
               if pics.length is 0
                 @div '.feature-box', ->>
-                  @img '.feature-img', src: 'img/noimage.png'
+                  @div '.feature-img-box', ->>
+                    @img '.feature-img', src: 'img/noimage.png'
                   @div '.feature-value', 'No Image'
               else
                 for [part, image], ix in pics
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->>
                     @div '.feature-box', ->>
-                      @img '.feature-img', src: image
+                      @div '.feature-img-box', ->>
+                        @img '.feature-img', src: image
                       @div '.feature-value', ->>
                         txt = displayValue part
                         if txt

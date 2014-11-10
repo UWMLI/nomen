@@ -323,8 +323,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 this.div('.feature-box', {
                   onclick: toggleFn
                 }, function() {
-                  this.img('.feature-img', {
-                    src: image
+                  this.div('.feature-img-box', function() {
+                    this.img('.feature-img', {
+                      src: image
+                    });
                   });
                   this.div('.feature-value', display);
                 });
@@ -445,8 +447,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 pics = dataset.imagesForSpecies(spec);
                 if (pics.length === 0) {
                   this.div('.feature-box', function() {
-                    this.img('.feature-img', {
-                      src: 'img/noimage.png'
+                    this.div('.feature-img-box', function() {
+                      this.img('.feature-img', {
+                        src: 'img/noimage.png'
+                      });
                     });
                     this.div('.feature-value', 'No Image');
                   });
@@ -459,8 +463,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                       onclick: setFn
                     }, function() {
                       this.div('.feature-box', function() {
-                        this.img('.feature-img', {
-                          src: image
+                        this.div('.feature-img-box', function() {
+                          this.img('.feature-img', {
+                            src: image
+                          });
                         });
                         this.div('.feature-value', function() {
                           var txt;
