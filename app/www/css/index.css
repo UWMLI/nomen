@@ -49,6 +49,10 @@ body {
   border-width: 1px;
 }
 
+.feature-row:last-child {
+  margin-bottom: 3px;
+}
+
 .feature-name {
   font-size: 14px;
   font-weight: normal;
