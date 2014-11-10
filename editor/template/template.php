@@ -5,13 +5,13 @@
   <title>Field Guide: <?php echo $page_title; ?></title>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="lib/jquery-2.1.1.min.js"></script>
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="lib/bootstrap-3.3.0/css/bootstrap.min.css">
   <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="lib/bootstrap-3.3.0/css/bootstrap-theme.min.css">
   <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <script src="lib/bootstrap-3.3.0/js/bootstrap.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="table.css">
