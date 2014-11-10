@@ -338,7 +338,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.toggleElement = function(element, feature, value) {
-      var _base;
+      var box, _base;
       if ((_base = this.selected)[feature] == null) {
         _base[feature] = {};
       }
@@ -350,11 +350,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       if (Object.keys(this.selected[feature]).length === 0) {
         delete this.selected[feature];
       }
-      value = $(element).find('.feature-value');
-      if (value.hasClass('selected')) {
-        value.removeClass('selected');
+      box = $(element);
+      if (box.hasClass('selected')) {
+        box.removeClass('selected');
       } else {
-        value.addClass('selected');
+        box.addClass('selected');
       }
       this.showHowMany();
       this.fillLikelyPage();
@@ -431,7 +431,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         appendTo($('#likely-species'), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";
-          this.a({
+          this.a('.to-species', {
             href: '#specimen0',
             'data-transition': 'slide',
             onclick: setFn
@@ -462,7 +462,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                         this.img('.feature-img', {
                           src: image
                         });
-                        this.div('.feature-value', displayValue(part));
+                        this.div('.feature-value', function() {
+                          var txt;
+                          txt = displayValue(part);
+                          if (txt) {
+                            this.text(txt);
+                          } else {
+                            this.raw('&nbsp;');
+                          }
+                        });
                       });
                     });
                   }

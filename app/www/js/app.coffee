@@ -219,11 +219,11 @@ class App
     if Object.keys(@selected[feature]).length is 0
       delete @selected[feature]
 
-    value = $(element).find '.feature-value'
-    if value.hasClass 'selected'
-      value.removeClass 'selected'
+    box = $(element)
+    if box.hasClass 'selected'
+      box.removeClass 'selected'
     else
-      value.addClass 'selected'
+      box.addClass 'selected'
 
     @showHowMany()
     @fillLikelyPage()
@@ -264,7 +264,7 @@ class App
     for [spec, score] in toShow
       appendTo $('#likely-species'), ->>
         setFn = "app.setSpecies('#{spec.name}'); return true;"
-        @a href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
+        @a '.to-species', href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
           @div '.feature-row', ->>
             @div '.feature-name', ->>
               @text "#{spec.display_name} (#{score})"
@@ -279,7 +279,12 @@ class App
                   @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->>
                     @div '.feature-box', ->>
                       @img '.feature-img', src: image
-                      @div '.feature-value', displayValue part
+                      @div '.feature-value', ->>
+                        txt = displayValue part
+                        if txt
+                          @text txt
+                        else
+                          @raw '&nbsp;'
 
   # Executed when the user clicks on a species button from the "likely" page.
   # Clear existing species pages, and make new ones for the selected species.
