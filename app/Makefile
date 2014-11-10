@@ -4,11 +4,9 @@ js_files     := $(coffee_files:%.coffee=%.js)
 mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 datasets := $(wildcard datasets/*/)
-zips     := $(datasets:datasets/%/=remote/%.zip)
 
-all: js zips
+all: js
 js: $(js_files)
-zips: $(zips)
 
 clean:
 	rm -f remote/*.zip
@@ -23,12 +21,3 @@ closure:
 		echo $$js; \
 		closure-compiler --language_in ECMASCRIPT5_STRICT $$js > /dev/null; \
 	done
-
-# Zips up each dataset into the zip file to be hosted at our fake remote
-remote/%.zip: datasets/%/species.csv
-	rm -f $@
-	cd datasets/$* && zip -r "$(mkfile_dir)/$@" . \
-		-i info.json \
-		-i species.csv \
-		-i "species/*" \
-		-i "features/*"
