@@ -18,13 +18,25 @@ body {
 #dataset-content {
   padding: 0px;
   padding-top: 4px;
-  background: #333;
+}
+
+#dataset {
+  background-color: black;
+  background-image: url("../img/bg.png");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
 }
 
 #likely-content {
   padding: 0px;
   padding-top: 4px;
-  background: #333;
+}
+
+#likely {
+  background-color: black;
+  background-image: url("../img/bg.png");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
 }
 
 .specimen-content {
