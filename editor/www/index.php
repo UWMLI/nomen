@@ -111,6 +111,12 @@ switch ($action) {
           mkdir($extract_dir);
           $zip->extractTo($extract_dir);
           $zip->close();
+          if (!is_file("$extract_dir/species.csv")) {
+            $message = 'No species.csv found in your zip file.';
+            $success = false;
+            include '../template/upload.php';
+            break;
+          }
           $dataset_errors = validateDataset($extract_dir);
           rmdir_rf($extract_dir);
           include '../template/confirm.php';
