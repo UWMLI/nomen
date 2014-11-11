@@ -264,11 +264,8 @@ class App
       $('#likely-show-button').removeClass 'ui-state-disabled'
     dataset = @dataset
     maxScore = Object.keys(@selected).length
-    $('#likely-species-section').hide()
-    $('#other-species-section').hide()
     for [spec, score] in toShow
       div = if score is maxScore then '#likely-species' else '#other-species'
-      $("#{div}-section").show()
       appendTo $(div), ->>
         setFn = "app.setSpecies('#{spec.name}'); return true;"
         @a '.to-species', href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
@@ -282,6 +279,11 @@ class App
                 @img '.feature-img', src: image
             @div '.feature-value', ->>
               @text "#{spec.display_name} (#{score})"
+    for div in ['#likely-species', '#other-species']
+      if $(div).html() is ''
+        $("#{div}-section").hide()
+      else
+        $("#{div}-section").show()
 
   # Executed when the user clicks on a species button from the "likely" page.
   # Clear existing species pages, and make new ones for the selected species.

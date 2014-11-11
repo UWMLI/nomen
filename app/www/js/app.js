@@ -420,7 +420,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.showSpecies = function() {
-      var dataset, div, maxScore, score, spec, toShow, _i, _len, _ref;
+      var dataset, div, maxScore, score, spec, toShow, _i, _j, _len, _len1, _ref, _ref1;
       toShow = this.speciesPending.slice(0, 10);
       this.speciesPending = this.speciesPending.slice(10);
       if (this.speciesPending.length === 0) {
@@ -430,12 +430,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       }
       dataset = this.dataset;
       maxScore = Object.keys(this.selected).length;
-      $('#likely-species-section').hide();
-      $('#other-species-section').hide();
       for (_i = 0, _len = toShow.length; _i < _len; _i++) {
         _ref = toShow[_i], spec = _ref[0], score = _ref[1];
         div = score === maxScore ? '#likely-species' : '#other-species';
-        $("" + div + "-section").show();
         appendTo($(div), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";
@@ -465,6 +462,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             });
           });
         });
+      }
+      _ref1 = ['#likely-species', '#other-species'];
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        div = _ref1[_j];
+        if ($(div).html() === '') {
+          $("" + div + "-section").hide();
+        } else {
+          $("" + div + "-section").show();
+        }
       }
     };
 

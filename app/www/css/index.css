@@ -77,6 +77,10 @@ body {
   margin-right: 3px;
 }
 
+.to-species .feature-box {
+  margin-bottom: 3px;
+}
+
 .feature-box:not(.selected) {
   background-color: #575f6a;
 }
