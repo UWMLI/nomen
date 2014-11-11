@@ -430,9 +430,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       }
       dataset = this.dataset;
       maxScore = Object.keys(this.selected).length;
+      $('#likely-species-section').hide();
+      $('#other-species-section').hide();
       for (_i = 0, _len = toShow.length; _i < _len; _i++) {
         _ref = toShow[_i], spec = _ref[0], score = _ref[1];
         div = score === maxScore ? '#likely-species' : '#other-species';
+        $("" + div + "-section").show();
         appendTo($(div), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";

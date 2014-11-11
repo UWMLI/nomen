@@ -264,8 +264,11 @@ class App
       $('#likely-show-button').removeClass 'ui-state-disabled'
     dataset = @dataset
     maxScore = Object.keys(@selected).length
+    $('#likely-species-section').hide()
+    $('#other-species-section').hide()
     for [spec, score] in toShow
       div = if score is maxScore then '#likely-species' else '#other-species'
+      $("#{div}-section").show()
       appendTo $(div), ->>
         setFn = "app.setSpecies('#{spec.name}'); return true;"
         @a '.to-species', href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
