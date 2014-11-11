@@ -1,5 +1,11 @@
 #!/usr/bin/env ruby
 
+# CoffeeScript preprocessor that lets you disable the auto-return behavior.
+# Just end a line with ->> instead of ->, or =>> instead of =>.
+# This will stick a "return" line at the end of that indentation scope,
+# which the CS compiler removes when translating to JS.
+# Does not work for function arrows in a place other than the end of a line.
+
 class String
   def indent
     self.match(/^(\s*)/) do |md|

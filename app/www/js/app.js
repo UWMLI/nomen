@@ -384,6 +384,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.fillLikelyPage = function() {
       var maxScore, score, spec, species, __;
       $('#likely-species').text('');
+      $('#other-species').text('');
       species = (function() {
         var _ref, _results;
         _ref = this.dataset.species;
@@ -419,7 +420,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.showSpecies = function() {
-      var dataset, score, spec, toShow, _i, _len, _ref;
+      var dataset, div, maxScore, score, spec, toShow, _i, _len, _ref;
       toShow = this.speciesPending.slice(0, 10);
       this.speciesPending = this.speciesPending.slice(10);
       if (this.speciesPending.length === 0) {
@@ -428,9 +429,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         $('#likely-show-button').removeClass('ui-state-disabled');
       }
       dataset = this.dataset;
+      maxScore = Object.keys(this.selected).length;
       for (_i = 0, _len = toShow.length; _i < _len; _i++) {
         _ref = toShow[_i], spec = _ref[0], score = _ref[1];
-        appendTo($('#likely-species'), function() {
+        div = score === maxScore ? '#likely-species' : '#other-species';
+        appendTo($(div), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";
           this.a('.to-species', {
@@ -438,49 +441,23 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
             'data-transition': 'slide',
             onclick: setFn
           }, function() {
-            this.div('.feature-row', function() {
-              this.div('.feature-name', function() {
-                this.text("" + spec.display_name + " (" + score + ")");
-              });
-              this.div('.feature-boxes', function() {
-                var image, ix, part, pics, _j, _len1, _ref1;
+            this.div('.feature-box', function() {
+              this.div('.feature-img-box', function() {
+                var image, part, pics, _ref1;
                 pics = dataset.imagesForSpecies(spec);
                 if (pics.length === 0) {
-                  this.div('.feature-box', function() {
-                    this.div('.feature-img-box', function() {
-                      this.img('.feature-img', {
-                        src: 'img/noimage.png'
-                      });
-                    });
-                    this.div('.feature-value', 'No Image');
+                  this.img('.feature-img', {
+                    src: 'img/noimage.png'
                   });
                 } else {
-                  for (ix = _j = 0, _len1 = pics.length; _j < _len1; ix = ++_j) {
-                    _ref1 = pics[ix], part = _ref1[0], image = _ref1[1];
-                    this.a({
-                      href: "#specimen" + ix,
-                      'data-transition': 'slide',
-                      onclick: setFn
-                    }, function() {
-                      this.div('.feature-box', function() {
-                        this.div('.feature-img-box', function() {
-                          this.img('.feature-img', {
-                            src: image
-                          });
-                        });
-                        this.div('.feature-value', function() {
-                          var txt;
-                          txt = displayValue(part);
-                          if (txt) {
-                            this.text(txt);
-                          } else {
-                            this.raw('&nbsp;');
-                          }
-                        });
-                      });
-                    });
-                  }
+                  _ref1 = pics[0], part = _ref1[0], image = _ref1[1];
+                  this.img('.feature-img', {
+                    src: image
+                  });
                 }
+              });
+              this.div('.feature-value', function() {
+                this.text("" + spec.display_name + " (" + score + ")");
               });
             });
           });

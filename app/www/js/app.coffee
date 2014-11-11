@@ -242,6 +242,7 @@ class App
   # Fill the "likely" page with rows of species images.
   fillLikelyPage: ->>
     $('#likely-species').text ''
+    $('#other-species').text ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
     maxScore = Object.keys(@selected).length
@@ -262,32 +263,22 @@ class App
     else
       $('#likely-show-button').removeClass 'ui-state-disabled'
     dataset = @dataset
+    maxScore = Object.keys(@selected).length
     for [spec, score] in toShow
-      appendTo $('#likely-species'), ->>
+      div = if score is maxScore then '#likely-species' else '#other-species'
+      appendTo $(div), ->>
         setFn = "app.setSpecies('#{spec.name}'); return true;"
         @a '.to-species', href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
-          @div '.feature-row', ->>
-            @div '.feature-name', ->>
-              @text "#{spec.display_name} (#{score})"
-            @div '.feature-boxes', ->>
+          @div '.feature-box', ->>
+            @div '.feature-img-box', ->>
               pics = dataset.imagesForSpecies spec
               if pics.length is 0
-                @div '.feature-box', ->>
-                  @div '.feature-img-box', ->>
-                    @img '.feature-img', src: 'img/noimage.png'
-                  @div '.feature-value', 'No Image'
+                @img '.feature-img', src: 'img/noimage.png'
               else
-                for [part, image], ix in pics
-                  @a href: "#specimen#{ix}", 'data-transition': 'slide', onclick: setFn, ->>
-                    @div '.feature-box', ->>
-                      @div '.feature-img-box', ->>
-                        @img '.feature-img', src: image
-                      @div '.feature-value', ->>
-                        txt = displayValue part
-                        if txt
-                          @text txt
-                        else
-                          @raw '&nbsp;'
+                [part, image] = pics[0]
+                @img '.feature-img', src: image
+            @div '.feature-value', ->>
+              @text "#{spec.display_name} (#{score})"
 
   # Executed when the user clicks on a species button from the "likely" page.
   # Clear existing species pages, and make new ones for the selected species.

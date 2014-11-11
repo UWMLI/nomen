@@ -73,7 +73,7 @@ body {
   margin-left: 3px;
 }
 
-.feature-box:last-child {
+.feature-boxes .feature-box:last-child {
   margin-right: 3px;
 }
 
@@ -103,6 +103,7 @@ body {
   margin-bottom: 0px;
   padding: 0px;
   display: block;
+  background-color: white;
 }
 
 .feature-value {
@@ -117,6 +118,10 @@ body {
   font-size: 12px;
   font-weight: normal;
   text-shadow: -1px 1px black;
+}
+
+.likely-section {
+  padding: 5px;
 }
 
 .specimen {
