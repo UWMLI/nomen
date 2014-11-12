@@ -64,30 +64,39 @@ class App
   # Clear all buttons for remotely available datasets.
   clearRemoteButtons: ->>
     $('#remote-content').text ''
+    appendTo $('#remote-content'), ->>
+      @table '#remote-table .guide-table', ''
 
   # Add a button for a new downloadable dataset to the Download page.
   addRemoteButton: (dataset) ->>
     setFn = "app.downloadZip($(this), '#{dataset.id}');"
-    appendTo $('#remote-content'), ->>
-      @a '.ui-btn .remote-button', onclick: setFn, datasetDisplay dataset
-      @p dataset.description or 'No description.'
+    appendTo $('#remote-table'), ->>
+      @tr '.guide-button', ->>
+        @td '.guide-icon-box', onclick: setFn, ->>
+          @img '.guide-icon', src: 'img/noimage.png'
+        @td '.guide-text', onclick: setFn, ->>
+          @div '.guide-title', dataset.title
+          @div '.guide-desc', dataset.description
+      @tr '.guide-spacer', ''
 
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
   downloadZip: (button, id, callback = (->)) ->>
     dataset = @remote.getDataset id
-    setname = datasetDisplay dataset
-    button.addClass 'ui-state-disabled'
-    button.text "Downloading: #{setname}"
+    row = button.closest 'tr'
+    titleText = button.parent().find '.guide-title'
+    row.addClass 'ui-state-disabled'
+    titleOrig = titleText.text()
+    titleText.text "Downloading: #{titleOrig}"
     @library.makeDir =>>
       @remote.downloadDataset id, @library, =>>
-        button.text setname
-        button.removeClass 'ui-state-disabled'
+        titleText.text titleOrig
+        row.removeClass 'ui-state-disabled'
         @refreshLibrary callback
       , =>>
         setTimeout =>>
-          button.text "Failed: #{setname}"
-          button.removeClass 'ui-state-disabled'
+          titleText.text "Failed: #{titleOrig}"
+          row.removeClass 'ui-state-disabled'
         , 250
 
   # Sets up and loads the delete confirmation dialog for clearing the library.

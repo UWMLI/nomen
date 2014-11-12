@@ -15,8 +15,8 @@ body {
   -webkit-user-select: none;
 }
 
-#home {
-  background-color: black;
+.bg-blur {
+  background-color: black !important;
   background-image: url("../img/bg.png");
   background-size: 100% auto;
   background-repeat: no-repeat;
@@ -27,23 +27,9 @@ body {
   padding-top: 4px;
 }
 
-#dataset {
-  background-color: black;
-  background-image: url("../img/bg.png");
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-}
-
 #likely-content {
   padding: 0px;
   padding-top: 4px;
-}
-
-#likely {
-  background-color: black;
-  background-image: url("../img/bg.png");
-  background-size: 100% auto;
-  background-repeat: no-repeat;
 }
 
 .specimen-content {
@@ -191,7 +177,7 @@ body {
   color: white;
 }
 
-#home-table {
+.guide-table {
   width: 100%;
   table-layout: auto;
   border-collapse: collapse;

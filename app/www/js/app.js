@@ -76,38 +76,55 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.clearRemoteButtons = function() {
       $('#remote-content').text('');
+      appendTo($('#remote-content'), function() {
+        this.table('#remote-table .guide-table', '');
+      });
     };
 
     App.prototype.addRemoteButton = function(dataset) {
       var setFn;
       setFn = "app.downloadZip($(this), '" + dataset.id + "');";
-      appendTo($('#remote-content'), function() {
-        this.a('.ui-btn .remote-button', {
-          onclick: setFn
-        }, datasetDisplay(dataset));
-        this.p(dataset.description || 'No description.');
+      appendTo($('#remote-table'), function() {
+        this.tr('.guide-button', function() {
+          this.td('.guide-icon-box', {
+            onclick: setFn
+          }, function() {
+            this.img('.guide-icon', {
+              src: 'img/noimage.png'
+            });
+          });
+          this.td('.guide-text', {
+            onclick: setFn
+          }, function() {
+            this.div('.guide-title', dataset.title);
+            this.div('.guide-desc', dataset.description);
+          });
+        });
+        this.tr('.guide-spacer', '');
       });
     };
 
     App.prototype.downloadZip = function(button, id, callback) {
-      var dataset, setname;
+      var dataset, row, titleOrig, titleText;
       if (callback == null) {
         callback = (function() {});
       }
       dataset = this.remote.getDataset(id);
-      setname = datasetDisplay(dataset);
-      button.addClass('ui-state-disabled');
-      button.text("Downloading: " + setname);
+      row = button.closest('tr');
+      titleText = button.parent().find('.guide-title');
+      row.addClass('ui-state-disabled');
+      titleOrig = titleText.text();
+      titleText.text("Downloading: " + titleOrig);
       this.library.makeDir((function(_this) {
         return function() {
           _this.remote.downloadDataset(id, _this.library, function() {
-            button.text(setname);
-            button.removeClass('ui-state-disabled');
+            titleText.text(titleOrig);
+            row.removeClass('ui-state-disabled');
             _this.refreshLibrary(callback);
           }, function() {
             setTimeout(function() {
-              button.text("Failed: " + setname);
-              button.removeClass('ui-state-disabled');
+              titleText.text("Failed: " + titleOrig);
+              row.removeClass('ui-state-disabled');
             }, 250);
           });
         };
