@@ -218,23 +218,35 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.clearDataButtons = function() {
-      $('#home-content').text('');
+      $('#home-table').text('');
     };
 
     App.prototype.addDataButton = function(dataset, canDelete) {
       var deleteFn, setFn;
       setFn = "app.goToDataset('" + dataset.id + "');";
       deleteFn = "app.readyDelete('" + dataset.id + "');";
-      appendTo($('#home-content'), function() {
-        if (canDelete) {
-          this.a('.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', {
-            onclick: deleteFn
-          }, 'Delete');
-        }
-        this.a('.ui-btn .ui-btn-inline', {
-          onclick: setFn
-        }, datasetDisplay(dataset));
-        this.p(dataset.description || 'No description.');
+      appendTo($('#home-table'), function() {
+        this.tr('.guide-button', function() {
+          this.td('.guide-icon-box', {
+            onclick: setFn
+          }, function() {
+            this.img('.guide-icon', {
+              src: 'img/noimage.png'
+            });
+          });
+          this.td('.guide-text', {
+            onclick: setFn
+          }, function() {
+            this.div('.guide-title', dataset.title);
+            this.div('.guide-desc', dataset.description);
+          });
+          if (canDelete) {
+            this.td('.guide-delete', {
+              onclick: deleteFn
+            }, 'Delete');
+          }
+        });
+        this.tr('.guide-spacer', '');
       });
     };
 

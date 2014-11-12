@@ -15,6 +15,13 @@ body {
   -webkit-user-select: none;
 }
 
+#home {
+  background-color: black;
+  background-image: url("../img/bg.png");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+}
+
 #dataset-content {
   padding: 0px;
   padding-top: 4px;
@@ -184,3 +191,57 @@ body {
   color: white;
 }
 
+#home-table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.guide-button {
+  text-shadow: none;
+  cursor: pointer;
+}
+
+.guide-icon-box {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.guide-icon {
+  margin: 10px;
+  width: 45px;
+  height: auto;
+  border: 2px solid #ddd;
+}
+
+.guide-text {
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 100%;
+}
+
+.guide-title {
+  margin: 10px;
+  margin-left: 0px;
+  color: white;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.guide-desc {
+  margin: 10px;
+  margin-left: 0px;
+  color: white;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.guide-delete {
+  margin: 10px;
+  padding: 5px;
+  background-color: rgba(255, 50, 50, 0.5);
+  width: auto;
+  text-align: center;
+}
+
+.guide-spacer {
+  height: 10px;
+}

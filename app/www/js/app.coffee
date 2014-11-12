@@ -145,17 +145,22 @@ class App
 
   # Clear any existing dataset buttons on the home screen.
   clearDataButtons: ->>
-    $('#home-content').text ''
+    $('#home-table').text ''
 
   # Add a button for a new dataset to the home screen.
   addDataButton: (dataset, canDelete) ->>
     setFn = "app.goToDataset('#{dataset.id}');"
     deleteFn = "app.readyDelete('#{dataset.id}');"
-    appendTo $('#home-content'), ->>
-      if canDelete
-        @a '.ui-btn .ui-btn-inline .ui-icon-delete .ui-btn-icon-notext', onclick: deleteFn, 'Delete'
-      @a '.ui-btn .ui-btn-inline', onclick: setFn, datasetDisplay dataset
-      @p dataset.description or 'No description.'
+    appendTo $('#home-table'), ->>
+      @tr '.guide-button', ->>
+        @td '.guide-icon-box', onclick: setFn, ->>
+          @img '.guide-icon', src: 'img/noimage.png'
+        @td '.guide-text', onclick: setFn, ->>
+          @div '.guide-title', dataset.title
+          @div '.guide-desc', dataset.description
+        if canDelete
+          @td '.guide-delete', onclick: deleteFn, 'Delete'
+      @tr '.guide-spacer', ''
 
   # Loads a dataset, and then goes to the feature selection page.
   goToDataset: (id, callback = (->)) ->>
