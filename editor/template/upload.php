@@ -43,6 +43,9 @@ function page_content() {
         <span><i class="glyphicon glyphicon-file"></i> <code>species.csv</code></span>
       </li>
       <li>
+        <span><i class="glyphicon glyphicon-picture"></i> <code>icon.png</code></span>
+      </li>
+      <li>
         <span><i class="glyphicon glyphicon-folder-open"></i> <code>features</code></span>
         <ul>
           <li>
@@ -88,6 +91,18 @@ function page_content() {
 </ul>
 
 <p>All images can be JPEG or PNG.</p>
+
+<ul>
+  <li>
+    The <code>icon</code> image should be small and square.
+  </li>
+  <li>
+    <code>features</code> images should be small and somewhat square.
+  </li>
+  <li>
+    <code>species</code> images can be of any size and shape.
+  </li>
+</ul>
 
 <p>Your spreadsheet should look something like this:</p>
 
