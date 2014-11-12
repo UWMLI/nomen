@@ -202,6 +202,10 @@ switch ($action) {
     }
     goto defaultPage;
 
+  case 'about':
+    include '../template/about.php';
+    break;
+
   default:
   defaultPage:
     if ($logged_in) {

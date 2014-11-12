@@ -47,6 +47,11 @@
               <li><a href="?password">Change Password</a></li>
             </ul>
           </li>
+          <li><a href="?about">About</a></li>
+        </ul>
+      <?php } else { ?>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="?about">About</a></li>
         </ul>
       <?php } ?>
     </div>
