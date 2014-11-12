@@ -18,6 +18,9 @@ keep_files = %w{
   species.csv
   features.json
   species.json
+  icon.png
+  icon.jpg
+  icon.jpeg
 }
 
 system_ 'rm -rf *.zip'

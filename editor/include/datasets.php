@@ -45,6 +45,7 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
   // Insert info.json into zip, save zip and extract to $dataset_id
   $zip_old = '../uploads/' . $upload_id . '.zip';
   $zip_new = '../www/datasets/' . $dataset_id . '.zip';
+  $icon_out = '../www/datasets/' . $dataset_id . '.png';
   $extract_dir = '../www/datasets/' . $dataset_id;
   // First, add the info.json
   $zip = new ZipArchive;
@@ -52,12 +53,19 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
     DB::rollback();
     return false;
   }
+  $icon_file = null;
+  foreach (array('icon.png', 'icon.jpg', 'icon.jpeg') as $icon) {
+    if ( $zip->statName($icon, ZipArchive::FL_NOCASE) ) {
+      $icon_file = $icon;
+    }
+  }
   $zip_info = json_encode(array(
     'title' => $title,
     'description' => $description,
     'id' => DATASET_PREFIX . $dataset_id,
     'version' => $version,
     'author' => $_SESSION['email'],
+    'icon' => $icon_file,
   ));
   $zip->addFromString('info.json', $zip_info);
   $zip->close();
@@ -72,6 +80,12 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
   rmdir_rf($extract_dir);
   mkdir($extract_dir);
   $zip->extractTo($extract_dir);
+  // Save remote-view icon as PNG
+  if ($icon_file) {
+    $im_string = $zip->getFromName($icon_file);
+    $im = imagecreatefromstring($im_string);
+    imagepng($im, $icon_out);
+  }
   $zip->close();
   // Save explicit JSON directory listings
   $pwd = getcwd();
