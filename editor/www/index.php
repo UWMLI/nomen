@@ -121,7 +121,7 @@ switch ($action) {
             $dataset_errors = validateDataset($extract_dir);
             include '../template/confirm.php';
           }
-          rmdir_rf($extract_dir);
+          rm_rf($extract_dir);
         } else {
           $message = 'Failed to extract your zip file.';
           $success = false;

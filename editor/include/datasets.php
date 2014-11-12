@@ -45,7 +45,7 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
   // Insert info.json into zip, save zip and extract to $dataset_id
   $zip_old = '../uploads/' . $upload_id . '.zip';
   $zip_new = '../www/datasets/' . $dataset_id . '.zip';
-  $icon_out = '../www/datasets/' . $dataset_id . '.png';
+  $icon_out = '../www/datasets/' . $dataset_id;
   $extract_dir = '../www/datasets/' . $dataset_id;
   // First, add the info.json
   $zip = new ZipArchive;
@@ -77,14 +77,18 @@ function publish_dataset($dataset_id, $title, $description, $upload_id) {
     DB::rollback();
     return false;
   }
-  rmdir_rf($extract_dir);
+  rm_rf($extract_dir);
   mkdir($extract_dir);
   $zip->extractTo($extract_dir);
-  // Save remote-view icon as PNG
+  // Save remote-view icon
   if ($icon_file) {
     $im_string = $zip->getFromName($icon_file);
-    $im = imagecreatefromstring($im_string);
-    imagepng($im, $icon_out);
+    if ($icon_file === 'icon.png') {
+      file_put_contents($icon_out . '.png', $im_string);
+    }
+    else {
+      file_put_contents($icon_out . '.jpg', $im_string);
+    }
   }
   $zip->close();
   // Save explicit JSON directory listings
@@ -102,6 +106,8 @@ function delete_dataset($dataset_id) {
   DB::delete('datasets', "id = %i AND user_id = %i", $dataset_id, $_SESSION['user_id']);
   if (DB::affectedRows() != 1) return false;
   unlink('../www/datasets/' . $dataset_id . '.zip');
-  rmdir_rf('../www/datasets/' . $dataset_id);
+  rm_rf('../www/datasets/' . $dataset_id);
+  rm_rf('../www/datasets/' . $dataset_id . '.png');
+  rm_rf('../www/datasets/' . $dataset_id . '.jpg');
   return true;
 }

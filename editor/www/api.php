@@ -9,8 +9,13 @@ $rows = DB::query('SELECT d.id, d.title, d.version, d.description, u.email
   FROM datasets AS d
   LEFT JOIN users AS u ON d.user_id = u.id');
 foreach ($rows as $row) {
-  $icon = 'datasets/' . $row['id'] . '.png';
-  if ( !file_exists($icon) ) {
+  if ( file_exists($icon_maybe = 'datasets/' . $row['id'] . '.png') ) {
+    $icon = $icon_maybe;
+  }
+  else if ( file_exists($icon_maybe = 'datasets/' . $row['id'] . '.jpg') ) {
+    $icon = $icon_maybe;
+  }
+  else {
     $icon = null;
   }
   $datasets[] = array(
