@@ -17,6 +17,9 @@ class Remote
     transfer.download @url, @list, (entry) =>>
       $.getJSON @list, (json) =>>
         @datasets = json
+        for set in @datasets
+          if set.icon?
+            set.icon = resolveURI @url, set.icon
         callback()
     , errback
 
@@ -28,16 +31,7 @@ class Remote
     zipFile = "#{@datadir}/#{id}.zip"
     # TODO: potentially same caching issue as downloadList above?
     transfer = new FileTransfer()
-    absoluteUrl =
-      if dataset.url.match(/^https?:\/\//)?
-        dataset.url
-      else
-        if dataset.url.substr(-1) is '/'
-          # json url is a directory, files are relative to that directory
-          "#{@url}/#{dataset.url}"
-        else
-          # json url is a file, files are relative to that file's directory
-          "#{@url}/../#{dataset.url}"
+    absoluteUrl = resolveURI @url, dataset.url
     transfer.download absoluteUrl, zipFile, (zipEntry) =>>
       lib.makeSet id, (setEntry) =>>
         zip.unzip zipFile, setEntry.toURL(), (code) =>>

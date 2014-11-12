@@ -73,7 +73,7 @@ class App
     appendTo $('#remote-table'), ->>
       @tr '.guide-button', ->>
         @td '.guide-icon-box', onclick: setFn, ->>
-          @img '.guide-icon', src: 'img/noimage.png'
+          @img '.guide-icon', src: dataset.icon ? 'img/noimage.png'
         @td '.guide-text', onclick: setFn, ->>
           @div '.guide-title', dataset.title
           @div '.guide-desc', dataset.description
@@ -163,7 +163,7 @@ class App
     appendTo $('#home-table'), ->>
       @tr '.guide-button', ->>
         @td '.guide-icon-box', onclick: setFn, ->>
-          @img '.guide-icon', src: 'img/noimage.png'
+          @img '.guide-icon', src: dataset.icon ? 'img/noimage.png'
         @td '.guide-text', onclick: setFn, ->>
           @div '.guide-title', dataset.title
           @div '.guide-desc', dataset.description

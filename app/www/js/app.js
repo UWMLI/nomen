@@ -89,8 +89,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           this.td('.guide-icon-box', {
             onclick: setFn
           }, function() {
+            var _ref;
             this.img('.guide-icon', {
-              src: 'img/noimage.png'
+              src: (_ref = dataset.icon) != null ? _ref : 'img/noimage.png'
             });
           });
           this.td('.guide-text', {
@@ -247,8 +248,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           this.td('.guide-icon-box', {
             onclick: setFn
           }, function() {
+            var _ref;
             this.img('.guide-icon', {
-              src: 'img/noimage.png'
+              src: (_ref = dataset.icon) != null ? _ref : 'img/noimage.png'
             });
           });
           this.td('.guide-text', {

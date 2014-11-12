@@ -28,7 +28,15 @@
       transfer.download(this.url, this.list, (function(_this) {
         return function(entry) {
           $.getJSON(_this.list, function(json) {
+            var set, _i, _len, _ref;
             _this.datasets = json;
+            _ref = _this.datasets;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              set = _ref[_i];
+              if (set.icon != null) {
+                set.icon = resolveURI(_this.url, set.icon);
+              }
+            }
             callback();
           });
         };
@@ -44,7 +52,7 @@
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
-      absoluteUrl = dataset.url.match(/^https?:\/\//) != null ? dataset.url : dataset.url.substr(-1) === '/' ? "" + this.url + "/" + dataset.url : "" + this.url + "/../" + dataset.url;
+      absoluteUrl = resolveURI(this.url, dataset.url);
       transfer.download(absoluteUrl, zipFile, (function(_this) {
         return function(zipEntry) {
           lib.makeSet(id, function(setEntry) {

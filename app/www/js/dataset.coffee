@@ -19,7 +19,9 @@ class Dataset
   # Load just the metadata JSON file.
   loadInfo: (callback) ->>
     $.getJSON "#{@dir}/info.json", (json) =>>
-      {@title, @id, @version, @description, @author} = json
+      {@title, @id, @version, @description, @author, @icon} = json
+      if @icon
+        @icon = resolveURI "#{@dir}/", @icon
       callback()
 
   # Loads a directory listing either from a JSON file or by recursive traversal.
