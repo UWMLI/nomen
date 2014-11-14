@@ -56,7 +56,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   <div class="home-toggle-box">
     <div class="home-toggle home-toggle-selected home-toggle-left">
       My Guides
-    </div><a href="#remote" data-transition="none" id="download-button"><div class="home-toggle home-toggle-not-selected home-toggle-right">
+    </div><a href="#remote" onclick="app.syncRemote();" data-transition="none" id="download-button"><div class="home-toggle home-toggle-not-selected home-toggle-right">
       Browse
     </div></a>
   </div>
@@ -94,9 +94,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   </div>
 
   <div data-role="main" class="ui-content">
-    <a class="ui-btn ui-icon-refresh ui-btn-icon-left" onclick="app.syncRemote( $(this) );">Sync</a>
     <div id="remote-content">
-      Press the Sync button to show available datasets.
+      <!-- Either a table or error message goes here -->
     </div>
   </div>
 </div>

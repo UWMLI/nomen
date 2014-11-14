@@ -43,35 +43,27 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       this.refreshLibrary();
     };
 
-    App.prototype.syncRemote = function(button, callback) {
+    App.prototype.syncRemote = function(callback) {
       if (callback == null) {
         callback = (function() {});
       }
-      button.addClass('ui-state-disabled');
-      button.text('Syncing...');
-      this.remote.downloadList((function(_this) {
+      $('#remote-content').html('<p>Connecting to server...</p>');
+      setTimeout((function(_this) {
         return function() {
-          var dataset, _i, _len, _ref;
-          _this.clearRemoteButtons();
-          _ref = _this.remote.datasets;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            dataset = _ref[_i];
-            _this.addRemoteButton(dataset);
-          }
-          setTimeout(function() {
-            button.text('Synced');
-            button.removeClass('ui-state-disabled');
-          }, 250);
-          callback();
+          _this.remote.downloadList(function() {
+            var dataset, _i, _len, _ref;
+            _this.clearRemoteButtons();
+            _ref = _this.remote.datasets;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              dataset = _ref[_i];
+              _this.addRemoteButton(dataset);
+            }
+            callback();
+          }, function() {
+            $('#remote-content').html("<p>Failed to connect.</p>\n<p><a onclick=\"app.syncRemote();\">Try again</a></p>");
+          });
         };
-      })(this), (function(_this) {
-        return function() {
-          setTimeout(function() {
-            button.text('Sync failed');
-            button.removeClass('ui-state-disabled');
-          }, 250);
-        };
-      })(this));
+      })(this), 250);
     };
 
     App.prototype.clearRemoteButtons = function() {

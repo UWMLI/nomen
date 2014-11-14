@@ -43,23 +43,20 @@ class App
     @refreshLibrary()
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
-  syncRemote: (button, callback = (->)) ->>
-    button.addClass 'ui-state-disabled'
-    button.text 'Syncing...'
-    @remote.downloadList =>>
-      @clearRemoteButtons()
-      for dataset in @remote.datasets
-        @addRemoteButton dataset
-      setTimeout =>>
-        button.text 'Synced'
-        button.removeClass 'ui-state-disabled'
-      , 250 # For user-friendliness, we show "Syncing..." for at least 250ms
-      callback()
-    , =>>
-      setTimeout =>>
-        button.text 'Sync failed'
-        button.removeClass 'ui-state-disabled'
-      , 250
+  syncRemote: (callback = (->)) ->>
+    $('#remote-content').html '<p>Connecting to server...</p>'
+    setTimeout =>>
+      @remote.downloadList =>>
+        @clearRemoteButtons()
+        for dataset in @remote.datasets
+          @addRemoteButton dataset
+        callback()
+      , =>>
+        $('#remote-content').html """
+          <p>Failed to connect.</p>
+          <p><a onclick="app.syncRemote();">Try again</a></p>
+        """
+    , 250
 
   # Clear all buttons for remotely available datasets.
   clearRemoteButtons: ->>

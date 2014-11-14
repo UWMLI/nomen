@@ -315,3 +315,11 @@ body {
 .dataset-nav-arrow {
   font-size: 23px;
 }
+
+#remote-content {
+  text-align: center;
+}
+
+#remote-table {
+  text-align: left;
+}
