@@ -50,6 +50,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you select a dataset -->
 <div data-role="page" id="home" class="bg-blur">
+  <!--
   <div data-role="header" data-position="fixed">
     <h1>Field Guide</h1>
     <div data-role="navbar">
@@ -65,6 +66,18 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         </li>
       </ul>
     </div>
+  </div>
+  -->
+
+  <div class="home-header">
+    Field Guide
+  </div>
+  <div class="home-toggle-box">
+    <div class="home-toggle home-toggle-selected home-toggle-left">
+      My Guides
+    </div><a href="#remote" data-transition="none" id="download-button"><div class="home-toggle home-toggle-not-selected home-toggle-right">
+      Browse
+    </div></a>
   </div>
 
   <div data-role="main" class="ui-content" id="home-content">
@@ -88,14 +101,30 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you can see/download remotely available datasets -->
 <div data-role="page" id="remote" class="bg-blur">
+  <!--
   <div data-role="header" data-position="fixed">
     <h1>Download</h1>
     <a href="#home" data-icon="arrow-l" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>
     <a data-icon="refresh" class="ui-btn-right" onclick="app.syncRemote( $(this) );">Sync</a>
   </div>
+  -->
 
-  <div data-role="main" class="ui-content" id="remote-content">
-    Press the Sync button to show available datasets.
+  <div class="home-header">
+    Field Guide
+  </div>
+  <div class="home-toggle-box">
+    <a href="#home" data-transition="none"><div class="home-toggle home-toggle-not-selected home-toggle-left">
+      My Guides
+    </div></a><div class="home-toggle home-toggle-selected home-toggle-right">
+      Browse
+    </div>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <a class="ui-btn ui-icon-refresh ui-btn-icon-left" onclick="app.syncRemote( $(this) );">Sync</a>
+    <div id="remote-content">
+      Press the Sync button to show available datasets.
+    </div>
   </div>
 </div>
 

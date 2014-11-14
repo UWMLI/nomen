@@ -231,3 +231,40 @@ body {
 .guide-spacer {
   height: 10px;
 }
+
+.home-header {
+  text-align: center;
+  margin: 5px;
+}
+
+.home-toggle-box {
+  text-align: center;
+}
+
+.home-toggle {
+  width: 120px;
+  display: inline-block;
+  border: 1px solid #0081bb;
+  text-shadow: none;
+  margin: 0;
+  font-weight: normal;
+}
+
+.home-toggle-selected {
+  background-color: #0081bb;
+  color: black;
+}
+
+.home-toggle-not-selected {
+  color: white;
+}
+
+.home-toggle-left {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.home-toggle-right {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
