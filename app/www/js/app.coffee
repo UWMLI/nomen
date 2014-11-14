@@ -245,7 +245,7 @@ class App
 
   # Update the "X Likely" button in the upper-right of the features page.
   showHowMany: ->>
-    $('#likely-button').text "#{@getLikely().length} Likely"
+    $('#how-many-likely').text @getLikely().length
 
   # Compute how many species match the criteria the user selected.
   getLikely: ->

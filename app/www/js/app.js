@@ -394,7 +394,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.showHowMany = function() {
-      $('#likely-button').text("" + (this.getLikely().length) + " Likely");
+      $('#how-many-likely').text(this.getLikely().length);
     };
 
     App.prototype.getLikely = function() {

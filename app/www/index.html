@@ -130,6 +130,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you choose features to filter a dataset by -->
 <div data-role="page" id="dataset" class="bg-blur">
+  <!--
   <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <h1 id="dataset-header">Dataset</h1>
     <div data-role="navbar" data-iconpos="left">
@@ -143,6 +144,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       </ul>
     </div>
   </div>
+  -->
+
+  <div class="dataset-navbar">
+    <a class="dataset-nav-left" href="#home">
+      <span class="dataset-nav-arrow">&lt;</span>
+      Back
+    </a>
+    <div class="dataset-nav-center" id="dataset-header">My Guide</div>
+    <a class="dataset-nav-right" href="#likely" data-transition="slide">
+      <span id="how-many-likely">0</span>
+      <span class="dataset-nav-arrow">&gt;</span>
+    </a>
+  </div>
 
   <div data-role="main" class="ui-content" id="dataset-content">
   </div>
@@ -150,13 +164,26 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page listing the top matching species for the selected criteria -->
 <div data-role="page" id="likely" class="bg-blur">
+  <!--
   <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <h1>Likely Choices</h1>
     <a href="#dataset" data-icon="arrow-l" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>
   </div>
+  -->
+
+  <div class="dataset-navbar">
+    <a class="dataset-nav-left" href="#dataset" data-transition="slide" data-direction="reverse">
+      <span class="dataset-nav-arrow">&lt;</span>
+      Back
+    </a>
+    <div class="dataset-nav-center">
+      <span id="likely-species-section" class="likely-section">Likely Choices</span>
+    </div>
+    <div class="dataset-nav-right">
+    </div>
+  </div>
 
   <div data-role="main" class="ui-content" id="likely-content">
-    <div id="likely-species-section" class="likely-section">Likely Choices</div>
     <div id="likely-species"></div>
     <div id="other-species-section" class="likely-section">Other Choices</div>
     <div id="other-species"></div>

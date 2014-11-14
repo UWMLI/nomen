@@ -268,3 +268,42 @@ body {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
+
+.dataset-navbar {
+  display: table;
+  width: 100%;
+  text-shadow: none;
+}
+
+.dataset-nav-left {
+  display: table-cell;
+  text-align: left;
+  width: 4em;
+  color: #0080bf;
+  padding: 5px;
+  text-decoration: none;
+  font-weight: normal !important;
+}
+
+.dataset-nav-center {
+  display: table-cell;
+  text-align: center;
+  width: auto;
+  color: white;
+  padding: 5px;
+  font-size: 18px;
+}
+
+.dataset-nav-right {
+  display: table-cell;
+  text-align: right;
+  width: 4em;
+  color: #0080bf;
+  padding: 5px;
+  text-decoration: none;
+  font-weight: normal !important;
+}
+
+.dataset-nav-arrow {
+  font-size: 23px;
+}
