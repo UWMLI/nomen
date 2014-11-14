@@ -51,7 +51,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <!-- Page where you select a dataset -->
 <div data-role="page" id="home" class="bg-blur">
   <div class="home-header">
-    Field Guide
+    <a href="#about" data-transition="pop">Field Guide</a>
   </div>
   <div class="home-toggle-box">
     <div class="home-toggle home-toggle-selected home-toggle-left">
@@ -183,6 +183,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 </div>
 
 <script language="javascript">
+  location.href = "#"; // redirect to home, e.g. if user loaded #dataset
   if (typeof cordova === 'undefined') {
     console.log('Not running in Cordova.');
     var readOnly = '../../editor/www/library.php';

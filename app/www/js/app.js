@@ -371,23 +371,19 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.toggleElement = function(element, feature, value) {
-      var box, _base;
+      var _base;
       if ((_base = this.selected)[feature] == null) {
         _base[feature] = {};
       }
       if (this.selected[feature][value]) {
         delete this.selected[feature][value];
+        $(element).removeClass('selected');
       } else {
         this.selected[feature][value] = true;
+        $(element).addClass('selected');
       }
       if (Object.keys(this.selected[feature]).length === 0) {
         delete this.selected[feature];
-      }
-      box = $(element);
-      if (box.hasClass('selected')) {
-        box.removeClass('selected');
-      } else {
-        box.addClass('selected');
       }
       this.showHowMany();
       this.fillLikelyPage();

@@ -235,6 +235,14 @@ body {
 .home-header {
   text-align: center;
   margin: 5px;
+  font-size: 18px;
+}
+
+.home-header a {
+  color: white !important;
+  text-shadow: none !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
 }
 
 .home-toggle-box {

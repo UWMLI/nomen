@@ -228,17 +228,13 @@ class App
 
     if @selected[feature][value]
       delete @selected[feature][value]
+      $(element).removeClass 'selected'
     else
       @selected[feature][value] = true
+      $(element).addClass 'selected'
 
     if Object.keys(@selected[feature]).length is 0
       delete @selected[feature]
-
-    box = $(element)
-    if box.hasClass 'selected'
-      box.removeClass 'selected'
-    else
-      box.addClass 'selected'
 
     @showHowMany()
     @fillLikelyPage()
