@@ -50,25 +50,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you select a dataset -->
 <div data-role="page" id="home" class="bg-blur">
-  <!--
-  <div data-role="header" data-position="fixed">
-    <h1>Field Guide</h1>
-    <div data-role="navbar">
-      <ul>
-        <li>
-          <a href="#remote" data-transition="slide" id="download-button">Download</a>
-        </li>
-        <li>
-          <a onclick="app.readyClear();" data-transition="pop" id="clear-button">Clear</a>
-        </li>
-        <li>
-          <a href="#about" data-transition="pop">About</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  -->
-
   <div class="home-header">
     Field Guide
   </div>
@@ -101,14 +82,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you can see/download remotely available datasets -->
 <div data-role="page" id="remote" class="bg-blur">
-  <!--
-  <div data-role="header" data-position="fixed">
-    <h1>Download</h1>
-    <a href="#home" data-icon="arrow-l" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>
-    <a data-icon="refresh" class="ui-btn-right" onclick="app.syncRemote( $(this) );">Sync</a>
-  </div>
-  -->
-
   <div class="home-header">
     Field Guide
   </div>
@@ -130,22 +103,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you choose features to filter a dataset by -->
 <div data-role="page" id="dataset" class="bg-blur">
-  <!--
-  <div data-role="header" data-position="fixed" data-tap-toggle="false">
-    <h1 id="dataset-header">Dataset</h1>
-    <div data-role="navbar" data-iconpos="left">
-      <ul>
-        <li>
-          <a href="#home" data-icon="home">Home</a>
-        </li>
-        <li>
-          <a href="#likely" data-icon="arrow-r" id="likely-button" data-transition="slide">Likely</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  -->
-
   <div class="dataset-navbar">
     <a class="dataset-nav-left" href="#home">
       <span class="dataset-nav-arrow">&lt;</span>
@@ -164,13 +121,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page listing the top matching species for the selected criteria -->
 <div data-role="page" id="likely" class="bg-blur">
-  <!--
-  <div data-role="header" data-position="fixed" data-tap-toggle="false">
-    <h1>Likely Choices</h1>
-    <a href="#dataset" data-icon="arrow-l" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>
-  </div>
-  -->
-
   <div class="dataset-navbar">
     <a class="dataset-nav-left" href="#dataset" data-transition="slide" data-direction="reverse">
       <span class="dataset-nav-arrow">&lt;</span>
