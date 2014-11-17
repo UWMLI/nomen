@@ -545,18 +545,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         this.div("#specimen" + ix + " .specimen", {
           'data-role': 'page'
         }, function() {
-          this.div({
-            'data-role': 'header',
-            'data-position': 'fixed',
-            'data-tap-toggle': 'false'
-          }, function() {
-            this.h1(name);
-            this.a('.ui-btn-left', {
-              'href': '#likely',
-              'data-icon': 'arrow-l',
+          this.div('.dataset-navbar', function() {
+            this.a('.dataset-nav-left', {
+              href: '#likely',
               'data-transition': 'slide',
               'data-direction': 'reverse'
-            }, 'Back');
+            }, function() {
+              this.span('.dataset-nav-arrow', '<');
+              this.text(' Back');
+            });
+            this.div('.dataset-nav-center', '');
+            this.div('.dataset-nav-right', '');
           });
           this.div('.ui-content .specimen-content', {
             'data-role': 'main'
@@ -571,7 +570,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               this.div('.specimen-img-gradient', '');
             });
             this.div('.specimen-text-box', function() {
-              this.div('.specimen-text', desc);
+              this.div('.specimen-text', function() {
+                this.h1(name);
+                this.text(desc);
+              });
             });
           });
         });
@@ -608,7 +610,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.resizeImage = function() {
       var h;
       h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-      $('.specimen-img-box').css('height', "" + (h - 100) + "px");
+      $('.specimen-img-box').css('height', "" + (h - 160) + "px");
     };
 
     return App;

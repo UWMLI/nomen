@@ -327,16 +327,21 @@ class App
     img = encodeURI img
     appendTo $('body'), ->>
       @div "#specimen#{ix} .specimen", 'data-role': 'page', ->>
-        @div 'data-role': 'header', 'data-position': 'fixed', 'data-tap-toggle': 'false', ->>
-          @h1 name
-          @a '.ui-btn-left', 'href': '#likely', 'data-icon': 'arrow-l', 'data-transition': 'slide', 'data-direction': 'reverse', 'Back'
+        @div '.dataset-navbar', ->>
+          @a '.dataset-nav-left', href: '#likely', 'data-transition': 'slide', 'data-direction': 'reverse', ->>
+            @span '.dataset-nav-arrow', '<'
+            @text ' Back'
+          @div '.dataset-nav-center', ''
+          @div '.dataset-nav-right', ''
         @div '.ui-content .specimen-content', 'data-role': 'main', ->>
           @div '.specimen-img-box', ->>
             @div '.specimen-img', style: "background-image: url(#{img});", ''
             @div '.specimen-img .blur', style: "background-image: url(#{img});", ''
             @div '.specimen-img-gradient', ''
           @div '.specimen-text-box', ->>
-            @div '.specimen-text', desc
+            @div '.specimen-text', ->>
+              @h1 name
+              @text desc
 
   # Add swipe handlers to the image pages, so you can swipe left and right
   # to move through a species' images.
@@ -359,6 +364,6 @@ class App
   # see `onDeviceReady`.
   resizeImage: ->>
     h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
-    $('.specimen-img-box').css('height', "#{h - 100}px")
+    $('.specimen-img-box').css('height', "#{h - 160}px")
 
 window.App = App

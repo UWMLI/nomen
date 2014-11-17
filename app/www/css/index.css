@@ -23,11 +23,13 @@ body {
   background-attachment: fixed;
 }
 
+/*
 @media screen and (min-width: 768px) {
   .bg-blur {
     background-image: url("../img/DesktopBG.png");
   }
 }
+*/
 
 #dataset-content {
   padding: 0px;
@@ -136,6 +138,8 @@ body {
   position: relative;
   width: 100%;
   height: 300px;
+  overflow: visible;
+  z-index: 0;
 }
 
 .specimen-img {
@@ -143,11 +147,12 @@ body {
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 60px);
   background-image: url("../img/noimage.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
+  z-index: 0;
 }
 
 .specimen-img-gradient {
@@ -155,8 +160,9 @@ body {
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 60px);
   background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 90%,rgba(0,0,0,1) 100%); /* W3C */
+  z-index: 0;
 }
 
 .blur {
@@ -169,6 +175,8 @@ body {
 }
 
 .specimen-text-box {
+  position: relative;
+  z-index: 1;
 }
 
 .specimen-img-fade {
@@ -178,7 +186,6 @@ body {
 }
 
 .specimen-text {
-  text-align: justify;
   padding: 20px;
   text-shadow: none;
   color: white;
@@ -289,7 +296,23 @@ body {
   width: 100%;
   text-shadow: none;
   position: fixed;
+  z-index: 2;
+}
+
+#dataset .dataset-navbar {
   border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#likely .dataset-navbar {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.specimen .dataset-navbar {
+  text-shadow:
+   -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;
 }
 
 .header-padding {
