@@ -41,6 +41,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         };
       })(this));
       this.refreshLibrary();
+      $(document).scroll((function(_this) {
+        return function() {
+          return _this.checkScroll();
+        };
+      })(this));
     };
 
     App.prototype.syncRemote = function(callback) {
@@ -438,15 +443,26 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       this.showSpecies();
     };
 
+    App.prototype.checkScroll = function() {
+      if (document.URL.match(/\#likely$/) != null) {
+        if ($(window).height() + $(document).scrollTop() >= $(document).height() - 50) {
+          this.showSpecies();
+          setTimeout((function(_this) {
+            return function() {
+              _this.checkScroll();
+            };
+          })(this), 0);
+        }
+      }
+    };
+
     App.prototype.showSpecies = function() {
       var dataset, div, maxScore, score, spec, toShow, _i, _j, _len, _len1, _ref, _ref1;
+      if (this.speciesPending.length === 0) {
+        return;
+      }
       toShow = this.speciesPending.slice(0, 10);
       this.speciesPending = this.speciesPending.slice(10);
-      if (this.speciesPending.length === 0) {
-        $('#likely-show-button').addClass('ui-state-disabled');
-      } else {
-        $('#likely-show-button').removeClass('ui-state-disabled');
-      }
       dataset = this.dataset;
       maxScore = Object.keys(this.selected).length;
       for (_i = 0, _len = toShow.length; _i < _len; _i++) {

@@ -108,7 +108,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       Back
     </a>
     <div class="dataset-nav-center" id="dataset-header">My Guide</div>
-    <a class="dataset-nav-right" href="#likely" data-transition="slide">
+    <a class="dataset-nav-right" href="#likely" data-transition="slide"
+      onclick="setTimeout(function(){app.checkScroll();}, 100);">
       <span id="how-many-likely">0</span>
       <span class="dataset-nav-arrow">&gt;</span>
     </a>
@@ -136,7 +137,6 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     <div id="likely-species"></div>
     <div id="other-species-section" class="likely-section">Other Choices</div>
     <div id="other-species"></div>
-    <a id="likely-show-button" class="ui-btn" onclick="app.showSpecies();">Show More</a>
   </div>
 </div>
 

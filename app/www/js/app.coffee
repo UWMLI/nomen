@@ -41,6 +41,8 @@ class App
     @resizeImage()
     $(window).resize => @resizeImage()
     @refreshLibrary()
+    $(document).scroll =>
+      @checkScroll()
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (callback = (->)) ->>
@@ -261,14 +263,19 @@ class App
     @speciesPending = species
     @showSpecies()
 
+  checkScroll: ->>
+    if document.URL.match(/\#likely$/)?
+      if $(window).height() + $(document).scrollTop() >= $(document).height() - 50
+        @showSpecies()
+        setTimeout =>>
+          @checkScroll()
+        , 0
+
   # Add some more species to the list of likely candidates.
   showSpecies: ->>
+    return if @speciesPending.length is 0
     toShow = @speciesPending[0..9]
     @speciesPending = @speciesPending[10..]
-    if @speciesPending.length is 0
-      $('#likely-show-button').addClass 'ui-state-disabled'
-    else
-      $('#likely-show-button').removeClass 'ui-state-disabled'
     dataset = @dataset
     maxScore = Object.keys(@selected).length
     for [spec, score] in toShow
