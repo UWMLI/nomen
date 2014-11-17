@@ -17,9 +17,16 @@ body {
 
 .bg-blur {
   background-color: black !important;
-  background-image: url("../img/bg.png");
-  background-size: 100% auto;
+  background-image: url("../img/MobileBG.png");
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media screen and (min-width: 768px) {
+  .bg-blur {
+    background-image: url("../img/DesktopBG.png");
+  }
 }
 
 #dataset-content {
