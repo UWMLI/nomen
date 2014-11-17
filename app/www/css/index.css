@@ -281,6 +281,12 @@ body {
   display: table;
   width: 100%;
   text-shadow: none;
+  position: fixed;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-padding {
+  height: 40px;
 }
 
 .dataset-nav-left {

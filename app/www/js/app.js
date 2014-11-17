@@ -335,12 +335,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.makeFeatureRows = function() {
       var feature, row, _i, _len, _ref;
-      $('#dataset-content').text('');
+      $('#dataset-entries').text('');
       _ref = this.featureRows;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
         feature = row[0].feature;
-        appendTo($('#dataset-content'), function() {
+        appendTo($('#dataset-entries'), function() {
           this.div('.feature-row', function() {
             this.div('.feature-name', displayValue(feature));
             this.div('.feature-boxes', function() {

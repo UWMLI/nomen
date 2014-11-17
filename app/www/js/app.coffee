@@ -205,10 +205,10 @@ class App
 
   # Fill the features page with rows of possible filtering criteria.
   makeFeatureRows: ->>
-    $('#dataset-content').text ''
+    $('#dataset-entries').text ''
     for row in @featureRows
       feature = row[0].feature
-      appendTo $('#dataset-content'), ->>
+      appendTo $('#dataset-entries'), ->>
         @div '.feature-row', ->>
           @div '.feature-name', displayValue feature
           @div '.feature-boxes', ->>

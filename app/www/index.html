@@ -102,7 +102,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <!-- Page where you choose features to filter a dataset by -->
 <div data-role="page" id="dataset" class="bg-blur">
-  <div class="dataset-navbar">
+  <div class="dataset-navbar bg-blur">
     <a class="dataset-nav-left" href="#home">
       <span class="dataset-nav-arrow">&lt;</span>
       Back
@@ -116,24 +116,29 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   </div>
 
   <div data-role="main" class="ui-content" id="dataset-content">
+    <div class="header-padding"></div>
+    <div id="dataset-entries">
+      <!-- feature rows go here -->
+    </div>
   </div>
 </div>
 
 <!-- Page listing the top matching species for the selected criteria -->
 <div data-role="page" id="likely" class="bg-blur">
-  <div class="dataset-navbar">
+  <div class="dataset-navbar bg-blur">
     <a class="dataset-nav-left" href="#dataset" data-transition="slide" data-direction="reverse">
       <span class="dataset-nav-arrow">&lt;</span>
       Back
     </a>
     <div class="dataset-nav-center">
-      <span id="likely-species-section" class="likely-section">Likely Choices</span>
     </div>
     <div class="dataset-nav-right">
     </div>
   </div>
 
   <div data-role="main" class="ui-content" id="likely-content">
+    <div class="header-padding"></div>
+    <div id="likely-species-section" class="likely-section">Likely Choices</div>
     <div id="likely-species"></div>
     <div id="other-species-section" class="likely-section">Other Choices</div>
     <div id="other-species"></div>
