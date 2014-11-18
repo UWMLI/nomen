@@ -42,8 +42,8 @@ body {
 }
 
 .specimen-content {
-  padding: 0px;
-  padding-top: 4px;
+  padding: 0px !important;
+  padding-top: 4px !important;
 }
 
 .to-species {
@@ -327,6 +327,10 @@ body {
   padding: 5px;
   text-decoration: none;
   font-weight: normal !important;
+}
+
+.specimen .dataset-nav-left {
+  color: white !important;
 }
 
 .dataset-nav-center {
