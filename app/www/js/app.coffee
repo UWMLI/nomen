@@ -169,6 +169,12 @@ class App
         if canDelete
           @td '.guide-delete', onclick: deleteFn, 'Delete'
       @tr '.guide-spacer', ''
+    if canDelete
+      button = $('#home-table .guide-button').last()
+      button.on 'swipeleft', (event) ->>
+        $(event.target).closest('.guide-button').find('.guide-delete').show(100)
+      button.on 'swiperight', (event) ->>
+        $(event.target).closest('.guide-button').find('.guide-delete').hide(100)
 
   # Loads a dataset, and then goes to the feature selection page.
   goToDataset: (id, callback = (->)) ->>

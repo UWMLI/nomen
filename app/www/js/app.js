@@ -237,7 +237,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.addDataButton = function(dataset, canDelete) {
-      var deleteFn, setFn;
+      var button, deleteFn, setFn;
       setFn = "app.goToDataset('" + dataset.id + "');";
       deleteFn = "app.readyDelete('" + dataset.id + "');";
       appendTo($('#home-table'), function() {
@@ -264,6 +264,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         });
         this.tr('.guide-spacer', '');
       });
+      if (canDelete) {
+        button = $('#home-table .guide-button').last();
+        button.on('swipeleft', function(event) {
+          $(event.target).closest('.guide-button').find('.guide-delete').show(100);
+        });
+        button.on('swiperight', function(event) {
+          $(event.target).closest('.guide-button').find('.guide-delete').hide(100);
+        });
+      }
     };
 
     App.prototype.goToDataset = function(id, callback) {
