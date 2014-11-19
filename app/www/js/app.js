@@ -564,7 +564,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               'data-transition': 'slide',
               'data-direction': 'reverse'
             }, function() {
-              this.span('.dataset-nav-arrow', '<');
+              this.span('.dataset-nav-arrow', function() {
+                this.img({
+                  src: 'img/white-arrow.png'
+                });
+              });
               this.text(' Back');
             });
             this.div('.dataset-nav-center', '');

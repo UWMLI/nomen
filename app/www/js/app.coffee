@@ -347,7 +347,8 @@ class App
       @div "#specimen#{ix} .specimen", 'data-role': 'page', ->>
         @div '.dataset-navbar', ->>
           @a '.dataset-nav-left', href: '#likely', 'data-transition': 'slide', 'data-direction': 'reverse', ->>
-            @span '.dataset-nav-arrow', '<'
+            @span '.dataset-nav-arrow', ->>
+              @img src: 'img/white-arrow.png'
             @text ' Back'
           @div '.dataset-nav-center', ''
           @div '.dataset-nav-right', ''

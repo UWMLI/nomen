@@ -383,6 +383,21 @@ body {
   font-size: 23px;
 }
 
+.dataset-nav-arrow img {
+  position: relative;
+  height: 20px;
+  top: 3px;
+}
+
+.dataset-nav-right .dataset-nav-arrow img {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
 #remote-content {
   text-align: center;
 }
