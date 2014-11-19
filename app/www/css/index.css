@@ -158,6 +158,14 @@ body {
   height: 300px;
   overflow: visible;
   z-index: 0;
+
+  /* Make sure Firefox doesn't try to select text during swipe event */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .specimen-img {
