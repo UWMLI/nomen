@@ -407,8 +407,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
     App.prototype.fillLikelyPage = function() {
       var maxScore, score, spec, species, __;
-      $('#likely-species').text('');
-      $('#other-species').text('');
+      $('#likely-col1').text('');
+      $('#likely-col2').text('');
+      $('#other-col1').text('');
+      $('#other-col2').text('');
       species = (function() {
         var _ref, _results;
         _ref = this.dataset.species;
@@ -441,6 +443,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       }
       this.speciesPending = species;
       this.showSpecies();
+      this.nextLikelyCol = 1;
+      this.nextOtherCol = 1;
     };
 
     App.prototype.checkScroll = function() {
@@ -457,7 +461,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.showSpecies = function() {
-      var dataset, div, maxScore, score, spec, toShow, _i, _j, _len, _len1, _ref, _ref1;
+      var dataset, div, maxScore, s, score, spec, toShow, _i, _j, _len, _len1, _ref, _ref1;
       if (this.speciesPending.length === 0) {
         return;
       }
@@ -467,7 +471,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       maxScore = Object.keys(this.selected).length;
       for (_i = 0, _len = toShow.length; _i < _len; _i++) {
         _ref = toShow[_i], spec = _ref[0], score = _ref[1];
-        div = score === maxScore ? '#likely-species' : '#other-species';
+        div = score === maxScore ? (s = "#likely-col" + this.nextLikelyCol, this.nextLikelyCol = this.nextLikelyCol === 2 ? 1 : 2, s) : (s = "#other-col" + this.nextOtherCol, this.nextOtherCol = this.nextOtherCol === 2 ? 1 : 2, s);
         appendTo($(div), function() {
           var setFn;
           setFn = "app.setSpecies('" + spec.name + "'); return true;";
@@ -498,7 +502,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           });
         });
       }
-      _ref1 = ['#likely-species', '#other-species'];
+      _ref1 = ['#likely-col1', '#other-col1'];
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
         div = _ref1[_j];
         if ($(div).html() === '') {

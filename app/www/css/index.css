@@ -112,6 +112,24 @@ body {
   background-color: white;
 }
 
+.to-species .feature-img {
+  width: calc(100% - 3px);
+  height: auto;
+}
+
+.to-species .feature-box {
+  display: block;
+  width: 100%;
+}
+
+#likely-species { display: table; width: calc(100% - 10px); max-width: 600px; table-layout: fixed; }
+#other-species { display: table; width: calc(100% - 10px); max-width: 600px; table-layout: fixed; }
+
+#likely-col1 { display: table-cell; padding-left: 5px; vertical-align: top; }
+#likely-col2 { display: table-cell; padding-left: 5px; vertical-align: top; }
+#other-col1 { display: table-cell; padding-right: 5px; vertical-align: top; }
+#other-col2 { display: table-cell; padding-right: 5px; vertical-align: top; }
+
 .feature-value {
   text-shadow: none;
   color: white;

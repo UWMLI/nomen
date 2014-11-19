@@ -250,8 +250,10 @@ class App
 
   # Fill the "likely" page with rows of species images.
   fillLikelyPage: ->>
-    $('#likely-species').text ''
-    $('#other-species').text ''
+    $('#likely-col1').text ''
+    $('#likely-col2').text ''
+    $('#other-col1').text ''
+    $('#other-col2').text ''
     species =
       [spec, spec.computeScore(@selected)] for __, spec of @dataset.species
     maxScore = Object.keys(@selected).length
@@ -262,6 +264,8 @@ class App
         score2 - score1 # sorts by score descending
     @speciesPending = species
     @showSpecies()
+    @nextLikelyCol = 1
+    @nextOtherCol = 1
 
   checkScroll: ->>
     if document.URL.match(/\#likely$/)?
@@ -279,7 +283,15 @@ class App
     dataset = @dataset
     maxScore = Object.keys(@selected).length
     for [spec, score] in toShow
-      div = if score is maxScore then '#likely-species' else '#other-species'
+      div =
+        if score is maxScore
+          s = "#likely-col#{@nextLikelyCol}"
+          @nextLikelyCol = if @nextLikelyCol is 2 then 1 else 2
+          s
+        else
+          s = "#other-col#{@nextOtherCol}"
+          @nextOtherCol = if @nextOtherCol is 2 then 1 else 2
+          s
       appendTo $(div), ->>
         setFn = "app.setSpecies('#{spec.name}'); return true;"
         @a '.to-species', href: '#specimen0', 'data-transition': 'slide', onclick: setFn, ->>
@@ -293,7 +305,7 @@ class App
                 @img '.feature-img', src: image
             @div '.feature-value', ->>
               @text "#{spec.display_name} (#{score})"
-    for div in ['#likely-species', '#other-species']
+    for div in ['#likely-col1', '#other-col1']
       if $(div).html() is ''
         $("#{div}-section").hide()
       else
