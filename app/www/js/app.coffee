@@ -17,6 +17,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 appendTo = (element, muggexpr) ->>
   element.append( CoffeeMugg.render(muggexpr, format: no) ).trigger('create')
 
+# Same as appendTo, but clears the element's contents first.
+replaceHtml = (element, muggexpr) ->>
+  element.html ''
+  appendTo element, muggexpr
+
 class App
   constructor: (readWriteDir, readOnlyDir, remoteURL) ->
     # Library stored in read/write storage, data downloaded from remote
@@ -207,6 +212,12 @@ class App
       @makeFeatureRows()
       @showHowMany()
       @fillLikelyPage()
+      dataset = @dataset
+      $('#about-guide-header').text dataset.title
+      replaceHtml $('#about-guide-content'), ->>
+        @p "Author: #{dataset.author}"
+        @p "Version: #{dataset.version}"
+        @p dataset.description
       callback()
 
   # Fill the features page with rows of possible filtering criteria.
@@ -311,11 +322,11 @@ class App
                 @img '.feature-img', src: image
             @div '.feature-value', ->>
               @text "#{spec.display_name} (#{score})"
-    for div in ['#likely-col1', '#other-col1']
-      if $(div).html() is ''
-        $("#{div}-section").hide()
+    for div in ['#likely', '#other']
+      if $("#{div}-col1").html() is ''
+        $("#{div}-species-section").hide()
       else
-        $("#{div}-section").show()
+        $("#{div}-species-section").show()
 
   # Executed when the user clicks on a species button from the "likely" page.
   # Clear existing species pages, and make new ones for the selected species.

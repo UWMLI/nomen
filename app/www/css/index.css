@@ -360,9 +360,11 @@ body {
   display: table-cell;
   text-align: center;
   width: auto;
-  color: white;
+  color: white !important;
   padding: 5px;
   font-size: 18px;
+  text-decoration: none;
+  font-weight: normal !important;
 }
 
 .dataset-nav-right {

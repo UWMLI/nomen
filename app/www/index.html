@@ -83,7 +83,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <!-- Page where you can see/download remotely available datasets -->
 <div data-role="page" id="remote" class="bg-blur">
   <div class="home-header">
-    Field Guide
+    <a href="#about" data-transition="pop">Field Guide</a>
   </div>
   <div class="home-toggle-box">
     <a href="#home" data-transition="none"><div class="home-toggle home-toggle-not-selected home-toggle-left">
@@ -109,7 +109,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       </span>
       Back
     </a>
-    <div class="dataset-nav-center" id="dataset-header">My Guide</div>
+    <a href="#about-guide" data-transition="pop" class="dataset-nav-center" id="dataset-header">
+      My Guide
+    </a>
     <a class="dataset-nav-right" href="#likely" data-transition="slide"
       onclick="setTimeout(function(){app.checkScroll();}, 100);">
       <span id="how-many-likely">0</span>
@@ -195,6 +197,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         <a onclick="window.open('https://github.com/jaekwon', '_system');" href="#">Jae Kwon</a>
       </li>
     </ul>
+  </div>
+</div>
+
+<div data-role="page" id="about-guide" data-dialog="true">
+  <div data-role="header">
+    <h1 id="about-guide-header">Guide Name</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" id="about-guide-content">
   </div>
 </div>
 

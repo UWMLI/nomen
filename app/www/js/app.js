@@ -11,12 +11,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 (function() {
   'use strict';
-  var App, appendTo;
+  var App, appendTo, replaceHtml;
 
   appendTo = function(element, muggexpr) {
     element.append(CoffeeMugg.render(muggexpr, {
       format: false
     })).trigger('create');
+  };
+
+  replaceHtml = function(element, muggexpr) {
+    element.html('');
+    appendTo(element, muggexpr);
   };
 
   App = (function() {
@@ -295,7 +300,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       this.dataset = (_ref = (_ref1 = this.library) != null ? _ref1.datasets[id] : void 0) != null ? _ref : (_ref2 = this.libraryStatic) != null ? _ref2.datasets[id] : void 0;
       this.dataset.load((function(_this) {
         return function() {
-          var feature, naturalSort, value, values;
+          var dataset, feature, naturalSort, value, values;
           naturalSort = function(a, b) {
             var anum, arest, bnum, brest, matchNum, __, _ref3, _ref4, _ref5, _ref6;
             matchNum = function(x) {
@@ -337,6 +342,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           _this.makeFeatureRows();
           _this.showHowMany();
           _this.fillLikelyPage();
+          dataset = _this.dataset;
+          $('#about-guide-header').text(dataset.title);
+          replaceHtml($('#about-guide-content'), function() {
+            this.p("Author: " + dataset.author);
+            this.p("Version: " + dataset.version);
+            this.p(dataset.description);
+          });
           callback();
         };
       })(this));
@@ -511,13 +523,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           });
         });
       }
-      _ref1 = ['#likely-col1', '#other-col1'];
+      _ref1 = ['#likely', '#other'];
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
         div = _ref1[_j];
-        if ($(div).html() === '') {
-          $("" + div + "-section").hide();
+        if ($("" + div + "-col1").html() === '') {
+          $("" + div + "-species-section").hide();
         } else {
-          $("" + div + "-section").show();
+          $("" + div + "-species-section").show();
         }
       }
     };
