@@ -64,6 +64,7 @@
       if (!((_ref = this.display_name) != null ? _ref.length : void 0)) {
         this.display_name = this.name;
       }
+      this.name = this.name.toLowerCase().replace(/[^a-z0-9]/g, '');
     }
 
     Species.prototype.computeScore = function(selected) {

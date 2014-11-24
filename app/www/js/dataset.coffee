@@ -76,30 +76,26 @@ class Dataset
   # Parse the species image filename to see which species and label it has.
   addSpeciesImage: (url) ->>
     url = decodeURI url
-    # General form: {species}-{label}.{ext}
+    return if url.match /\.DS_Store$/
+    # Form: {species}{possibly label}.{ext}
     result = url.match ///
       (?: ^ | \/ )
-      ([\w\ ]+) - # {species}-
-      ([\w\ -]+)  # {label}
+      ([\w\ \-]+) # {species}{possibly label}
       \. \w+ $    # .{ext}
     ///
     if result?
-      name = canonicalValue result[1]
-      label = canonicalValue result[2]
-      @speciesImages[name] ?= []
-      @speciesImages[name].push [label, url]
-      return
-    # Simple form: {species}.{ext} (empty label)
-    result = url.match ///
-      (?: ^ | \/ )
-      ([\w\ ]+) # {species}
-      \. \w+ $  # .{ext}
-    ///
-    if result?
-      name = canonicalValue result[1]
-      @speciesImages[name] ?= []
-      @speciesImages[name].push ['', url]
-      return
+      # Split the filename into alphanum "words", and start trying to match
+      # the sequence of words to a known species, popping words off the end
+      # as we continue searching.
+      words =
+        word for word in result[1].toLowerCase().split(/[^a-z0-9]+/) when word isnt ''
+      for index in [words.length .. 0]
+        name = words[..index].join ''
+        if @species[name]?
+          label = words[index..].join ' '
+          @speciesImages[name] ?= []
+          @speciesImages[name].push [label, url]
+          return
     console.log "Couldn't parse species image: #{url}"
 
   # Load the CSV file of species information.

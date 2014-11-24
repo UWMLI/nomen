@@ -27,6 +27,7 @@ class Species
         else @features[k] = parseList v
     # Use name as display_name if display_name is undefined or ''
     @display_name = @name unless @display_name?.length
+    @name = @name.toLowerCase().replace(/[^a-z0-9]/g, '')
 
   # If `selected` is an object from features to arrays of values,
   # compute how many of them match the features of this species.
