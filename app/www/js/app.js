@@ -238,36 +238,38 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.clearDataButtons = function() {
-      $('#home-table').text('');
+      $('#home-content').text('');
     };
 
     App.prototype.addDataButton = function(dataset, canDelete) {
       var button, deleteFn, setFn;
       setFn = "app.goToDataset('" + dataset.id + "');";
       deleteFn = "app.readyDelete('" + dataset.id + "');";
-      appendTo($('#home-table'), function() {
-        this.tr('.guide-button', function() {
-          this.td('.guide-icon-box', {
-            onclick: setFn
-          }, function() {
-            var _ref;
-            this.img('.guide-icon', {
-              src: (_ref = dataset.icon) != null ? _ref : 'img/noimage.png'
+      appendTo($('#home-content'), function() {
+        this.table('#home-table .guide-table', function() {
+          this.tr('.guide-button', function() {
+            this.td('.guide-icon-box', {
+              onclick: setFn
+            }, function() {
+              var _ref;
+              this.img('.guide-icon', {
+                src: (_ref = dataset.icon) != null ? _ref : 'img/noimage.png'
+              });
             });
+            this.td('.guide-text', {
+              onclick: setFn
+            }, function() {
+              this.div('.guide-title', dataset.title);
+              this.div('.guide-desc', dataset.description);
+            });
+            if (canDelete) {
+              this.td('.guide-delete', {
+                onclick: deleteFn
+              }, 'Delete');
+            }
           });
-          this.td('.guide-text', {
-            onclick: setFn
-          }, function() {
-            this.div('.guide-title', dataset.title);
-            this.div('.guide-desc', dataset.description);
-          });
-          if (canDelete) {
-            this.td('.guide-delete', {
-              onclick: deleteFn
-            }, 'Delete');
-          }
+          this.tr('.guide-spacer', '');
         });
-        this.tr('.guide-spacer', '');
       });
       if (canDelete) {
         button = $('#home-table .guide-button').last();

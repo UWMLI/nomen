@@ -158,22 +158,23 @@ class App
 
   # Clear any existing dataset buttons on the home screen.
   clearDataButtons: ->>
-    $('#home-table').text ''
+    $('#home-content').text ''
 
   # Add a button for a new dataset to the home screen.
   addDataButton: (dataset, canDelete) ->>
     setFn = "app.goToDataset('#{dataset.id}');"
     deleteFn = "app.readyDelete('#{dataset.id}');"
-    appendTo $('#home-table'), ->>
-      @tr '.guide-button', ->>
-        @td '.guide-icon-box', onclick: setFn, ->>
-          @img '.guide-icon', src: dataset.icon ? 'img/noimage.png'
-        @td '.guide-text', onclick: setFn, ->>
-          @div '.guide-title', dataset.title
-          @div '.guide-desc', dataset.description
-        if canDelete
-          @td '.guide-delete', onclick: deleteFn, 'Delete'
-      @tr '.guide-spacer', ''
+    appendTo $('#home-content'), ->>
+      @table '#home-table .guide-table', ->>
+        @tr '.guide-button', ->>
+          @td '.guide-icon-box', onclick: setFn, ->>
+            @img '.guide-icon', src: dataset.icon ? 'img/noimage.png'
+          @td '.guide-text', onclick: setFn, ->>
+            @div '.guide-title', dataset.title
+            @div '.guide-desc', dataset.description
+          if canDelete
+            @td '.guide-delete', onclick: deleteFn, 'Delete'
+        @tr '.guide-spacer', ''
     if canDelete
       button = $('#home-table .guide-button').last()
       button.on 'swipeleft', (event) ->>
