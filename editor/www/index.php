@@ -111,15 +111,21 @@ switch ($action) {
           mkdir($extract_dir);
           $zip->extractTo($extract_dir);
           $zip->close();
-          if (!is_file("$extract_dir/species.csv")) {
+          $in_subfolders = glob("$extract_dir/*/species.csv");
+          if (is_file("$extract_dir/species.csv")) {
+            $dataset_errors = validateDataset($extract_dir);
+            include '../template/confirm.php';
+          }
+          else if (count($in_subfolders) == 1) {
+            $subfolder = preg_replace("/species\\.csv$/", '', $in_subfolders[0]);
+            $dataset_errors = validateDataset($subfolder);
+            include '../template/confirm.php';
+          }
+          else {
             unlink($saved_zip);
             $message = 'No species.csv found in your zip file.';
             $success = false;
             include '../template/upload.php';
-          }
-          else {
-            $dataset_errors = validateDataset($extract_dir);
-            include '../template/confirm.php';
           }
           rm_rf($extract_dir);
         } else {

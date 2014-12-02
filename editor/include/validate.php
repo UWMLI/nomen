@@ -17,7 +17,7 @@ function scandir_real($dir) {
 }
 
 function canonical($str) {
-  return str_replace( ' ', '_', strtolower( trim($str) ) );
+  return preg_replace("/[^a-z0-9]/", '', strtolower($str));
 }
 
 function printInfo($dir) {
@@ -46,7 +46,7 @@ function validateDataset($dir) {
       $img_species[ canonical($matches[1]) ] = true;
     }
     else {
-      $errors[] = "Couldn't parse species image: $img";
+      $errors[] = "Couldn't parse species image: <b>$img</b>";
     }
   }
 
@@ -66,7 +66,8 @@ function validateDataset($dir) {
         $img_features[canonical($feature)][canonical(substr($image, 0, $extension_dot))] = true;
       }
       else {
-        $errors[] = "Feature image couldn't be parsed: $feature/$image";
+        // no extension, whatever
+        $img_features[canonical($feature)][canonical($image)] = true;
       }
     }
   }
@@ -75,7 +76,7 @@ function validateDataset($dir) {
   $csv_features = array();
   foreach ($species_canonical as $spec) {
     foreach ($spec as $k => $vstr) {
-      if ($k == 'name' || $k == 'display_name' || $k == 'description') continue;
+      if ($k == 'name' || $k == 'displayname' || $k == 'description') continue;
 
       if ( empty($csv_features[$k]) )
       {
