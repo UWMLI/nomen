@@ -100,8 +100,8 @@
       }
       result = url.match(/(?:^|\/)([\w \-]+)\/([\w \-]+)\.\w+$/);
       if (result != null) {
-        feature = canonicalValue(result[1]);
-        value = canonicalValue(result[2]);
+        feature = comparisonValue(result[1]);
+        value = comparisonValue(result[2]);
         if ((_base = this.featureImages)[feature] == null) {
           _base[feature] = {};
         }
@@ -155,7 +155,7 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             csvRow = _ref[_i];
             spec = new Species(csvRow);
-            _this.species[spec.name] = spec;
+            _this.species[comparisonValue(spec.name)] = spec;
           }
           _this.listFeatures();
           callback();
@@ -185,12 +185,12 @@
 
     Dataset.prototype.imagesForSpecies = function(spec) {
       var _ref;
-      return (_ref = this.speciesImages[canonicalValue(spec.name)]) != null ? _ref : [];
+      return (_ref = this.speciesImages[comparisonValue(spec.name)]) != null ? _ref : [];
     };
 
     Dataset.prototype.imageForFeature = function(feature, value) {
       var _ref;
-      return ((_ref = this.featureImages[canonicalValue(feature)]) != null ? _ref : {})[canonicalValue(value)];
+      return ((_ref = this.featureImages[comparisonValue(feature)]) != null ? _ref : {})[comparisonValue(value)];
     };
 
     return Dataset;

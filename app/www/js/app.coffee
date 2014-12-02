@@ -205,7 +205,7 @@ class App
           anum - bnum
       @featureRows = for feature, values of @dataset.features
         for value in Object.keys(values).sort(naturalSort)
-          display: displayValue value
+          display: comparisonValue value # TODO
           image: @dataset.imageForFeature(feature, value) ? 'img/noimage.png'
           feature: feature
           value: value
@@ -228,7 +228,7 @@ class App
       feature = row[0].feature
       appendTo $('#dataset-entries'), ->>
         @div '.feature-row', ->>
-          @div '.feature-name', displayValue feature
+          @div '.feature-name', comparisonValue feature # TODO
           @div '.feature-boxes', ->>
             for {display, image, value} in row
               toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"
@@ -333,7 +333,7 @@ class App
   # Clear existing species pages, and make new ones for the selected species.
   setSpecies: (name) ->>
     @clearPages()
-    spec = @dataset.species[name]
+    spec = @dataset.species[comparisonValue name]
     pics = @dataset.imagesForSpecies spec
     if pics.length is 0
       @addPage spec.display_name, 'img/noimage.png', spec.description, 0

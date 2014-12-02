@@ -329,7 +329,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
                   value = _ref4[_i];
                   _results1.push({
-                    display: displayValue(value),
+                    display: comparisonValue(value),
                     image: (_ref5 = this.dataset.imageForFeature(feature, value)) != null ? _ref5 : 'img/noimage.png',
                     feature: feature,
                     value: value
@@ -365,7 +365,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
         feature = row[0].feature;
         appendTo($('#dataset-entries'), function() {
           this.div('.feature-row', function() {
-            this.div('.feature-name', displayValue(feature));
+            this.div('.feature-name', comparisonValue(feature));
             this.div('.feature-boxes', function() {
               var display, image, toggleFn, value, _j, _len1, _ref1;
               for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
@@ -539,7 +539,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.setSpecies = function(name) {
       var image, ix, part, pics, spec, _i, _len, _ref;
       this.clearPages();
-      spec = this.dataset.species[name];
+      spec = this.dataset.species[comparisonValue(name)];
       pics = this.dataset.imagesForSpecies(spec);
       if (pics.length === 0) {
         this.addPage(spec.display_name, 'img/noimage.png', spec.description, 0);

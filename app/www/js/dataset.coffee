@@ -66,8 +66,8 @@ class Dataset
       \. \w+ $       # .{ext}
     ///
     if result?
-      feature = canonicalValue result[1]
-      value = canonicalValue result[2]
+      feature = comparisonValue result[1]
+      value = comparisonValue result[2]
       @featureImages[feature] ?= {}
       @featureImages[feature][value] = url
       return
@@ -104,7 +104,7 @@ class Dataset
       @species = {}
       for csvRow in $.parse(str).results.rows
         spec = new Species csvRow
-        @species[spec.name] = spec
+        @species[comparisonValue spec.name] = spec
       @listFeatures()
       callback()
 
@@ -119,12 +119,12 @@ class Dataset
 
   # Get all the images (found via loadSpeciesImages) for a certain Species object.
   imagesForSpecies: (spec) ->
-    @speciesImages[canonicalValue spec.name] ? []
+    @speciesImages[comparisonValue spec.name] ? []
 
   # Gets the image (found via loadFeatureImages) for a feature/value pair,
   # or `undefined` if none is found.
   imageForFeature: (feature, value) ->
-    (@featureImages[canonicalValue feature] ? {})[canonicalValue value]
+    (@featureImages[comparisonValue feature] ? {})[comparisonValue value]
 
 # Works for Dataset objects as well as simple entries in a Remote.
 datasetDisplay = (obj) ->
