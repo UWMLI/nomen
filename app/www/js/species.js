@@ -26,6 +26,7 @@
   Species = (function() {
     function Species(csvRow) {
       var k, v, _ref;
+      this.csvRow = csvRow;
       this.features = {};
       for (k in csvRow) {
         v = csvRow[k];
@@ -41,7 +42,7 @@
             this.display_name = v.trim();
             break;
           default:
-            this.features[k] = splitList(v);
+            this.features[k] = splitList(v).map(comparisonValue);
         }
       }
       if (!((_ref = this.display_name) != null ? _ref.length : void 0)) {
@@ -78,5 +79,7 @@
   window.Species = Species;
 
   window.comparisonValue = comparisonValue;
+
+  window.splitList = splitList;
 
 }).call(this);

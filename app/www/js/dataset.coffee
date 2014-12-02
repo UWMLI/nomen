@@ -117,6 +117,17 @@ class Dataset
         for value in values
           @features[feature][value] = true
 
+  featureDisplayName: (feature) ->
+    for name, spec of @species
+      for k, vs of spec.csvRow
+        return k.split('_').join(' ') if feature is comparisonValue k
+
+  valueDisplayName: (value) ->
+    for name, spec of @species
+      for k, vs of spec.csvRow
+        for v in splitList vs
+          return v.split('_').join(' ') if value is comparisonValue v
+
   # Get all the images (found via loadSpeciesImages) for a certain Species object.
   imagesForSpecies: (spec) ->
     @speciesImages[comparisonValue spec.name] ? []

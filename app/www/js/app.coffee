@@ -205,7 +205,7 @@ class App
           anum - bnum
       @featureRows = for feature, values of @dataset.features
         for value in Object.keys(values).sort(naturalSort)
-          display: comparisonValue value # TODO
+          display: @dataset.valueDisplayName value
           image: @dataset.imageForFeature(feature, value) ? 'img/noimage.png'
           feature: feature
           value: value
@@ -226,9 +226,10 @@ class App
     $('#dataset-entries').text ''
     for row in @featureRows
       feature = row[0].feature
+      dataset = @dataset
       appendTo $('#dataset-entries'), ->>
         @div '.feature-row', ->>
-          @div '.feature-name', comparisonValue feature # TODO
+          @div '.feature-name', dataset.featureDisplayName feature
           @div '.feature-boxes', ->>
             for {display, image, value} in row
               toggleFn = "app.toggleElement(this, '#{feature}', '#{value}');"

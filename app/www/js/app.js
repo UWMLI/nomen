@@ -329,7 +329,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                 for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
                   value = _ref4[_i];
                   _results1.push({
-                    display: comparisonValue(value),
+                    display: this.dataset.valueDisplayName(value),
                     image: (_ref5 = this.dataset.imageForFeature(feature, value)) != null ? _ref5 : 'img/noimage.png',
                     feature: feature,
                     value: value
@@ -357,15 +357,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.makeFeatureRows = function() {
-      var feature, row, _i, _len, _ref;
+      var dataset, feature, row, _i, _len, _ref;
       $('#dataset-entries').text('');
       _ref = this.featureRows;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         row = _ref[_i];
         feature = row[0].feature;
+        dataset = this.dataset;
         appendTo($('#dataset-entries'), function() {
           this.div('.feature-row', function() {
-            this.div('.feature-name', comparisonValue(feature));
+            this.div('.feature-name', dataset.featureDisplayName(feature));
             this.div('.feature-boxes', function() {
               var display, image, toggleFn, value, _j, _len1, _ref1;
               for (_j = 0, _len1 = row.length; _j < _len1; _j++) {

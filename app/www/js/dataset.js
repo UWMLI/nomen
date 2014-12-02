@@ -183,6 +183,40 @@
       }
     };
 
+    Dataset.prototype.featureDisplayName = function(feature) {
+      var k, name, spec, vs, _ref, _ref1;
+      _ref = this.species;
+      for (name in _ref) {
+        spec = _ref[name];
+        _ref1 = spec.csvRow;
+        for (k in _ref1) {
+          vs = _ref1[k];
+          if (feature === comparisonValue(k)) {
+            return k.split('_').join(' ');
+          }
+        }
+      }
+    };
+
+    Dataset.prototype.valueDisplayName = function(value) {
+      var k, name, spec, v, vs, _i, _len, _ref, _ref1, _ref2;
+      _ref = this.species;
+      for (name in _ref) {
+        spec = _ref[name];
+        _ref1 = spec.csvRow;
+        for (k in _ref1) {
+          vs = _ref1[k];
+          _ref2 = splitList(vs);
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            v = _ref2[_i];
+            if (value === comparisonValue(v)) {
+              return v.split('_').join(' ');
+            }
+          }
+        }
+      }
+    };
+
     Dataset.prototype.imagesForSpecies = function(spec) {
       var _ref;
       return (_ref = this.speciesImages[comparisonValue(spec.name)]) != null ? _ref : [];

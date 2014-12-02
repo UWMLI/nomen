@@ -8,7 +8,7 @@ splitList = (value) ->
 
 class Species
   # Create a Species given one row from the species.csv file as an object.
-  constructor: (csvRow) ->
+  constructor: (@csvRow) ->
     @features = {}
     for k, v of csvRow
       k = comparisonValue k
@@ -16,7 +16,7 @@ class Species
         when 'name'        then @name         = v.trim()
         when 'description' then @description  = v.trim()
         when 'displayname' then @display_name = v.trim()
-        else @features[k] = splitList v
+        else @features[k] = splitList(v).map(comparisonValue)
     # Use name as display_name if display_name is undefined or ''
     @display_name = @name unless @display_name?.length
 
@@ -32,3 +32,4 @@ class Species
 
 window.Species = Species
 window.comparisonValue = comparisonValue
+window.splitList = splitList
