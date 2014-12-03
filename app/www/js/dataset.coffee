@@ -80,19 +80,17 @@ class Dataset
     # Form: {species}{possibly label}.{ext}
     result = url.match ///
       (?: ^ | \/ )
-      ([\w\ \-]+) # {species}{possibly label}
-      \. \w+ $    # .{ext}
+      ([^\.\/]+)  # {species}{possibly label}
+      (\. \w+)? $ # .{ext} (optional)
     ///
     if result?
-      # Split the filename into alphanum "words", and start trying to match
-      # the sequence of words to a known species, popping words off the end
-      # as we continue searching.
-      words =
-        word for word in result[1].toLowerCase().split(/[^a-z0-9]+/) when word isnt ''
-      for index in [words.length .. 0]
-        name = words[..index].join ''
+      # Start trying to match initial sequences of the filename to a known
+      # species (starting from the entire filename).
+      img = comparisonValue result[1]
+      for index in [img.length .. 0]
+        name = img[..index]
         if @species[name]?
-          label = words[index..].join ' '
+          label = img[index..]
           @speciesImages[name] ?= []
           @speciesImages[name].push [label, url]
           return

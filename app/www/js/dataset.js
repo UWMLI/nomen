@@ -112,29 +112,18 @@
     };
 
     Dataset.prototype.addSpeciesImage = function(url) {
-      var index, label, name, result, word, words, _base, _i, _ref;
+      var img, index, label, name, result, _base, _i, _ref;
       url = decodeURI(url);
       if (url.match(/\.DS_Store$/)) {
         return;
       }
-      result = url.match(/(?:^|\/)([\w \-]+)\.\w+$/);
+      result = url.match(/(?:^|\/)([^\.\/]+)(\.\w+)?$/);
       if (result != null) {
-        words = (function() {
-          var _i, _len, _ref, _results;
-          _ref = result[1].toLowerCase().split(/[^a-z0-9]+/);
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            word = _ref[_i];
-            if (word !== '') {
-              _results.push(word);
-            }
-          }
-          return _results;
-        })();
-        for (index = _i = _ref = words.length; _ref <= 0 ? _i <= 0 : _i >= 0; index = _ref <= 0 ? ++_i : --_i) {
-          name = words.slice(0, +index + 1 || 9e9).join('');
+        img = comparisonValue(result[1]);
+        for (index = _i = _ref = img.length; _ref <= 0 ? _i <= 0 : _i >= 0; index = _ref <= 0 ? ++_i : --_i) {
+          name = img.slice(0, +index + 1 || 9e9);
           if (this.species[name] != null) {
-            label = words.slice(index).join(' ');
+            label = img.slice(index);
             if ((_base = this.speciesImages)[name] == null) {
               _base[name] = [];
             }
