@@ -135,6 +135,25 @@ Dog,Canis lupus familiaris,Red,Big
 Cat,Felis catus,"Red, Blue",Small
 </pre>
 
+<p>In the above data, <code>Cat</code> has two values for <code>Color</code>,
+separated by commas, which means it shows up if you select either of those
+(or both).</p>
+
+<p>Filenames and spreadsheet values are not case sensitive, and when matching
+images to data, characters other than letters or numbers are ignored.
+Any tag may be added to the end of a specimen image so long as it doesn't end
+up forming the name of some other specimen.</p>
+
+<p>For example, the specimen <code>Things + Stuff</code> could be linked to any of these images:</p>
+
+<ul>
+  <li><code>Things + Stuff.jpg</code></li>
+  <li><code>things_stuff.jpeg</code></li>
+  <li><code>THINGSSTUFF.PNG</code></li>
+  <li><code>things + stuff - a cool image.png</code></li>
+  <li><code>ThingsStuffFront.jpg</code></li>
+</ul>
+
   <?php
 }
 
