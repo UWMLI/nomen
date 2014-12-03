@@ -207,8 +207,15 @@
     };
 
     Dataset.prototype.imagesForSpecies = function(spec) {
-      var _ref;
-      return (_ref = this.speciesImages[comparisonValue(spec.name)]) != null ? _ref : [];
+      var imgs, _ref;
+      imgs = (_ref = this.speciesImages[comparisonValue(spec.name)]) != null ? _ref : [];
+      imgs.sort(function(_arg, _arg1) {
+        var label1, label2, url1, url2;
+        label1 = _arg[0], url1 = _arg[1];
+        label2 = _arg1[0], url2 = _arg1[1];
+        return label1.localeCompare(label2);
+      });
+      return imgs;
     };
 
     Dataset.prototype.imageForFeature = function(feature, value) {

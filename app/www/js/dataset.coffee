@@ -128,7 +128,12 @@ class Dataset
 
   # Get all the images (found via loadSpeciesImages) for a certain Species object.
   imagesForSpecies: (spec) ->
-    @speciesImages[comparisonValue spec.name] ? []
+    imgs = @speciesImages[comparisonValue spec.name] ? []
+    # We sort based on the label string, so that an image with no label
+    # always becomes the first image.
+    imgs.sort ([label1, url1], [label2, url2]) ->
+      label1.localeCompare label2
+    imgs
 
   # Gets the image (found via loadFeatureImages) for a feature/value pair,
   # or `undefined` if none is found.

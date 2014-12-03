@@ -154,6 +154,9 @@ up forming the name of some other specimen.</p>
   <li><code>ThingsStuffFront.jpg</code></li>
 </ul>
 
+<p>To ensure that a certain image is the primary one, do not attach a tag
+after the specimen name.</p>
+
   <?php
 }
 
