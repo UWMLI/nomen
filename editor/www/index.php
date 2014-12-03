@@ -119,6 +119,13 @@ switch ($action) {
           else if (count($in_subfolders) == 1) {
             $subfolder = preg_replace("/species\\.csv$/", '', $in_subfolders[0]);
             $dataset_errors = validateDataset($subfolder);
+            // Rezip up $subfolder into a new zip at $saved_zip
+            unlink($saved_zip);
+            $orig_dir = getcwd();
+            chdir($subfolder);
+            exec('zip -r new.zip .');
+            chdir($orig_dir);
+            rename("$subfolder/new.zip", $saved_zip);
             include '../template/confirm.php';
           }
           else {
