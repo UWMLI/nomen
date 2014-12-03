@@ -42,11 +42,11 @@ function validateDataset($dir) {
   // Find all species images
   $img_species = array();
   foreach (scandir_real("$dir/species") as $img) {
-    if ( preg_match('/^([\w ]+)(-[\w -]+)?\.[A-Za-z]+$/', $img, $matches) ) {
-      $img_species[ canonical($matches[1]) ] = true;
+    if ( preg_match('/^([^\.]+)\.[A-Za-z]+$/', $img, $matches) ) {
+      $img_species[] = canonical($matches[1]);
     }
     else {
-      $errors[] = "Couldn't parse species image: <b>$img</b>";
+      $img_species[] = canonical($img);
     }
   }
 
@@ -112,13 +112,25 @@ function validateDataset($dir) {
     }
   }
 
-  // Validation: find species images which don't have CSV rows
-  foreach (array_diff_key($img_species, $csv_species) as $spec => $_) {
-    $errors[] = "Species has image but no CSV row: <b>$spec</b>";
+  // Validation: find species images which can't be matched to CSV rows
+  $csv_species_with_images = array();
+  foreach ($img_species as $img) {
+    $original_image = $img;
+    $has_image = false;
+    for (; $img; $img = substr($img, 0, -1)) {
+      if (array_key_exists($img, $csv_species)) {
+        $csv_species_with_images[$img] = true;
+        $has_image = true;
+        break;
+      }
+    }
+    if (!$has_image) {
+      $errors[] = "Image couldn't be matched to a species: <b>$original_image</b>";
+    }
   }
 
-  // Validation: find species rows which don't have images
-  foreach (array_diff_key($csv_species, $img_species) as $spec => $_) {
+  // Validation: find CSV rows which didn't have any images matched to them
+  foreach (array_diff_key($csv_species, $csv_species_with_images) as $spec => $_) {
     $errors[] = "Species has CSV row but no image: <b>$spec</b>";
   }
 
