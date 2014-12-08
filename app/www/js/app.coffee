@@ -48,6 +48,7 @@ class App
     @refreshLibrary()
     $(document).scroll =>
       @checkScroll()
+    $.ajaxSetup cache: false
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (callback = (->)) ->>

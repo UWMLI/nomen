@@ -51,6 +51,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           return _this.checkScroll();
         };
       })(this));
+      $.ajaxSetup({
+        cache: false
+      });
     };
 
     App.prototype.syncRemote = function(callback) {

@@ -9,10 +9,6 @@ class Remote
     null
 
   downloadList: (callback, errback) ->>
-    # TODO: this file gets cached. How to force redownload?
-    # Tried https://github.com/moderna/cordova-plugin-cache with no luck.
-    # https://github.com/apache/cordova-plugin-file-transfer/blob/master/doc/index.md
-    # gives no indication of a "disable caching" feature.
     transfer = new FileTransfer()
     transfer.download @url, @list, (entry) =>>
       $.getJSON @list, (json) =>>
@@ -29,7 +25,6 @@ class Remote
       errback "Couldn't find dataset: #{id}"
       return
     zipFile = "#{@datadir}/#{id}.zip"
-    # TODO: potentially same caching issue as downloadList above?
     transfer = new FileTransfer()
     transfer.onprogress = progback
     absoluteUrl = resolveURI @url, dataset.url
