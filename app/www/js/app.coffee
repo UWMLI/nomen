@@ -73,24 +73,29 @@ class App
 
   # Add a button for a new downloadable dataset to the Download page.
   addRemoteButton: (dataset) ->>
+    local = @library.datasets[dataset.id]
+    newVersion = local? and local.version < dataset.version
     setFn = "app.downloadZip($(this), '#{dataset.id}');"
     appendTo $('#remote-table'), ->>
       @tr '.guide-button', ->>
         @td '.guide-icon-box', onclick: setFn, ->>
           @img '.guide-icon', src: dataset.icon ? 'img/noimage.png'
         @td '.guide-text', onclick: setFn, ->>
-          @div '.guide-title', dataset.title
+          @div '.guide-title', ->>
+            @text dataset.title
+            if newVersion
+              @text ' '
+              @b "(new version)"
           @div '.guide-desc', dataset.description
       @tr '.guide-spacer', ''
 
   # Download a dataset from the remote, unzip it, and add a button for it to the
   # home screen (by calling refreshLibrary).
   downloadZip: (button, id, callback = (->)) ->>
-    dataset = @remote.getDataset id
     row = button.closest 'tr'
     titleText = button.parent().find '.guide-title'
     row.addClass 'ui-state-disabled'
-    titleOrig = titleText.text()
+    titleOrig = @remote.getDataset(id).title
     titleText.text "Downloading: #{titleOrig}"
     @library.makeDir =>>
       @remote.downloadDataset id, @library, =>>

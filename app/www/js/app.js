@@ -84,7 +84,9 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.addRemoteButton = function(dataset) {
-      var setFn;
+      var local, newVersion, setFn;
+      local = this.library.datasets[dataset.id];
+      newVersion = (local != null) && local.version < dataset.version;
       setFn = "app.downloadZip($(this), '" + dataset.id + "');";
       appendTo($('#remote-table'), function() {
         this.tr('.guide-button', function() {
@@ -99,7 +101,13 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
           this.td('.guide-text', {
             onclick: setFn
           }, function() {
-            this.div('.guide-title', dataset.title);
+            this.div('.guide-title', function() {
+              this.text(dataset.title);
+              if (newVersion) {
+                this.text(' ');
+                this.b("(new version)");
+              }
+            });
             this.div('.guide-desc', dataset.description);
           });
         });
@@ -108,15 +116,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     };
 
     App.prototype.downloadZip = function(button, id, callback) {
-      var dataset, row, titleOrig, titleText;
+      var row, titleOrig, titleText;
       if (callback == null) {
         callback = (function() {});
       }
-      dataset = this.remote.getDataset(id);
       row = button.closest('tr');
       titleText = button.parent().find('.guide-title');
       row.addClass('ui-state-disabled');
-      titleOrig = titleText.text();
+      titleOrig = this.remote.getDataset(id).title;
       titleText.text("Downloading: " + titleOrig);
       this.library.makeDir((function(_this) {
         return function() {
