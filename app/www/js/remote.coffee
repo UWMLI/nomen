@@ -23,7 +23,7 @@ class Remote
         callback()
     , errback
 
-  downloadDataset: (id, lib, callback, errback) ->>
+  downloadDataset: (id, lib, callback, errback, progback) ->>
     dataset = @getDataset id
     unless dataset?
       errback "Couldn't find dataset: #{id}"
@@ -31,6 +31,7 @@ class Remote
     zipFile = "#{@datadir}/#{id}.zip"
     # TODO: potentially same caching issue as downloadList above?
     transfer = new FileTransfer()
+    transfer.onprogress = progback
     absoluteUrl = resolveURI @url, dataset.url
     transfer.download absoluteUrl, zipFile, (zipEntry) =>>
       lib.makeSet id, (setEntry) =>>

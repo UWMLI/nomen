@@ -129,6 +129,11 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
               titleText.text("Failed: " + titleOrig);
               row.removeClass('ui-state-disabled');
             }, 250);
+          }, function(progress) {
+            var percent, portion;
+            portion = progress.loaded / progress.total;
+            percent = Math.floor(portion * 100);
+            titleText.text("Downloading: " + titleOrig + " (" + percent + "%)");
           });
         };
       })(this));

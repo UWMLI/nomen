@@ -102,6 +102,10 @@ class App
           titleText.text "Failed: #{titleOrig}"
           row.removeClass 'ui-state-disabled'
         , 250
+      , (progress) =>>
+        portion = progress.loaded / progress.total
+        percent = Math.floor(portion * 100)
+        titleText.text "Downloading: #{titleOrig} (#{percent}%)"
 
   # Sets up and loads the delete confirmation dialog for clearing the library.
   readyClear: ->>

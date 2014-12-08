@@ -43,7 +43,7 @@
       })(this), errback);
     };
 
-    Remote.prototype.downloadDataset = function(id, lib, callback, errback) {
+    Remote.prototype.downloadDataset = function(id, lib, callback, errback, progback) {
       var absoluteUrl, dataset, transfer, zipFile;
       dataset = this.getDataset(id);
       if (dataset == null) {
@@ -52,6 +52,7 @@
       }
       zipFile = "" + this.datadir + "/" + id + ".zip";
       transfer = new FileTransfer();
+      transfer.onprogress = progback;
       absoluteUrl = resolveURI(this.url, dataset.url);
       transfer.download(absoluteUrl, zipFile, (function(_this) {
         return function(zipEntry) {
