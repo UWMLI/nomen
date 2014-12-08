@@ -35,6 +35,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       if (!((readWriteDir != null) && (remoteURL != null))) {
         $('#download-button').addClass('ui-state-disabled');
       }
+      this.isDownloading = false;
     }
 
     App.prototype.onDeviceReady = function() {
@@ -59,6 +60,10 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     App.prototype.syncRemote = function(callback) {
       if (callback == null) {
         callback = (function() {});
+      }
+      if (this.isDownloading) {
+        callback();
+        return;
       }
       $('#remote-content').html('<p>Connecting to server...</p>');
       setTimeout((function(_this) {
@@ -130,14 +135,17 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
       titleText.text("Downloading: " + titleOrig);
       this.library.makeDir((function(_this) {
         return function() {
+          _this.isDownloading = true;
           _this.remote.downloadDataset(id, _this.library, function() {
             titleText.text(titleOrig);
             row.removeClass('ui-state-disabled');
+            _this.isDownloading = false;
             _this.refreshLibrary(callback);
           }, function() {
             setTimeout(function() {
               titleText.text("Failed: " + titleOrig);
               row.removeClass('ui-state-disabled');
+              _this.isDownloading = false;
             }, 250);
           }, function(progress) {
             var percent, portion;

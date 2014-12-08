@@ -39,6 +39,7 @@ class App
       $('#clear-button').addClass 'ui-state-disabled'
     unless readWriteDir? and remoteURL?
       $('#download-button').addClass 'ui-state-disabled'
+    @isDownloading = false
 
   # Called after all the Cordova APIs are ready.
   onDeviceReady: ->>
@@ -52,6 +53,10 @@ class App
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (callback = (->)) ->>
+    if @isDownloading
+      # Don't modify the Browse page while downloading a guide
+      callback()
+      return
     $('#remote-content').html '<p>Connecting to server...</p>'
     setTimeout =>>
       @remote.downloadList =>>
@@ -99,14 +104,17 @@ class App
     titleOrig = @remote.getDataset(id).title
     titleText.text "Downloading: #{titleOrig}"
     @library.makeDir =>>
+      @isDownloading = true
       @remote.downloadDataset id, @library, =>>
         titleText.text titleOrig
         row.removeClass 'ui-state-disabled'
+        @isDownloading = false
         @refreshLibrary callback
       , =>>
         setTimeout =>>
           titleText.text "Failed: #{titleOrig}"
           row.removeClass 'ui-state-disabled'
+          @isDownloading = false
         , 250
       , (progress) =>>
         portion = progress.loaded / progress.total
