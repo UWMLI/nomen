@@ -10,15 +10,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 -->
 
 <!-- change the widget id to your id and update the version as appropriate -->
-<widget id="edu.wisc.fieldguide" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="edu.wisc.wid.fielddaylab.fieldguide" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
   <!-- Edit to match the details of your app -->
   <name>Field Guide</name>
   <description>
-    A template Apache Cordova application using jQuery Mobile
+    Identify anything!
   </description>
   <author email="djgagnon@wisc.edu" href="http://mobile.wisc.edu/teaching-and-learning/">
-    UW Madison Mobile Learning Incubator
+    Field Day Lab
   </author>
   <!-- END App Details -->
 
