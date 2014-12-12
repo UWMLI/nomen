@@ -176,7 +176,7 @@ body {
   height: calc(100% + 60px);
   background-image: url("../img/noimage.png");
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-position: center center;
   z-index: 0;
 }
