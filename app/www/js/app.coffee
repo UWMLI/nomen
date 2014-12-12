@@ -50,6 +50,8 @@ class App
     $(document).scroll =>
       @checkScroll()
     $.ajaxSetup cache: false
+    if @library?
+      $('#delete-all-btn').show()
 
   # Syncs the list of remote datasets, and updates the buttons accordingly.
   syncRemote: (callback = (->)) ->>
