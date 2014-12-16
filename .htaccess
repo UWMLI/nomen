@@ -1,11 +1,11 @@
 RewriteEngine on
 
 RewriteRule ^author$ /author/ [R]
-RewriteRule ^author/$ editor/www/
-RewriteRule ^author/(.*)$ editor/www/$1
+RewriteRule ^author/$ /editor/www/
+RewriteRule ^author/(.*)$ /editor/www/$1
 
 RewriteRule ^webclient$ /webclient/ [R]
-RewriteRule ^webclient/$ app/www/
-RewriteRule ^webclient/(.*)$ app/www/$1
+RewriteRule ^webclient/$ /app/www/
+RewriteRule ^webclient/(.*)$ /app/www/$1
 
-RewriteRule ^/?([^/]*)$ front/$1
+RewriteRule ^/?([^/]*)$ /front/$1
