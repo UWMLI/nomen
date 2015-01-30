@@ -9,3 +9,7 @@ RewriteRule ^webclient/$ /app/www/
 RewriteRule ^webclient/(.*)$ /app/www/$1
 
 RewriteRule ^/?([^/]*)$ /front/$1
+
+# Serve SVG correctly
+AddType image/svg+xml svg svgz
+AddEncoding gzip svgz
