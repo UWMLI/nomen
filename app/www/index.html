@@ -14,7 +14,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
   <meta name="format-detection" content="telephone=no" />
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
 
-  <title>Field Guide</title>
+  <title>Nomen</title>
 
   <!-- custom styling -->
   <link rel="stylesheet" href="css/index.css">
@@ -51,7 +51,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <!-- Page where you select a dataset -->
 <div data-role="page" id="home" class="bg-blur">
   <div class="home-header">
-    <a href="#about" data-transition="pop">Field Guide</a>
+    <a href="#about" data-transition="pop">Nomen</a>
   </div>
   <div class="home-toggle-box">
     <div class="home-toggle home-toggle-selected home-toggle-left">
@@ -81,7 +81,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <!-- Page where you can see/download remotely available datasets -->
 <div data-role="page" id="remote" class="bg-blur">
   <div class="home-header">
-    <a href="#about" data-transition="pop">Field Guide</a>
+    <a href="#about" data-transition="pop">Nomen</a>
   </div>
   <div class="home-toggle-box">
     <a href="#home" data-transition="none"><div class="home-toggle home-toggle-not-selected home-toggle-left">
@@ -167,9 +167,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
   <div data-role="main" class="ui-content" id="confirm-delete-content">
     <img src="img/UWlogo_fl_4c_wht.png" style="max-width: 100%;" />
-    <p>Field Identification Tool</p>
+    <p>
+      Nomen, developed by the
+      <a href="http://wid.wisc.edu/programs/fielddaylab/">Field Day Lab</a>
+    </p>
     <ul>
-      <li>David Gagnon &mdash; Project Lead</li>
+      <li>David Gagnon &mdash; Director</li>
       <li>Michael Tolly &mdash; Developer</li>
       <li>Tyler Anlauf &mdash; Graphic Design</li>
     </ul>
@@ -221,7 +224,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
     document.addEventListener('deviceready', function() {
       var readWrite = cordova.file.dataDirectory;
       var readOnly = cordova.file.applicationDirectory + '/www/library.json';
-      var remoteURL = 'http://localhost:8888/editor/www/api.php';
+      var remoteURL = 'http://nomenproject.org/author/api.php';
       window.app = new App(readWrite, readOnly, remoteURL);
       app.onDeviceReady();
     });

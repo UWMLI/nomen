@@ -10,14 +10,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 -->
 
 <!-- change the widget id to your id and update the version as appropriate -->
-<widget id="edu.wisc.wid.fielddaylab.fieldguide" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="edu.wisc.wid.fielddaylab.nomen" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
   <!-- Edit to match the details of your app -->
-  <name>Field Guide</name>
+  <name>Nomen</name>
   <description>
-    Identify anything!
+    Give the world a name!
   </description>
-  <author email="djgagnon@wisc.edu" href="http://mobile.wisc.edu/teaching-and-learning/">
+  <author email="djgagnon@wisc.edu" href="http://wid.wisc.edu/programs/fielddaylab/">
     Field Day Lab
   </author>
   <!-- END App Details -->

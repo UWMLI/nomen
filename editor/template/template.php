@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Field Guide: <?php echo $page_title; ?></title>
+  <title>Nomen Editor: <?php echo $page_title; ?></title>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="lib/jquery-2.1.1.min.js"></script>
@@ -27,7 +27,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="?">Field Guide</a>
+      <a class="navbar-brand" href="?">Nomen Editor</a>
     </div>
 
     <div class="collapse navbar-collapse" id="navbar-collapse">

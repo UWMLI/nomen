@@ -9,14 +9,14 @@ all: js
 js: $(js_files)
 
 clean:
-	rm -f remote/*.zip
+	rm -f $(js_files)
 
 # Runs the ->>/=>> preprocessor, then the normal CoffeeScript compiler
 %.js: %.coffee
 	./action-arrow.rb < $< | coffee -sc > $@
 
 # Runs closure on the .js files just to check for dead code, etc.
-closure:
+closure: $(js_files)
 	for js in $(js_files); do \
 		echo $$js; \
 		closure-compiler --language_in ECMASCRIPT5_STRICT $$js > /dev/null; \
