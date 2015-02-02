@@ -7,7 +7,17 @@ username   = $fdl_logins[:nomen][:username]
 password   = $fdl_logins[:nomen][:password]
 remote_dir = $fdl_logins[:nomen][:remote_dir]
 
+# Enter database details here
+nomen_db = {
+  host:     $nomen_db[:host],
+  user:     $nomen_db[:user],
+  password: $nomen_db[:password],
+  database: $nomen_db[:database],
+  port:     $nomen_db[:port],
+}
+
 require 'net/sftp'
+require 'tempfile'
 
 def log(s)
   STDERR.puts s
@@ -47,5 +57,26 @@ Net::SFTP.start(url, username, password: password) do |sftp|
   log " => Connected #{username}@#{url} via SFTP."
   log " => Uploading repo to #{remote_dir}..."
   upload_rf sftp, '.', remote_dir
+
+  log " => Editing server config to include DB login info..."
+  config_location = 'editor/include/config.php'
+  db_config = File.read(config_location).split("\n").map do |line|
+    %w{host user password database port}.each do |field|
+      if line.start_with? "define(#{field.upcase.inspect},"
+        line = "define(#{field.upcase.inspect}, #{nomen_db[field.to_sym].inspect});"
+      end
+    end
+    line
+  end.join("\n")
+  temp_config = Tempfile.new(['config', '.php'])
+  begin
+    temp_config.puts db_config
+    temp_config.close
+    log "Uploading #{temp_config.path} to #{remote_dir}/#{config_location}"
+    sftp.upload! temp_config.path, "#{remote_dir}/#{config_location}"
+  ensure
+    temp_config.close!
+  end
+
   log ' => Done!'
 end
