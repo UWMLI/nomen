@@ -25,7 +25,7 @@ def upload_rf(sftp, from, to)
   return if from == './guides'
   log "Uploading #{from} to #{to}"
   Dir.entries(from).each do |ent|
-    next if %w{. .. .DS_Store .gitignore .git}.include? ent
+    next if %w{. .. .DS_Store .gitignore .git deploy.rb}.include? ent
     full_from = "#{from}/#{ent}"
     full_to = "#{to}/#{ent}"
     if File.file?(full_from)
