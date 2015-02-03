@@ -135,27 +135,51 @@ Dog,Canis lupus familiaris,Red,Big
 Cat,Felis catus,"Red, Blue",Small
 </pre>
 
-<p>In the above data, <code>Cat</code> has two values for <code>Color</code>,
-separated by commas, which means it shows up if you select either of those
-(or both).</p>
-
-<p>Filenames and spreadsheet values are not case sensitive, and when matching
-images to data, characters other than letters or numbers are ignored.
-Any tag may be added to the end of a specimen image so long as it doesn't end
-up forming the name of some other specimen.</p>
-
-<p>For example, the specimen <code>Things + Stuff</code> could be linked to any of these images:</p>
-
 <ul>
-  <li><code>Things + Stuff.jpg</code></li>
-  <li><code>things_stuff.jpeg</code></li>
-  <li><code>THINGSSTUFF.PNG</code></li>
-  <li><code>things + stuff - a cool image.png</code></li>
-  <li><code>ThingsStuffFront.jpg</code></li>
+
+<li><p>
+  The <code>Name</code> is what gets displayed in the app's list of specimens,
+  and also determines what image names to look for (see below). The
+  <code>Description</code> is the text (or HTML) that is displayed below the
+  full-screen photo when the user selects that specimen from the list.
+  All the other fields are used to categorize specimens.
+</p></li>
+
+<li><p>
+  In the above data, <code>Cat</code> has two values for <code>Color</code>,
+  separated by commas, which means it shows up if you select either of those
+  (or both).
+</p></li>
+
+<li><p>
+  Filenames and spreadsheet values are not case sensitive, and when matching
+  images to data, characters other than letters or numbers are ignored.
+  Extra text may be added to the end of a specimen image name,
+  so long as it doesn't end up forming the name of some other specimen.
+</p></li>
+
+<li>
+  <p>
+    For example, the specimen <code>Things + Stuff</code> could be linked to any of these images:
+  </p>
+  <p>
+    <ul>
+      <li><code>Things + Stuff.jpg</code></li>
+      <li><code>things_stuff.jpeg</code></li>
+      <li><code>THINGSSTUFF.PNG</code></li>
+      <li><code>things + stuff - a cool image.png</code></li>
+      <li><code>ThingsStuffFront.jpg</code></li>
+    </ul>
+  </p>
+  <p>
+    To ensure that a certain image is the primary one, name it with just the
+    specimen name, nothing after it.
+  </p>
+</li>
+
 </ul>
 
-<p>To ensure that a certain image is the primary one, do not attach a tag
-after the specimen name.</p>
+
 
   <?php
 }
