@@ -11,10 +11,12 @@ function page_content() {
 
 <form action="?login" method="post">
   <div class="form-group">
-    <input autofocus placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
+    <label for="input-email">Email</label>
+    <input autofocus id="input-email" class="form-control" placeholder="Email" type="text" name="email" value="<?= $existing_email ?>" />
   </div>
   <div class="form-group">
-    <input placeholder="Password" type="password" name="password" />
+    <label for="input-password">Password</label>
+    <input id="input-password" class="form-control" placeholder="Password" type="password" name="password" />
   </div>
   <div class="form-group">
     <input type="submit" value="Login" class="btn btn-primary" />
