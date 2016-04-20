@@ -238,7 +238,8 @@ class App
       replaceHtml $('#about-guide-content'), ->>
         @p "Author: #{dataset.author}"
         @p "Version: #{dataset.version}"
-        @p dataset.description
+        @p ->>
+          @raw dataset.description
       callback()
 
   # Fill the features page with rows of possible filtering criteria.
@@ -393,7 +394,7 @@ class App
           @div '.specimen-text-box', ->>
             @div '.specimen-text', ->>
               @h1 name
-              @text desc
+              @raw desc
 
   # Add swipe handlers to the image pages, so you can swipe left and right
   # to move through a species' images.
